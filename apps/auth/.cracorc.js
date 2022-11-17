@@ -28,10 +28,19 @@ module.exports = () => ({
             "playlist-content": {
               singleton: true,
             },
+            "auth-content": {
+              singleton: true,
+            },
             tsconfig: {
               singleton: true,
             },
             ui: {
+              singleton: true,
+            },
+            hooks: {
+              singleton: true,
+            },
+            form: {
               singleton: true,
             },
             store: {

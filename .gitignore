@@ -31,3 +31,10 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+#dist
+dist
+
+#lock
+yarn.lock
+pnpm-lock.yaml

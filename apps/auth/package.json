@@ -23,6 +23,8 @@
     "tsconfig": "workspace:*",
     "typescript": "^4.8.4",
     "ui": "workspace:*",
+    "hooks": "workspace:*",
+    "form": "workspace:*",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

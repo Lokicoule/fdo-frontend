@@ -1,2 +1,3 @@
 import * as React from "react";
-export * from "./AppShell";
+export * from "./src/AppShell";
+export * from "./src/LinkRouter";
