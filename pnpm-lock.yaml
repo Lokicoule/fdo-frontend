@@ -15,65 +15,6 @@ importers:
       prettier: 2.7.1
       turbo: 1.6.3
 
-  apps/auth:
-    specifiers:
-      '@craco/craco': ^7.0.0
-      '@emotion/react': ^11.10.5
-      '@emotion/styled': ^11.10.5
-      '@hookform/resolvers': ^2.9.10
-      '@mui/icons-material': ^5.10.14
-      '@mui/material': ^5.10.14
-      '@testing-library/jest-dom': ^5.16.5
-      '@testing-library/react': ^13.4.0
-      '@testing-library/user-event': ^13.5.0
-      '@types/jest': ^27.5.2
-      '@types/node': ^16.18.3
-      '@types/react': ^18.0.25
-      '@types/react-dom': ^18.0.9
-      amazon-cognito-identity-js: ^5.2.12
-      auth-content: workspace:*
-      auth-context: workspace:*
-      form: workspace:*
-      hooks: workspace:*
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      react-hook-form: ^7.39.4
-      react-scripts: 5.0.1
-      tsconfig: workspace:*
-      typescript: ^4.8.4
-      ui: workspace:*
-      web-vitals: ^2.1.4
-      yup: ^0.32.11
-    dependencies:
-      '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
-      '@emotion/styled': 11.10.5_otcjdfkheatawhug6fwk7ldzni
-      '@hookform/resolvers': 2.9.10_react-hook-form@7.39.4
-      '@mui/icons-material': 5.10.14_edp4dc7hnxdrqofuyrrjp2id7y
-      '@mui/material': 5.10.14_thp4wrxo45nyllusrnt46mid4u
-      '@testing-library/jest-dom': 5.16.5
-      '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
-      '@testing-library/user-event': 13.5.0
-      '@types/jest': 27.5.2
-      '@types/node': 16.18.3
-      '@types/react': 18.0.25
-      '@types/react-dom': 18.0.9
-      amazon-cognito-identity-js: 5.2.12
-      auth-content: link:../../packages/auth-content
-      auth-context: link:../../packages/auth-context
-      form: link:../../packages/form
-      hooks: link:../../packages/hooks
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-hook-form: 7.39.4_react@18.2.0
-      react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
-      tsconfig: link:../../packages/tsconfig
-      typescript: 4.8.4
-      ui: link:../../packages/ui
-      web-vitals: 2.1.4
-      yup: 0.32.11
-    devDependencies:
-      '@craco/craco': 7.0.0_pz55nzhwxh67asrmxmq5gfw6xu
-
   apps/customers:
     specifiers:
       '@testing-library/jest-dom': ^5.16.5
@@ -101,6 +42,67 @@ importers:
       react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
       typescript: 4.8.4
       web-vitals: 2.1.4
+
+  apps/home:
+    specifiers:
+      '@craco/craco': ^7.0.0
+      '@emotion/react': ^11.10.5
+      '@emotion/styled': ^11.10.5
+      '@hookform/resolvers': ^2.9.10
+      '@mui/icons-material': ^5.10.14
+      '@mui/material': ^5.10.14
+      '@testing-library/jest-dom': ^5.16.5
+      '@testing-library/react': ^13.4.0
+      '@testing-library/user-event': ^13.5.0
+      '@types/jest': ^27.5.2
+      '@types/node': ^16.18.3
+      '@types/react': ^18.0.25
+      '@types/react-dom': ^18.0.9
+      amazon-cognito-identity-js: ^5.2.12
+      auth-provider: workspace:*
+      auth-routing: workspace:*
+      auth-ui: workspace:*
+      form: workspace:*
+      hooks: workspace:*
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-hook-form: ^7.39.4
+      react-scripts: 5.0.1
+      tsconfig: workspace:*
+      typescript: ^4.8.4
+      ui: workspace:*
+      web-vitals: ^2.1.4
+      yup: ^0.32.11
+    dependencies:
+      '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
+      '@emotion/styled': 11.10.5_otcjdfkheatawhug6fwk7ldzni
+      '@hookform/resolvers': 2.9.10_react-hook-form@7.39.4
+      '@mui/icons-material': 5.10.14_edp4dc7hnxdrqofuyrrjp2id7y
+      '@mui/material': 5.10.14_thp4wrxo45nyllusrnt46mid4u
+      '@testing-library/jest-dom': 5.16.5
+      '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
+      '@testing-library/user-event': 13.5.0
+      '@types/jest': 27.5.2
+      '@types/node': 16.18.3
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.9
+      amazon-cognito-identity-js: 5.2.12
+      auth-provider: link:../../packages/auth-provider
+      auth-routing: link:../../packages/auth-routing
+      auth-ui: link:../../packages/auth-ui
+      form: link:../../packages/form
+      hooks: link:../../packages/hooks
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.39.4_react@18.2.0
+      react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
+      tsconfig: link:../../packages/tsconfig
+      typescript: 4.8.4
+      ui: link:../../packages/ui
+      web-vitals: 2.1.4
+      yup: 0.32.11
+    devDependencies:
+      '@craco/craco': 7.0.0_pz55nzhwxh67asrmxmq5gfw6xu
 
   apps/orders:
     specifiers:
@@ -186,7 +188,55 @@ importers:
       typescript: 4.8.4
       web-vitals: 2.1.4
 
-  packages/auth-content:
+  packages/auth-provider:
+    specifiers:
+      '@types/node': ^16.18.3
+      '@types/react': ^18.0.17
+      '@types/react-dom': ^18.0.6
+      amazon-cognito-identity-js: ^5.2.12
+      eslint: ^7.32.0
+      eslint-config-custom: workspace:*
+      react: ^18.2.0
+      react-router-dom: ^6.4.3
+      tsconfig: workspace:*
+      typescript: ^4.5.2
+    dependencies:
+      amazon-cognito-identity-js: 5.2.12
+      react-router-dom: 6.4.3_react@18.2.0
+    devDependencies:
+      '@types/node': 16.18.3
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.9
+      eslint: 7.32.0
+      eslint-config-custom: link:../eslint-config-custom
+      react: 18.2.0
+      tsconfig: link:../tsconfig
+      typescript: 4.8.4
+
+  packages/auth-routing:
+    specifiers:
+      '@types/react': ^18.0.17
+      '@types/react-dom': ^18.0.6
+      auth-provider: workspace:*
+      eslint: ^7.32.0
+      eslint-config-custom: workspace:*
+      react: ^18.2.0
+      react-router-dom: ^6.4.3
+      tsconfig: workspace:*
+      typescript: ^4.5.2
+    dependencies:
+      auth-provider: link:../auth-provider
+      react-router-dom: 6.4.3_react@18.2.0
+    devDependencies:
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.9
+      eslint: 7.32.0
+      eslint-config-custom: link:../eslint-config-custom
+      react: 18.2.0
+      tsconfig: link:../tsconfig
+      typescript: 4.8.4
+
+  packages/auth-ui:
     specifiers:
       '@emotion/react': ^11.10.5
       '@emotion/styled': ^11.10.5
@@ -196,7 +246,7 @@ importers:
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
       amazon-cognito-identity-js: ^5.2.12
-      auth-context: workspace:*
+      auth-provider: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       form: workspace:*
@@ -214,7 +264,7 @@ importers:
       '@mui/icons-material': 5.10.14_edp4dc7hnxdrqofuyrrjp2id7y
       '@mui/material': 5.10.14_v64nlmo6pkqfmpmxge6otzlg54
       amazon-cognito-identity-js: 5.2.12
-      auth-context: link:../auth-context
+      auth-provider: link:../auth-provider
       react-hook-form: 7.39.4_react@18.2.0
       react-router-dom: 6.4.3_react@18.2.0
       yup: 0.32.11
@@ -228,48 +278,6 @@ importers:
       tsconfig: link:../tsconfig
       typescript: 4.8.4
       ui: link:../ui
-
-  packages/auth-context:
-    specifiers:
-      '@types/react': ^18.0.17
-      '@types/react-dom': ^18.0.6
-      amazon-cognito-identity-js: ^5.2.12
-      auth-service: workspace:*
-      eslint: ^7.32.0
-      eslint-config-custom: workspace:*
-      react: ^18.2.0
-      react-router-dom: ^6.4.3
-      tsconfig: workspace:*
-      typescript: ^4.5.2
-    dependencies:
-      amazon-cognito-identity-js: 5.2.12
-      auth-service: link:../auth-service
-      react-router-dom: 6.4.3_react@18.2.0
-    devDependencies:
-      '@types/react': 18.0.25
-      '@types/react-dom': 18.0.9
-      eslint: 7.32.0
-      eslint-config-custom: link:../eslint-config-custom
-      react: 18.2.0
-      tsconfig: link:../tsconfig
-      typescript: 4.8.4
-
-  packages/auth-service:
-    specifiers:
-      '@types/node': ^16.18.3
-      amazon-cognito-identity-js: ^5.2.12
-      eslint: ^7.32.0
-      eslint-config-custom: workspace:*
-      tsconfig: workspace:*
-      typescript: ^4.5.2
-    dependencies:
-      amazon-cognito-identity-js: 5.2.12
-    devDependencies:
-      '@types/node': 16.18.3
-      eslint: 7.32.0
-      eslint-config-custom: link:../eslint-config-custom
-      tsconfig: link:../tsconfig
-      typescript: 4.8.4
 
   packages/eslint-config-custom:
     specifiers:
@@ -355,7 +363,7 @@ importers:
       '@mui/material': ^5.10.14
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
-      auth-context: workspace:*
+      auth-provider: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       hooks: workspace:*
@@ -370,7 +378,7 @@ importers:
       '@mui/material': 5.10.14_v64nlmo6pkqfmpmxge6otzlg54
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.8
-      auth-context: link:../auth-context
+      auth-provider: link:../auth-provider
       eslint: 7.32.0
       eslint-config-custom: link:../eslint-config-custom
       hooks: link:../hooks

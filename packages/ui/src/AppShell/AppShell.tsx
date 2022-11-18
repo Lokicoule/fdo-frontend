@@ -11,7 +11,7 @@ import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 import { Header } from "./Header";
 import { Navbar } from "./Navbar/Navbar";
 import { ThemeColorProvider, useThemeColorMode } from "./ThemeColor";
-import { AuthProvider } from "auth-context";
+import { AuthProvider } from "auth-provider";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
