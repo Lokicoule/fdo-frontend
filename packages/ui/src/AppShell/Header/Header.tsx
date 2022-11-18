@@ -11,6 +11,8 @@ const drawerWidth = 240;
 
 interface HeaderProps extends MuiAppBarProps {
   open?: boolean;
+  onOpen?: () => void;
+  render?: React.ReactNode;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -32,7 +34,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export const Header: React.FC<HeaderProps> = (props) => {
-  const { open, title, onClick } = props;
+  const { open, title, onOpen, render } = props;
 
   return (
     <AppBar position="fixed" open={open}>
@@ -40,7 +42,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={onClick}
+          onClick={onOpen}
           edge="start"
           sx={{
             marginRight: 5,
@@ -52,6 +54,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
         <Typography variant="h6" noWrap component="div" flexGrow={1}>
           {title}
         </Typography>
+        {render}
         <ThemeColor />
       </Toolbar>
     </AppBar>

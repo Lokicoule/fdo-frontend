@@ -1,9 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import { useAuth } from "auth-context/auth-routing";
+import { FormInputSecret, FormInputText } from "form";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { FormInputText, FormInputSecret } from "form";
 import { LinkRouter } from "ui";
 import schema from "./validation/sign-up.validation";
 
@@ -14,8 +14,7 @@ type SignUpForm = {
 };
 
 export const SignUp = () => {
-  const navigate = useNavigate();
-  const theme = useTheme();
+  const auth = useAuth();
   const form = useForm<SignUpForm>({
     defaultValues: {
       email: "",
@@ -28,8 +27,8 @@ export const SignUp = () => {
   const { formState, handleSubmit, control } = form;
   const { errors } = formState;
 
-  const onSubmit = (data: SignUpForm) => {
-    navigate("/confirm-sign-up");
+  const onSubmit = async (data: SignUpForm) => {
+    await auth.onRegister(data.email, data.password);
   };
 
   return (
@@ -97,7 +96,7 @@ export const SignUp = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          {"S'enregistrer"}
+          Create account
         </Button>
 
         <Grid container justifyContent="flex-end">

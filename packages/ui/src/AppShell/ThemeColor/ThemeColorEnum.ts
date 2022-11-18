@@ -3,8 +3,8 @@ export enum ThemeColorEnum {
   DARK = "dark",
 }
 
-function factory(value: string): ThemeColorEnum {
-  switch (value.toLowerCase()) {
+function factory(value: string | undefined): ThemeColorEnum {
+  switch (value?.toLowerCase()) {
     case ThemeColorEnum.LIGHT.toString():
       return ThemeColorEnum.LIGHT;
     case ThemeColorEnum.DARK.toString():
@@ -14,6 +14,8 @@ function factory(value: string): ThemeColorEnum {
   }
 }
 
-export function getThemeColor(value: string): ThemeColorEnum {
+export function getThemeColor(
+  value: string | ThemeColorEnum | undefined
+): ThemeColorEnum {
   return factory(value);
 }

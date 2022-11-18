@@ -31,6 +31,12 @@ module.exports = () => ({
             "auth-content": {
               singleton: true,
             },
+            "auth-context": {
+              singleton: true,
+            },
+            "auth-service": {
+              singleton: true,
+            },
             tsconfig: {
               singleton: true,
             },

@@ -25,6 +25,8 @@
     "ui": "workspace:*",
     "hooks": "workspace:*",
     "form": "workspace:*",
+    "auth-content": "workspace:*",
+    "auth-context": "workspace:*",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

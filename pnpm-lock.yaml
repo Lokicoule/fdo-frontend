@@ -4,9 +4,12 @@ importers:
 
   .:
     specifiers:
+      dotenv-cli: ^6.0.0
       eslint-config-custom: workspace:*
       prettier: latest
       turbo: latest
+    dependencies:
+      dotenv-cli: 6.0.0
     devDependencies:
       eslint-config-custom: link:packages/eslint-config-custom
       prettier: 2.7.1
@@ -29,6 +32,7 @@ importers:
       '@types/react-dom': ^18.0.9
       amazon-cognito-identity-js: ^5.2.12
       auth-content: workspace:*
+      auth-context: workspace:*
       form: workspace:*
       hooks: workspace:*
       react: ^18.2.0
@@ -55,6 +59,7 @@ importers:
       '@types/react-dom': 18.0.9
       amazon-cognito-identity-js: 5.2.12
       auth-content: link:../../packages/auth-content
+      auth-context: link:../../packages/auth-context
       form: link:../../packages/form
       hooks: link:../../packages/hooks
       react: 18.2.0
@@ -191,6 +196,7 @@ importers:
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
       amazon-cognito-identity-js: ^5.2.12
+      auth-context: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       form: workspace:*
@@ -208,6 +214,7 @@ importers:
       '@mui/icons-material': 5.10.14_edp4dc7hnxdrqofuyrrjp2id7y
       '@mui/material': 5.10.14_v64nlmo6pkqfmpmxge6otzlg54
       amazon-cognito-identity-js: 5.2.12
+      auth-context: link:../auth-context
       react-hook-form: 7.39.4_react@18.2.0
       react-router-dom: 6.4.3_react@18.2.0
       yup: 0.32.11
@@ -221,6 +228,48 @@ importers:
       tsconfig: link:../tsconfig
       typescript: 4.8.4
       ui: link:../ui
+
+  packages/auth-context:
+    specifiers:
+      '@types/react': ^18.0.17
+      '@types/react-dom': ^18.0.6
+      amazon-cognito-identity-js: ^5.2.12
+      auth-service: workspace:*
+      eslint: ^7.32.0
+      eslint-config-custom: workspace:*
+      react: ^18.2.0
+      react-router-dom: ^6.4.3
+      tsconfig: workspace:*
+      typescript: ^4.5.2
+    dependencies:
+      amazon-cognito-identity-js: 5.2.12
+      auth-service: link:../auth-service
+      react-router-dom: 6.4.3_react@18.2.0
+    devDependencies:
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.9
+      eslint: 7.32.0
+      eslint-config-custom: link:../eslint-config-custom
+      react: 18.2.0
+      tsconfig: link:../tsconfig
+      typescript: 4.8.4
+
+  packages/auth-service:
+    specifiers:
+      '@types/node': ^16.18.3
+      amazon-cognito-identity-js: ^5.2.12
+      eslint: ^7.32.0
+      eslint-config-custom: workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.5.2
+    dependencies:
+      amazon-cognito-identity-js: 5.2.12
+    devDependencies:
+      '@types/node': 16.18.3
+      eslint: 7.32.0
+      eslint-config-custom: link:../eslint-config-custom
+      tsconfig: link:../tsconfig
+      typescript: 4.8.4
 
   packages/eslint-config-custom:
     specifiers:
@@ -306,6 +355,7 @@ importers:
       '@mui/material': ^5.10.14
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
+      auth-context: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       hooks: workspace:*
@@ -320,6 +370,7 @@ importers:
       '@mui/material': 5.10.14_v64nlmo6pkqfmpmxge6otzlg54
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.8
+      auth-context: link:../auth-context
       eslint: 7.32.0
       eslint-config-custom: link:../eslint-config-custom
       hooks: link:../hooks
@@ -4632,12 +4683,32 @@ packages:
       no-case: 3.0.4
       tslib: 2.4.1
 
+  /dotenv-cli/6.0.0:
+    resolution: {integrity: sha512-qXlCOi3UMDhCWFKe0yq5sg3X+pJAz+RQDiFN38AMSbUrnY3uZshSfDJUAge951OS7J9gwLZGfsBlWRSOYz/TRg==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.0.3
+      dotenv-expand: 8.0.3
+      minimist: 1.2.7
+    dev: false
+
   /dotenv-expand/5.1.0:
     resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
+
+  /dotenv-expand/8.0.3:
+    resolution: {integrity: sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==}
+    engines: {node: '>=12'}
+    dev: false
 
   /dotenv/10.0.0:
     resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
     engines: {node: '>=10'}
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /duplexer/0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}

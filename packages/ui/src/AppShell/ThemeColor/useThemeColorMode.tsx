@@ -2,7 +2,9 @@ import createTheme from "@mui/material/styles/createTheme";
 import React from "react";
 import { ThemeColorEnum, getThemeColor } from "./ThemeColorEnum";
 
-export const useThemeColorMode = (color: string | ThemeColorEnum) => {
+export const useThemeColorMode = (
+  color: string | ThemeColorEnum | undefined
+) => {
   const [mode, setMode] = React.useState<ThemeColorEnum>(getThemeColor(color));
 
   const themeColor = React.useMemo(

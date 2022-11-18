@@ -11,5 +11,9 @@
     "dev": {
       "cache": false
     }
-  }
+  },
+  "globalEnv": [
+    "REACT_APP_COGNITO_USER_POOL_ID",
+    "REACT_APP_COGNITO_USER_POOL_CLIENT_ID"
+  ]
 }

@@ -1,24 +1,28 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
-import { FormInputSecret, FormInputText } from "form";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { useAuth } from "auth-context/auth-routing";
+import { FormInputText } from "form";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
-import { useAuth } from "auth-context/auth-routing";
 
-import schema from "./validation/sign-in.validation";
+import schema from "./validation/confirm-sign-up.validation";
 
-type SignInForm = {
+type ConfirmSignUpForm = {
   email: string;
-  password: string;
+  code: string;
 };
 
-export const SignIn = () => {
+export const ConfirmSignUp = () => {
   const auth = useAuth();
-  const form = useForm<SignInForm>({
+  const theme = useTheme();
+  const [error, setError] = useState<string | null>(null);
+
+  const form = useForm<ConfirmSignUpForm>({
     defaultValues: {
       email: "",
-      password: "",
+      code: "",
     },
     resolver: yupResolver(schema),
   });
@@ -26,9 +30,11 @@ export const SignIn = () => {
   const { formState, handleSubmit, control } = form;
   const { errors } = formState;
 
-  const onSubmit = async (data: SignInForm) => {
-    console.log("updated2");
-    await auth.onLogin(data.email, data.password);
+  const onSubmit = async (data: ConfirmSignUpForm) => {
+    auth.onConfirmRegister(data.email, data.code).catch((err) => {
+      console.log(err);
+      setError(err.message);
+    });
   };
 
   return (
@@ -43,7 +49,7 @@ export const SignIn = () => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Connexion
+        Confirmation
       </Typography>
       <Box
         component="form"
@@ -66,16 +72,16 @@ export const SignIn = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormInputSecret
-              name="password"
+            <FormInputText
+              name="code"
               control={control}
-              label="Mot de passe"
+              label="Code de confirmation"
               required
               fullWidth
               autoComplete="current-password"
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            ></FormInputSecret>
+              error={!!errors.code}
+              helperText={errors.code?.message}
+            ></FormInputText>
           </Grid>
         </Grid>
         <Button
@@ -85,13 +91,15 @@ export const SignIn = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          Login
+          Confirmer
         </Button>
-
+        <Typography color={theme.palette.error.main}>
+          {error && error}
+        </Typography>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <LinkRouter to="/auth/sign-up" variant="body2">
-              Vous n&#39;avez pas de compte ? Inscrivez-vous
+            <LinkRouter to="/auth/sign-in" variant="body2">
+              Already have an account? Sign in
             </LinkRouter>
           </Grid>
         </Grid>

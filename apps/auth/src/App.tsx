@@ -2,32 +2,61 @@ import React from "react";
 import { AppShell } from "ui";
 import HomeIcon from "@mui/icons-material/Home";
 import SignUp from "./views/SignUp/SignUpContent";
+import ConfirmSignUp from "./views/ConfirmSignUp/ConfirmSignUpContent";
+import SignIn from "./views/SignIn/SignInContent";
+import { RequireAuth, PreventAuth } from "auth-context/auth-routing";
+import { LogoutButton } from "../../../packages/auth-ui/auth-content";
 
 function App() {
   return (
     <AppShell
       title="Auth"
       colorScheme="dark"
+      render={<LogoutButton />}
       routes={[
         {
           path: "/",
           element: () => <div>Home</div>,
         },
         {
-          path: "/auth/sign-up",
-          element: SignUp,
+          path: "/register",
+          element: () => (
+            <PreventAuth>
+              <SignUp />
+            </PreventAuth>
+          ),
         },
         {
-          path: "/auth/confirm-sign-up",
-          element: SignUp,
+          path: "/confirm-register",
+          element: () => (
+            <PreventAuth>
+              <ConfirmSignUp />
+            </PreventAuth>
+          ),
         },
         {
-          path: "/auth/sign-in",
-          element: SignUp,
+          path: "/login",
+          element: () => (
+            <PreventAuth>
+              <SignIn />
+            </PreventAuth>
+          ),
         },
         {
-          path: "/auth/forgot-password",
-          element: SignUp,
+          path: "/reset-password",
+          element: () => (
+            <PreventAuth>
+              <SignUp />
+            </PreventAuth>
+          ),
+        },
+        {
+          path: "/dashboard",
+          element: () => (
+            <RequireAuth>
+              <SignUp />
+            </RequireAuth>
+          ),
         },
       ]}
       navLinks={[
@@ -37,18 +66,23 @@ function App() {
           icon: <HomeIcon />,
         },
         {
-          label: "Sign Up",
-          path: "/auth/sign-up",
+          label: "Register",
+          path: "/register",
           icon: <HomeIcon />,
         },
         {
-          label: "Sign In",
-          path: "/auth/sign-up",
+          label: "Login",
+          path: "/login",
           icon: <HomeIcon />,
         },
         {
-          label: "Confirm Sign Up",
-          path: "/auth/confirm-sign-up",
+          label: "Confirm Register",
+          path: "/confirm-register",
+          icon: <HomeIcon />,
+        },
+        {
+          label: "Dashboard",
+          path: "/dashboard",
           icon: <HomeIcon />,
         },
       ]}

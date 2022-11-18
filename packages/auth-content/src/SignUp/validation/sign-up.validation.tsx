@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { AUTH_CONSTANTS } from "../../common/constants/auth.constants";
+import { AUTH_CONSTANTS } from "../../constants/auth.constants";
 
 export default yup.object().shape({
   email: yup

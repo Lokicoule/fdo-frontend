@@ -11,6 +11,7 @@ import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 import { Header } from "./Header";
 import { Navbar } from "./Navbar/Navbar";
 import { ThemeColorProvider, useThemeColorMode } from "./ThemeColor";
+import { AuthProvider } from "auth-context";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -37,7 +38,8 @@ export type AppShellProps = {
   title: string;
   routes: Route[];
   navLinks: NavLink[];
-  colorScheme: ColorScheme;
+  colorScheme?: ColorScheme;
+  render?: React.ReactNode;
 };
 
 function MainLink({
@@ -73,41 +75,48 @@ function MainLink({
 }
 
 export const AppShell: React.FC<AppShellProps> = (props) => {
-  const { title, routes, navLinks, colorScheme } = props;
+  const { title, routes, navLinks, colorScheme, render } = props;
   const [open, setOpen] = useToggle();
 
   const { theme, themeColor } = useThemeColorMode(colorScheme);
 
   return (
     <BrowserRouter>
-      <ThemeColorProvider value={themeColor}>
-        <ThemeProvider theme={theme}>
-          <Box sx={{ display: "flex" }}>
-            <CssBaseline />
-            <Header title={title} open={open} onClick={setOpen} />
-            <Navbar
-              open={open}
-              onClick={setOpen}
-              render={navLinks.map((link) => (
-                <MainLink {...link} open={open} key={link.label} />
-              ))}
-            ></Navbar>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-              <DrawerHeader />
-              <Routes>
-                {routes.map((route) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<route.element />}
-                  />
+      <AuthProvider>
+        <ThemeColorProvider value={themeColor}>
+          <ThemeProvider theme={theme}>
+            <Box sx={{ display: "flex" }}>
+              <CssBaseline />
+              <Header
+                title={title}
+                open={open}
+                onOpen={setOpen}
+                render={render}
+              />
+              <Navbar
+                open={open}
+                onClick={setOpen}
+                render={navLinks.map((link) => (
+                  <MainLink {...link} open={open} key={link.label} />
                 ))}
-              </Routes>
-              <Outlet />
+              ></Navbar>
+              <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <DrawerHeader />
+                <Routes>
+                  {routes.map((route) => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={<route.element />}
+                    />
+                  ))}
+                </Routes>
+                <Outlet />
+              </Box>
             </Box>
-          </Box>
-        </ThemeProvider>
-      </ThemeColorProvider>
+          </ThemeProvider>
+        </ThemeColorProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 };
