@@ -5,6 +5,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -35,23 +36,33 @@ const AuthContext = createContext<AuthContextValue>({
 
 export const AuthProvider: FC<PropsWithChildren> = (props) => {
   const { children } = props;
-
   const navigate = useNavigate();
   const location = useLocation();
-  const [token, setToken] = useState<string | null>(null);
+
+  const authChannel = useRef(new BroadcastChannel("auth"));
+
+  const [token, setToken] = useState<string | null>(
+    "default_to_prevent_redirect_when_refreshing"
+  );
+
+  async function checkToken() {
+    const token = await authService.getToken();
+    setToken(token);
+  }
+
+  authChannel.current.onmessage = (event) => {
+    console.log("event", event);
+    checkToken();
+  };
 
   useEffect(() => {
-    async function checkToken() {
-      const token = await authService.getToken();
-      console.log("token", token);
-      setToken(token);
-    }
     checkToken();
   }, []);
 
   const handleLogin = async (email: string, password: string) => {
     const token = await authService.signIn(email, password);
     setToken(token);
+    authChannel.current.postMessage("login");
     const origin = location.state?.from?.pathname ?? "/home";
     navigate(origin);
   };
@@ -59,6 +70,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   const handleLogout = async () => {
     await authService.signOut();
     setToken(null);
+    authChannel.current.postMessage("logout");
     navigate("/login");
   };
 
