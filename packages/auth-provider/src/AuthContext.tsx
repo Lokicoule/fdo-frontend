@@ -45,18 +45,18 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     "default_to_prevent_redirect_when_refreshing"
   );
 
-  async function checkToken() {
+  async function synchronizeToken() {
     const token = await authService.getToken();
     setToken(token);
   }
 
   authChannel.current.onmessage = (event) => {
     console.log("event", event);
-    checkToken();
+    synchronizeToken();
   };
 
   useEffect(() => {
-    checkToken();
+    synchronizeToken();
   }, []);
 
   const handleLogin = async (email: string, password: string) => {
