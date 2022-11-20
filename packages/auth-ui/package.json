@@ -16,6 +16,7 @@
     "eslint-config-custom": "workspace:*",
     "form": "workspace:*",
     "ui": "workspace:*",
+    "store": "workspace:*",
     "react": "^18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2"

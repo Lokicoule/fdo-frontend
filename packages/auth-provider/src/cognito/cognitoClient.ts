@@ -37,6 +37,7 @@ export class CognitoClient implements ICognitoClient {
   private poolData: ICognitoUserPoolData;
 
   constructor(data: ICognitoUserPoolData) {
+    console.log("CognitoClient constructor", data);
     this.userPool = new CognitoUserPool(data);
     this.pendingSignIn = null;
     this.poolData = data;
@@ -235,6 +236,7 @@ export class CognitoClient implements ICognitoClient {
     const userData: ICognitoUserData = {
       Username: username,
       Pool: this.userPool,
+      Storage: this.poolData.Storage,
     };
     return new CognitoUser(userData);
   };

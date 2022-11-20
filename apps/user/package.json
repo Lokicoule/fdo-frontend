@@ -1,5 +1,5 @@
 {
-  "name": "home",
+  "name": "user",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -33,7 +33,7 @@
     "zustand": "^4.1.4"
   },
   "scripts": {
-    "dev": "PORT=3001 craco start",
+    "dev": "PORT=3000 craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"

@@ -1,15 +1,12 @@
-import React from "react";
-import { AppShell } from "ui";
 import HomeIcon from "@mui/icons-material/Home";
-import SignUp from "./views/Register/RegisterView";
-import ConfirmSignUp from "./views/ConfirmRegister/ConfirmRegisterView";
-import SignIn from "./views/Login/LoginView";
-import { RequireAuth, PreventAuth } from "auth-routing";
-import { LogoutButton } from "auth-ui";
-// @ts-ignore
-import { User } from "user/User";
+import { PreventAuth, RequireAuth } from "auth-routing";
+import { ConfirmSignUp, LogoutButton, SignIn, SignUp } from "auth-ui";
+import { AppShell } from "ui";
+import { User } from "./views/User";
+import { useStore } from "store";
 
 function App() {
+  const { token, setToken } = useStore();
   return (
     <AppShell
       title="Fruits d'orient"
@@ -18,7 +15,20 @@ function App() {
       routes={[
         {
           path: "/",
-          element: () => <div>Home</div>,
+          element: () => (
+            <div>
+              Home User
+              <button onClick={() => setToken("test")}>test</button>
+            </div>
+          ),
+        },
+        {
+          path: "/user",
+          element: () => (
+            <RequireAuth>
+              <User />
+            </RequireAuth>
+          ),
         },
         {
           path: "/home",
@@ -56,22 +66,6 @@ function App() {
             </PreventAuth>
           ),
         },
-        {
-          path: "/dashboard",
-          element: () => (
-            <RequireAuth>
-              <SignUp />
-            </RequireAuth>
-          ),
-        },
-        {
-          path: "/user",
-          element: () => <User />,
-        },
-        {
-          path: "*",
-          element: () => <div>Doesnt match</div>,
-        },
       ]}
       navLinks={[
         {
@@ -80,23 +74,8 @@ function App() {
           icon: <HomeIcon />,
         },
         {
-          label: "Register",
-          path: "/register",
-          icon: <HomeIcon />,
-        },
-        {
-          label: "Login",
-          path: "/login",
-          icon: <HomeIcon />,
-        },
-        {
-          label: "Confirm Register",
-          path: "/confirm-register",
-          icon: <HomeIcon />,
-        },
-        {
-          label: "Dashboard",
-          path: "/dashboard",
+          label: "User",
+          path: "/user",
           icon: <HomeIcon />,
         },
       ]}

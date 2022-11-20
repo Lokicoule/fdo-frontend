@@ -23,6 +23,7 @@
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2",
     "hooks": "workspace:*",
+    "store": "workspace:*",
     "auth-provider": "workspace:*"
   }
 }

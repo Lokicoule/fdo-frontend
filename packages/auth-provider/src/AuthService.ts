@@ -24,6 +24,7 @@ class AuthService {
       new CognitoUserPoolDataBuilder()
         .withClientId(cognitoConfig.poolData.ClientId)
         .withUserPoolId(cognitoConfig.poolData.UserPoolId)
+        .withCookieStorage("localhost", false) // Use cookie storage for local development
         .build()
     );
     console.log("AuthService constructor");
