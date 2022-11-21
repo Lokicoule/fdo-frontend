@@ -1,20 +1,32 @@
 import React from "react";
-import { AppShell } from "ui";
+import { AppShell, ErrorBoundary } from "ui";
 import HomeIcon from "@mui/icons-material/Home";
-import SignUp from "./views/Register/RegisterView";
-import ConfirmSignUp from "./views/ConfirmRegister/ConfirmRegisterView";
-import SignIn from "./views/Login/LoginView";
 import { RequireAuth, PreventAuth } from "auth-routing";
-import { LogoutButton } from "auth-ui";
-// @ts-ignore
-import { User } from "user/User";
+
+import {
+  ConfirmRegisterContent,
+  LoginContent,
+  RegisterContent,
+  LogoutButton,
+} from "auth-ui";
+
+const LogoutButtonRuntime = React.lazy(() => import("auth/LogoutButton"));
+const ConfirmRegisterRuntime = React.lazy(() => import("auth/ConfirmRegister"));
+const LoginRuntime = React.lazy(() => import("auth/Login"));
+const RegisterRuntime = React.lazy(() => import("auth/Register"));
 
 function App() {
   return (
     <AppShell
-      title="Fruits d'orient"
+      title="Fruits d'orient home"
       colorScheme="dark"
-      render={<LogoutButton />}
+      render={
+        <ErrorBoundary failover={<LogoutButton />}>
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <LogoutButtonRuntime />
+          </React.Suspense>
+        </ErrorBoundary>
+      }
       routes={[
         {
           path: "/",
@@ -28,7 +40,11 @@ function App() {
           path: "/register",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <SignUp />
+              <ErrorBoundary failover={<ConfirmRegisterContent />}>
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  <RegisterRuntime />
+                </React.Suspense>
+              </ErrorBoundary>
             </PreventAuth>
           ),
         },
@@ -36,7 +52,11 @@ function App() {
           path: "/confirm-register",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <ConfirmSignUp />
+              <ErrorBoundary failover={<ConfirmRegisterContent />}>
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  <ConfirmRegisterRuntime />
+                </React.Suspense>
+              </ErrorBoundary>
             </PreventAuth>
           ),
         },
@@ -44,7 +64,11 @@ function App() {
           path: "/login",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <SignIn />
+              <ErrorBoundary failover={<LoginContent />}>
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  <LoginRuntime />
+                </React.Suspense>
+              </ErrorBoundary>
             </PreventAuth>
           ),
         },
@@ -52,21 +76,13 @@ function App() {
           path: "/reset-password",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <SignUp />
+              <ErrorBoundary failover={<RegisterContent />}>
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  <RegisterRuntime />
+                </React.Suspense>
+              </ErrorBoundary>
             </PreventAuth>
           ),
-        },
-        {
-          path: "/dashboard",
-          element: () => (
-            <RequireAuth>
-              <SignUp />
-            </RequireAuth>
-          ),
-        },
-        {
-          path: "/user",
-          element: () => <User />,
         },
         {
           path: "*",

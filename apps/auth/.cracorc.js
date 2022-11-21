@@ -12,10 +12,16 @@ module.exports = () => ({
     plugins: {
       add: [
         new ModuleFederationPlugin({
-          name: "user",
+          name: "auth",
           filename: "remoteEntry.js",
           exposes: {
-            "./User": "./src/views/User",
+            "./Login": "./src/views/LoginContent",
+            "./LogoutButton": "./src/components/LogoutButton",
+            "./Register": "./src/views/RegisterContent",
+            "./ConfirmRegister": "./src/views/ConfirmRegisterContent",
+            /*             "./useAuthStore": "./src/store",
+            "./PreventAuthRoute": "./src/routes/PreventAuth",
+            "./RequireAuthRoute": "./src/routes/RequireAuth", */
           },
           shared: {
             ...deps,

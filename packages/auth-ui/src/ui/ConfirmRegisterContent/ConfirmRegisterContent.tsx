@@ -7,14 +7,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
 
-import schema from "./validation/confirm-sign-up.validation";
+import schema from "./confirm-register.schema";
 
 type ConfirmSignUpForm = {
   email: string;
   code: string;
 };
 
-export const ConfirmSignUp = () => {
+export const ConfirmRegisterContent = () => {
   const auth = useAuth();
   const theme = useTheme();
   const [error, setError] = useState<string | null>(null);

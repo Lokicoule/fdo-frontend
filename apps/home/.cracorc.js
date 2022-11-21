@@ -15,7 +15,8 @@ module.exports = () => ({
           name: "home",
           filename: "remoteEntry.js",
           remotes: {
-            user: "user@http://localhost:3000/remoteEntry.js",
+            user: "user@http://localhost:3002/remoteEntry.js",
+            auth: "auth@http://localhost:3000/remoteEntry.js",
           },
           shared: {
             ...deps,

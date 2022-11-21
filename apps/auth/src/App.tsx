@@ -1,12 +1,12 @@
 import HomeIcon from "@mui/icons-material/Home";
 import { PreventAuth, RequireAuth } from "auth-routing";
-import { ConfirmSignUp, LogoutButton, SignIn, SignUp } from "auth-ui";
 import { AppShell } from "ui";
-import { User } from "./views/User";
-import { useStore } from "store";
+import LogoutButton from "./components/LogoutButton";
+import ConfirmRegisterContent from "./views/ConfirmRegisterContent";
+import LoginContent from "./views/LoginContent";
+import RegisterContent from "./views/RegisterContent";
 
 function App() {
-  const { token, setToken } = useStore();
   return (
     <AppShell
       title="Fruits d'orient"
@@ -15,30 +15,25 @@ function App() {
       routes={[
         {
           path: "/",
-          element: () => (
-            <div>
-              Home User
-              <button onClick={() => setToken("test")}>test</button>
-            </div>
-          ),
-        },
-        {
-          path: "/user",
-          element: () => (
-            <RequireAuth>
-              <User />
-            </RequireAuth>
-          ),
+          element: () => <div>Home</div>,
         },
         {
           path: "/home",
           element: () => <div>Home</div>,
         },
         {
+          path: "/dashboard",
+          element: () => (
+            <RequireAuth>
+              <div>Home</div>
+            </RequireAuth>
+          ),
+        },
+        {
           path: "/register",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <SignUp />
+              <RegisterContent />
             </PreventAuth>
           ),
         },
@@ -46,7 +41,7 @@ function App() {
           path: "/confirm-register",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <ConfirmSignUp />
+              <ConfirmRegisterContent />
             </PreventAuth>
           ),
         },
@@ -54,7 +49,7 @@ function App() {
           path: "/login",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <SignIn />
+              <LoginContent />
             </PreventAuth>
           ),
         },
@@ -62,7 +57,7 @@ function App() {
           path: "/reset-password",
           element: () => (
             <PreventAuth redirectTo="/home">
-              <SignUp />
+              <RegisterContent />
             </PreventAuth>
           ),
         },
@@ -74,8 +69,18 @@ function App() {
           icon: <HomeIcon />,
         },
         {
-          label: "User",
-          path: "/user",
+          label: "Login",
+          path: "/login",
+          icon: <HomeIcon />,
+        },
+        {
+          label: "Register",
+          path: "/register",
+          icon: <HomeIcon />,
+        },
+        {
+          label: "Dashboard",
+          path: "/dashboard",
           icon: <HomeIcon />,
         },
       ]}

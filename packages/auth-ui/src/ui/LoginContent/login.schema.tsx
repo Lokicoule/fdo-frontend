@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { AUTH_CONSTANTS } from "../../constants/auth.constants";
+import { PASSWORD_RULES } from "../../constants/password.rules";
 
 export default yup.object().shape({
   email: yup
@@ -9,12 +9,12 @@ export default yup.object().shape({
   password: yup
     .string()
     .min(
-      AUTH_CONSTANTS.PASSWORD.MIN_LENGTH,
-      `Le mot de passe doit comporter au moins ${AUTH_CONSTANTS.PASSWORD.MIN_LENGTH} charactères.`
+      PASSWORD_RULES.MIN_LENGTH,
+      `Le mot de passe doit comporter au moins ${PASSWORD_RULES.MIN_LENGTH} charactères.`
     )
     .max(
-      AUTH_CONSTANTS.PASSWORD.MAX_LENGTH,
-      `Le mot de passe doit contenir ${AUTH_CONSTANTS.PASSWORD.MAX_LENGTH} charactères maximum.`
+      PASSWORD_RULES.MAX_LENGTH,
+      `Le mot de passe doit contenir ${PASSWORD_RULES.MAX_LENGTH} charactères maximum.`
     )
     .required("Le mot de passe est requis."),
   confirmPassword: yup

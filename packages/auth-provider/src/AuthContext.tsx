@@ -3,6 +3,7 @@ import {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -12,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "store";
 
 interface AuthContextValue {
+  token: string | null;
   onLogin: (email: string, password: string) => Promise<void>;
   onLogout: () => Promise<void>;
   onRegister: (email: string, password: string) => Promise<void>;
@@ -25,6 +27,7 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue>({
+  token: "",
   onLogin: async () => {},
   onLogout: async () => {},
   onRegister: async () => {},
@@ -37,7 +40,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   const { children } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const { setToken } = useStore();
+  const { token, setToken } = useStore();
 
   const authChannel = useRef(new BroadcastChannel("auth"));
 
@@ -45,10 +48,10 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     "default_to_prevent_redirect_when_refreshing"
   ); */
 
-  async function synchronizeToken() {
+  const synchronizeToken = async () => {
     const token = await authService.getToken();
     setToken(token);
-  }
+  };
 
   authChannel.current.onmessage = async (event) => {
     await synchronizeToken();
@@ -96,6 +99,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   };
 
   const value = {
+    token,
     onLogin: handleLogin,
     onLogout: handleLogout,
     onRegister: handleRegister,

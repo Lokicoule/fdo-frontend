@@ -15,6 +15,73 @@ importers:
       prettier: 2.7.1
       turbo: 1.6.3
 
+  apps/auth:
+    specifiers:
+      '@craco/craco': ^7.0.0
+      '@emotion/react': ^11.10.5
+      '@emotion/styled': ^11.10.5
+      '@hookform/resolvers': ^2.9.10
+      '@mui/icons-material': ^5.10.14
+      '@mui/material': ^5.10.14
+      '@testing-library/jest-dom': ^5.16.5
+      '@testing-library/react': ^13.4.0
+      '@testing-library/user-event': ^13.5.0
+      '@types/jest': ^27.5.2
+      '@types/node': ^16.18.3
+      '@types/react': ^18.0.25
+      '@types/react-dom': ^18.0.9
+      amazon-cognito-identity-js: ^5.2.12
+      auth-provider: workspace:*
+      auth-routing: workspace:*
+      auth-ui: workspace:*
+      form: workspace:*
+      hooks: workspace:*
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-hook-form: ^7.39.4
+      react-router-dom: ^6.4.3
+      react-scripts: 5.0.1
+      store: workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.8.4
+      ui: workspace:*
+      web-vitals: ^2.1.4
+      yup: ^0.32.11
+      zustand: ^4.1.4
+    dependencies:
+      '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
+      '@emotion/styled': 11.10.5_otcjdfkheatawhug6fwk7ldzni
+      '@hookform/resolvers': 2.9.10_react-hook-form@7.39.4
+      '@mui/icons-material': 5.10.14_edp4dc7hnxdrqofuyrrjp2id7y
+      '@mui/material': 5.10.14_thp4wrxo45nyllusrnt46mid4u
+      '@testing-library/jest-dom': 5.16.5
+      '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
+      '@testing-library/user-event': 13.5.0
+      '@types/jest': 27.5.2
+      '@types/node': 16.18.3
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.9
+      amazon-cognito-identity-js: 5.2.12
+      auth-provider: link:../../packages/auth-provider
+      auth-routing: link:../../packages/auth-routing
+      auth-ui: link:../../packages/auth-ui
+      form: link:../../packages/form
+      hooks: link:../../packages/hooks
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.39.4_react@18.2.0
+      react-router-dom: 6.4.3_biqbaboplfbrettd7655fr4n2y
+      react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
+      store: link:../../packages/store
+      tsconfig: link:../../packages/tsconfig
+      typescript: 4.8.4
+      ui: link:../../packages/ui
+      web-vitals: 2.1.4
+      yup: 0.32.11
+      zustand: 4.1.4_react@18.2.0
+    devDependencies:
+      '@craco/craco': 7.0.0_pz55nzhwxh67asrmxmq5gfw6xu
+
   apps/customers:
     specifiers:
       '@testing-library/jest-dom': ^5.16.5
@@ -55,7 +122,7 @@ importers:
       '@testing-library/react': ^13.4.0
       '@testing-library/user-event': ^13.5.0
       '@types/jest': ^27.5.2
-      '@types/node': ^18.11.9
+      '@types/node': ^16.18.3
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.9
       amazon-cognito-identity-js: ^5.2.12
@@ -85,6 +152,7 @@ importers:
       '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
       '@testing-library/user-event': 13.5.0
       '@types/jest': 27.5.2
+      '@types/node': 16.18.3
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.9
       amazon-cognito-identity-js: 5.2.12
@@ -105,8 +173,7 @@ importers:
       yup: 0.32.11
       zustand: 4.1.4_react@18.2.0
     devDependencies:
-      '@craco/craco': 7.0.0_bbgqtjkmngdwz2r4zhkopjpm6e
-      '@types/node': 18.11.9
+      '@craco/craco': 7.0.0_pz55nzhwxh67asrmxmq5gfw6xu
 
   apps/orders:
     specifiers:
@@ -163,71 +230,6 @@ importers:
       react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
       typescript: 4.8.4
       web-vitals: 2.1.4
-
-  apps/user:
-    specifiers:
-      '@craco/craco': ^7.0.0
-      '@emotion/react': ^11.10.5
-      '@emotion/styled': ^11.10.5
-      '@hookform/resolvers': ^2.9.10
-      '@mui/icons-material': ^5.10.14
-      '@mui/material': ^5.10.14
-      '@testing-library/jest-dom': ^5.16.5
-      '@testing-library/react': ^13.4.0
-      '@testing-library/user-event': ^13.5.0
-      '@types/jest': ^27.5.2
-      '@types/node': ^18.11.9
-      '@types/react': ^18.0.25
-      '@types/react-dom': ^18.0.9
-      amazon-cognito-identity-js: ^5.2.12
-      auth-provider: workspace:*
-      auth-routing: workspace:*
-      auth-ui: workspace:*
-      form: workspace:*
-      hooks: workspace:*
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      react-hook-form: ^7.39.4
-      react-scripts: 5.0.1
-      store: workspace:*
-      tsconfig: workspace:*
-      typescript: ^4.8.4
-      ui: workspace:*
-      web-vitals: ^2.1.4
-      yup: ^0.32.11
-      zustand: ^4.1.4
-    dependencies:
-      '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
-      '@emotion/styled': 11.10.5_otcjdfkheatawhug6fwk7ldzni
-      '@hookform/resolvers': 2.9.10_react-hook-form@7.39.4
-      '@mui/icons-material': 5.10.14_edp4dc7hnxdrqofuyrrjp2id7y
-      '@mui/material': 5.10.14_thp4wrxo45nyllusrnt46mid4u
-      '@testing-library/jest-dom': 5.16.5
-      '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
-      '@testing-library/user-event': 13.5.0
-      '@types/jest': 27.5.2
-      '@types/react': 18.0.25
-      '@types/react-dom': 18.0.9
-      amazon-cognito-identity-js: 5.2.12
-      auth-provider: link:../../packages/auth-provider
-      auth-routing: link:../../packages/auth-routing
-      auth-ui: link:../../packages/auth-ui
-      form: link:../../packages/form
-      hooks: link:../../packages/hooks
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-hook-form: 7.39.4_react@18.2.0
-      react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
-      store: link:../../packages/store
-      tsconfig: link:../../packages/tsconfig
-      typescript: 4.8.4
-      ui: link:../../packages/ui
-      web-vitals: 2.1.4
-      yup: 0.32.11
-      zustand: 4.1.4_react@18.2.0
-    devDependencies:
-      '@craco/craco': 7.0.0_bbgqtjkmngdwz2r4zhkopjpm6e
-      '@types/node': 18.11.9
 
   packages/auth-provider:
     specifiers:
@@ -1730,7 +1732,7 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  /@craco/craco/7.0.0_bbgqtjkmngdwz2r4zhkopjpm6e:
+  /@craco/craco/7.0.0_pz55nzhwxh67asrmxmq5gfw6xu:
     resolution: {integrity: sha512-OyjL9zpURB6Ha1HO62Hlt27Xd7UYJ8DRiBNuE4DBB8Ue0iQ9q/xsv3ze7ROm6gCZqV6I2Gxjnq0EHCCye+4xDQ==}
     engines: {node: '>=6'}
     hasBin: true
@@ -1739,7 +1741,7 @@ packages:
     dependencies:
       autoprefixer: 10.4.13
       cosmiconfig: 7.1.0
-      cosmiconfig-typescript-loader: 1.0.9_cbe7ovvae6zqfnmtgctpgpys54
+      cosmiconfig-typescript-loader: 1.0.9_e7yvbkxpwwqnzxz2s2bfjt7zx4
       cross-spawn: 7.0.3
       lodash: 4.17.21
       react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
@@ -4250,16 +4252,16 @@ packages:
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
-  /cosmiconfig-typescript-loader/1.0.9_cbe7ovvae6zqfnmtgctpgpys54:
+  /cosmiconfig-typescript-loader/1.0.9_e7yvbkxpwwqnzxz2s2bfjt7zx4:
     resolution: {integrity: sha512-tRuMRhxN4m1Y8hP9SNYfz7jRwt8lZdWxdjg/ohg5esKmsndJIn4yT96oJVcf5x0eA11taXl+sIp+ielu529k6g==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@types/node': '*'
       typescript: '>=3'
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 16.18.3
       cosmiconfig: 7.1.0
-      ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
+      ts-node: 10.9.1_e7yvbkxpwwqnzxz2s2bfjt7zx4
       typescript: 4.8.4
     transitivePeerDependencies:
       - '@swc/core'
@@ -8630,6 +8632,19 @@ packages:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}
     engines: {node: '>=0.10.0'}
 
+  /react-router-dom/6.4.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-MiaYQU8CwVCaOfJdYvt84KQNjT78VF0TJrA17SIQgNHRvLnXDJO6qsFqq8F/zzB1BWZjCFIrQpu4QxcshitziQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.0.3
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-router: 6.4.3_react@18.2.0
+    dev: false
+
   /react-router-dom/6.4.3_react@18.2.0:
     resolution: {integrity: sha512-MiaYQU8CwVCaOfJdYvt84KQNjT78VF0TJrA17SIQgNHRvLnXDJO6qsFqq8F/zzB1BWZjCFIrQpu4QxcshitziQ==}
     engines: {node: '>=14'}
@@ -9669,7 +9684,7 @@ packages:
   /tryer/1.0.1:
     resolution: {integrity: sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==}
 
-  /ts-node/10.9.1_cbe7ovvae6zqfnmtgctpgpys54:
+  /ts-node/10.9.1_e7yvbkxpwwqnzxz2s2bfjt7zx4:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -9688,7 +9703,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
-      '@types/node': 18.11.9
+      '@types/node': 16.18.3
       acorn: 8.8.1
       acorn-walk: 8.2.0
       arg: 4.1.3
