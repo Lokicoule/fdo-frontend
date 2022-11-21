@@ -1,14 +1,13 @@
-import React from "react";
-import { AppShell, ErrorBoundary } from "ui";
 import HomeIcon from "@mui/icons-material/Home";
-import { RequireAuth, PreventAuth } from "auth-routing";
-
+import { PreventAuth } from "auth-routing";
 import {
   ConfirmRegisterContent,
   LoginContent,
-  RegisterContent,
   LogoutButton,
+  RegisterContent,
 } from "auth-ui";
+import React from "react";
+import { AppShell, BundleLoader, ErrorBoundary } from "ui";
 
 const LogoutButtonRuntime = React.lazy(() => import("auth/LogoutButton"));
 const ConfirmRegisterRuntime = React.lazy(() => import("auth/ConfirmRegister"));
@@ -22,7 +21,7 @@ function App() {
       colorScheme="dark"
       render={
         <ErrorBoundary failover={<LogoutButton />}>
-          <React.Suspense fallback={<div>Loading...</div>}>
+          <React.Suspense fallback={<BundleLoader />}>
             <LogoutButtonRuntime />
           </React.Suspense>
         </ErrorBoundary>
@@ -41,7 +40,7 @@ function App() {
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<ConfirmRegisterContent />}>
-                <React.Suspense fallback={<div>Loading...</div>}>
+                <React.Suspense fallback={<BundleLoader />}>
                   <RegisterRuntime />
                 </React.Suspense>
               </ErrorBoundary>
@@ -53,7 +52,7 @@ function App() {
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<ConfirmRegisterContent />}>
-                <React.Suspense fallback={<div>Loading...</div>}>
+                <React.Suspense fallback={<BundleLoader />}>
                   <ConfirmRegisterRuntime />
                 </React.Suspense>
               </ErrorBoundary>
@@ -65,7 +64,7 @@ function App() {
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<LoginContent />}>
-                <React.Suspense fallback={<div>Loading...</div>}>
+                <React.Suspense fallback={<BundleLoader />}>
                   <LoginRuntime />
                 </React.Suspense>
               </ErrorBoundary>
@@ -77,7 +76,7 @@ function App() {
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<RegisterContent />}>
-                <React.Suspense fallback={<div>Loading...</div>}>
+                <React.Suspense fallback={<BundleLoader />}>
                   <RegisterRuntime />
                 </React.Suspense>
               </ErrorBoundary>
