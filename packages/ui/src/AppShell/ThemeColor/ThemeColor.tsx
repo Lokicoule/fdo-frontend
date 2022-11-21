@@ -2,7 +2,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
-import { useThemeColor } from "./ThemeColor.context";
+import { useThemeColor } from "./ThemeColorContext";
 
 export function ThemeColor() {
   const theme = useTheme();

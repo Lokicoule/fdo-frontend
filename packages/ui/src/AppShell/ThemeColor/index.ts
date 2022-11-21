@@ -1,3 +1,3 @@
 export * from "./ThemeColor";
 export * from "./useThemeColorMode";
-export * from "./ThemeColor.context";
+export * from "./ThemeColorContext";
