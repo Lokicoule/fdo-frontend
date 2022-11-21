@@ -3,7 +3,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useAuth } from "auth-provider";
 import { FormInputText } from "form";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
 
@@ -15,11 +15,12 @@ type ConfirmSignUpForm = {
 };
 
 export const ConfirmRegisterContent = () => {
-  const auth = useAuth();
   const theme = useTheme();
-  const [error, setError] = useState<string | null>(null);
+  const {
+    confirmRegister: { onConfirmRegister, error },
+  } = useAuth();
 
-  const form = useForm<ConfirmSignUpForm>({
+  const { formState, handleSubmit, control } = useForm<ConfirmSignUpForm>({
     defaultValues: {
       email: "",
       code: "",
@@ -27,15 +28,17 @@ export const ConfirmRegisterContent = () => {
     resolver: yupResolver(schema),
   });
 
-  const { formState, handleSubmit, control } = form;
   const { errors } = formState;
 
   const onSubmit = async (data: ConfirmSignUpForm) => {
-    auth.onConfirmRegister(data.email, data.code).catch((err) => {
-      console.log(err);
-      setError(err.message);
-    });
+    await onConfirmRegister(data.email, data.code);
   };
+
+  useEffect(() => {
+    return () => {
+      error.reset();
+    };
+  }, []);
 
   return (
     <Box
@@ -93,9 +96,11 @@ export const ConfirmRegisterContent = () => {
         >
           Confirmer
         </Button>
-        <Typography color={theme.palette.error.main}>
-          {error && error}
-        </Typography>
+        {error.message && (
+          <Typography color={theme.palette.error.main}>
+            {error.message}
+          </Typography>
+        )}
         <Grid container justifyContent="flex-end">
           <Grid item>
             <LinkRouter to="/auth/sign-in" variant="body2">

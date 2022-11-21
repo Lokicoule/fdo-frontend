@@ -14,26 +14,62 @@ import { useStore } from "store";
 
 interface AuthContextValue {
   token: string | null;
-  onLogin: (email: string, password: string) => Promise<void>;
-  onLogout: () => Promise<void>;
-  onRegister: (email: string, password: string) => Promise<void>;
-  onConfirmRegister: (email: string, code: string) => Promise<void>;
-  onResetPassword: (email: string) => Promise<void>;
-  onConfirmResetPassword: (
-    email: string,
-    code: string,
-    password: string
-  ) => Promise<void>;
+  login: {
+    error: { message: string | null; reset: () => void };
+    onLogin: (email: string, password: string) => Promise<void>;
+  };
+  register: {
+    error: { message: string | null; reset: () => void };
+    onRegister: (email: string, password: string) => Promise<void>;
+  };
+  logout: {
+    error: { message: string | null; reset: () => void };
+    onLogout: () => Promise<void>;
+  };
+  confirmRegister: {
+    error: { message: string | null; reset: () => void };
+    onConfirmRegister: (email: string, code: string) => Promise<void>;
+  };
+  resetPassword: {
+    error: { message: string | null; reset: () => void };
+    onResetPassword: (email: string) => Promise<void>;
+  };
+  confirmResetPassword: {
+    error: { message: string | null; reset: () => void };
+    onConfirmResetPassword: (
+      email: string,
+      code: string,
+      password: string
+    ) => Promise<void>;
+  };
 }
 
 const AuthContext = createContext<AuthContextValue>({
   token: "",
-  onLogin: async () => {},
-  onLogout: async () => {},
-  onRegister: async () => {},
-  onConfirmRegister: async () => {},
-  onResetPassword: async () => {},
-  onConfirmResetPassword: async () => {},
+  login: {
+    error: { message: null, reset: () => {} },
+    onLogin: () => Promise.resolve(),
+  },
+  register: {
+    error: { message: null, reset: () => {} },
+    onRegister: () => Promise.resolve(),
+  },
+  logout: {
+    error: { message: null, reset: () => {} },
+    onLogout: () => Promise.resolve(),
+  },
+  confirmRegister: {
+    error: { message: null, reset: () => {} },
+    onConfirmRegister: () => Promise.resolve(),
+  },
+  resetPassword: {
+    error: { message: null, reset: () => {} },
+    onResetPassword: () => Promise.resolve(),
+  },
+  confirmResetPassword: {
+    error: { message: null, reset: () => {} },
+    onConfirmResetPassword: () => Promise.resolve(),
+  },
 });
 
 export const AuthProvider: FC<PropsWithChildren> = (props) => {
@@ -44,17 +80,22 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
 
   const authChannel = useRef(new BroadcastChannel("auth"));
 
-  /* const [token, setToken] = useState<string | null>(
-    "default_to_prevent_redirect_when_refreshing"
-  ); */
-
-  const synchronizeToken = async () => {
-    const token = await authService.getToken();
-    setToken(token);
-  };
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [registerError, setRegisterError] = useState<string | null>(null);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
+  const [confirmRegisterError, setConfirmRegisterError] = useState<
+    string | null
+  >(null);
+  const [resetPasswordError, setResetPasswordError] = useState<string | null>(
+    null
+  );
+  const [confirmResetPasswordError, setConfirmResetPasswordError] = useState<
+    string | null
+  >(null);
 
   authChannel.current.onmessage = async (event) => {
-    await synchronizeToken();
+    const token = await authService.getToken();
+    setToken(token);
   };
 
   useEffect(() => {
@@ -67,32 +108,56 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   }, [setToken]);
 
   const handleLogin = async (email: string, password: string) => {
-    const token = await authService.signIn(email, password);
-    setToken(token);
-    authChannel.current.postMessage("login");
-    const origin = location.state?.from?.pathname ?? "/home";
-    navigate(origin);
+    setLoginError(null);
+    try {
+      await authService.signIn(email, password);
+      authChannel.current.postMessage("login");
+      const origin = location.state?.from?.pathname ?? "/home";
+      navigate(origin);
+    } catch (error: any) {
+      setLoginError(error.message);
+    }
   };
 
   const handleLogout = async () => {
-    await authService.signOut();
-    setToken(null);
-    authChannel.current.postMessage("logout");
-    navigate("/login");
+    setLogoutError(null);
+    try {
+      await authService.signOut();
+      authChannel.current.postMessage("logout");
+      navigate("/login");
+    } catch (error: any) {
+      setLogoutError(error.message);
+    }
   };
 
   const handleRegister = async (email: string, password: string) => {
-    await authService.signUp(email, password);
-    navigate("/confirm-register");
+    setRegisterError(null);
+    try {
+      await authService.signUp(email, password);
+      navigate("/confirm-register");
+    } catch (error: any) {
+      setRegisterError(error.message);
+    }
   };
 
   const handleConfirmRegister = async (email: string, code: string) => {
-    await authService.confirmSignUp(email, code);
-    navigate("/login");
+    setConfirmRegisterError(null);
+    try {
+      await authService.confirmSignUp(email, code);
+      navigate("/login");
+    } catch (error: any) {
+      setConfirmRegisterError(error.message);
+    }
   };
 
   const handleResetPassword = async (email: string) => {
-    await authService.forgotPassword(email);
+    setResetPasswordError(null);
+    try {
+      await authService.forgotPassword(email);
+      navigate("/confirm-reset-password");
+    } catch (error: any) {
+      setResetPasswordError(error.message);
+    }
   };
 
   const handleConfirmResetPassword = async (
@@ -100,17 +165,59 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     code: string,
     password: string
   ) => {
-    await authService.forgotPasswordSubmit(email, code, password);
+    setConfirmResetPasswordError(null);
+    try {
+      await authService.forgotPasswordSubmit(email, code, password);
+      navigate("/login");
+    } catch (error: any) {
+      setConfirmResetPasswordError(error.message);
+    }
   };
 
   const value = {
     token,
-    onLogin: handleLogin,
-    onLogout: handleLogout,
-    onRegister: handleRegister,
-    onConfirmRegister: handleConfirmRegister,
-    onResetPassword: handleResetPassword,
-    onConfirmResetPassword: handleConfirmResetPassword,
+    login: {
+      onLogin: handleLogin,
+      error: {
+        message: loginError,
+        reset: () => setLoginError(null),
+      },
+    },
+    register: {
+      onRegister: handleRegister,
+      error: {
+        message: registerError,
+        reset: () => setRegisterError(null),
+      },
+    },
+    logout: {
+      onLogout: handleLogout,
+      error: {
+        message: logoutError,
+        reset: () => setLogoutError(null),
+      },
+    },
+    confirmRegister: {
+      onConfirmRegister: handleConfirmRegister,
+      error: {
+        message: confirmRegisterError,
+        reset: () => setConfirmRegisterError(null),
+      },
+    },
+    resetPassword: {
+      onResetPassword: handleResetPassword,
+      error: {
+        message: resetPasswordError,
+        reset: () => setResetPasswordError(null),
+      },
+    },
+    confirmResetPassword: {
+      onConfirmResetPassword: handleConfirmResetPassword,
+      error: {
+        message: confirmResetPasswordError,
+        reset: () => setConfirmResetPasswordError(null),
+      },
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

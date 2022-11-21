@@ -1,12 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { FormInputSecret, FormInputText } from "form";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
 import { useAuth } from "auth-provider";
 
 import schema from "./login.schema";
+import { useEffect, useState } from "react";
 
 type SignInForm = {
   email: string;
@@ -14,22 +15,29 @@ type SignInForm = {
 };
 
 export const LoginContent = () => {
-  const auth = useAuth();
-  const form = useForm<SignInForm>({
+  const theme = useTheme();
+  const {
+    login: { onLogin, error },
+  } = useAuth();
+
+  const { formState, handleSubmit, control } = useForm<SignInForm>({
     defaultValues: {
       email: "",
       password: "",
     },
     resolver: yupResolver(schema),
   });
-
-  const { formState, handleSubmit, control } = form;
   const { errors } = formState;
 
   const onSubmit = async (data: SignInForm) => {
-    console.log("updated2");
-    await auth.onLogin(data.email, data.password);
+    await onLogin(data.email, data.password);
   };
+
+  useEffect(() => {
+    return () => {
+      error.reset();
+    };
+  }, []);
 
   return (
     <Box
@@ -87,7 +95,11 @@ export const LoginContent = () => {
         >
           Login
         </Button>
-
+        {error.message && (
+          <Typography color={theme.palette.error.main}>
+            {error.message}
+          </Typography>
+        )}
         <Grid container justifyContent="flex-end">
           <Grid item>
             <LinkRouter to="/auth/sign-up" variant="body2">
