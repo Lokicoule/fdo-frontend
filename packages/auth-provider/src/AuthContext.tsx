@@ -58,8 +58,13 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   };
 
   useEffect(() => {
-    synchronizeToken();
-  }, []);
+    async function initializeToken() {
+      const token = await authService.getToken();
+      setToken(token);
+    }
+
+    initializeToken();
+  }, [setToken]);
 
   const handleLogin = async (email: string, password: string) => {
     const token = await authService.signIn(email, password);

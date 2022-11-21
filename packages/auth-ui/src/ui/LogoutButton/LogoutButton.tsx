@@ -1,13 +1,11 @@
 import Button from "@mui/material/Button";
 import { useAuth } from "auth-provider";
-import { FC, useEffect } from "react";
-import { useStore } from "store";
+import { FC } from "react";
 
 export const LogoutButton: FC = () => {
-  const { onLogout } = useAuth();
-  const { token } = useStore();
+  const { onLogout, token } = useAuth();
 
-  return token ? (
+  return Boolean(token) ? (
     <Button type="button" onClick={onLogout}>
       Sign Out
     </Button>

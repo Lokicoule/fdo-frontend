@@ -1,13 +1,13 @@
+import { useAuth } from "auth-provider";
 import { FC } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useStore } from "store";
 
 type Props = { children: JSX.Element; redirectTo: string };
 
 export const PreventAuth: FC<Props> = (props): JSX.Element => {
   const { children, redirectTo } = props;
   const location = useLocation();
-  const { token } = useStore();
+  const { token } = useAuth();
   console.log("token", token);
 
   if (Boolean(token)) {
