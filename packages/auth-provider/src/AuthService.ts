@@ -19,15 +19,13 @@ class AuthService {
   private cognitoClient: CognitoClient;
 
   constructor() {
-    console.log(cognitoConfig);
     this.cognitoClient = new CognitoClient(
       new CognitoUserPoolDataBuilder()
         .withClientId(cognitoConfig.poolData.ClientId)
         .withUserPoolId(cognitoConfig.poolData.UserPoolId)
-        .withCookieStorage("localhost", false) // Use cookie storage for local development
+        //.withCookieStorage("localhost", false) // Use cookie storage for local development
         .build()
     );
-    console.log("AuthService constructor");
   }
 
   public async signUp(email: string, password: string) {
@@ -47,20 +45,11 @@ class AuthService {
   }
 
   public async resendConfirmationCode(email: string) {
-    try {
-      await this.cognitoClient.resendSignUp(email);
-    } catch (err) {
-      console.log("error resending code: ", err);
-    }
+    await this.cognitoClient.resendSignUp(email);
   }
 
   public async forgotPassword(email: string) {
-    try {
-      const t = await this.cognitoClient.forgotPassword(email);
-      console.log(t);
-    } catch (error) {
-      console.log(error);
-    }
+    await this.cognitoClient.forgotPassword(email);
   }
 
   public async forgotPasswordSubmit(
@@ -68,11 +57,7 @@ class AuthService {
     code: string,
     password: string
   ) {
-    try {
-      await this.cognitoClient.forgotPasswordSubmit(email, code, password);
-    } catch (error) {
-      console.log("error submit forgot password code: ", error);
-    }
+    await this.cognitoClient.forgotPasswordSubmit(email, code, password);
   }
 
   public async signIn(email: string, password: string): Promise<string | null> {
@@ -92,7 +77,6 @@ class AuthService {
     if (!Boolean(this.cognitoClient.getMe())) {
       throw new Error("You are already logged out.");
     }
-    console.log("signOut");
     await this.cognitoClient.signOut();
   }
 

@@ -1,9 +1,7 @@
-import { authService } from "./AuthService";
 import {
   createContext,
   FC,
   PropsWithChildren,
-  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -11,9 +9,11 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "store";
+import { authService } from "./AuthService";
 
 interface AuthContextValue {
   token: string | null;
+  paths: typeof AUTH_PATHS;
   login: {
     error: { message: string | null; reset: () => void };
     onLogin: (email: string, password: string) => Promise<void>;
@@ -30,13 +30,13 @@ interface AuthContextValue {
     error: { message: string | null; reset: () => void };
     onConfirmRegister: (email: string, code: string) => Promise<void>;
   };
+  forgotPassword: {
+    error: { message: string | null; reset: () => void };
+    onForgotPassword: (email: string) => Promise<void>;
+  };
   resetPassword: {
     error: { message: string | null; reset: () => void };
-    onResetPassword: (email: string) => Promise<void>;
-  };
-  confirmResetPassword: {
-    error: { message: string | null; reset: () => void };
-    onConfirmResetPassword: (
+    onResetPassword: (
       email: string,
       code: string,
       password: string
@@ -44,8 +44,18 @@ interface AuthContextValue {
   };
 }
 
+const AUTH_PATHS = {
+  LOGIN_PATH: "/login",
+  //LOGOUT_PATH: "/logout",
+  FORGOT_PASSWORD_PATH: "/forgot-password",
+  RESET_PASSWORD_PATH: "/reset-password",
+  REGISTER_PATH: "/register",
+  CONFIRM_REGISTER_PATH: "/confirm-register",
+};
+
 const AuthContext = createContext<AuthContextValue>({
   token: "",
+  paths: AUTH_PATHS,
   login: {
     error: { message: null, reset: () => {} },
     onLogin: () => Promise.resolve(),
@@ -62,13 +72,13 @@ const AuthContext = createContext<AuthContextValue>({
     error: { message: null, reset: () => {} },
     onConfirmRegister: () => Promise.resolve(),
   },
+  forgotPassword: {
+    error: { message: null, reset: () => {} },
+    onForgotPassword: () => Promise.resolve(),
+  },
   resetPassword: {
     error: { message: null, reset: () => {} },
     onResetPassword: () => Promise.resolve(),
-  },
-  confirmResetPassword: {
-    error: { message: null, reset: () => {} },
-    onConfirmResetPassword: () => Promise.resolve(),
   },
 });
 
@@ -89,9 +99,9 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   const [resetPasswordError, setResetPasswordError] = useState<string | null>(
     null
   );
-  const [confirmResetPasswordError, setConfirmResetPasswordError] = useState<
-    string | null
-  >(null);
+  const [forgotPasswordError, setForgotPasswordError] = useState<string | null>(
+    null
+  );
 
   authChannel.current.onmessage = async (event) => {
     const token = await authService.getToken();
@@ -124,7 +134,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     try {
       await authService.signOut();
       authChannel.current.postMessage("logout");
-      navigate("/login");
+      navigate(AUTH_PATHS.LOGIN_PATH);
     } catch (error: any) {
       setLogoutError(error.message);
     }
@@ -134,7 +144,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     setRegisterError(null);
     try {
       await authService.signUp(email, password);
-      navigate("/confirm-register");
+      navigate(AUTH_PATHS.CONFIRM_REGISTER_PATH);
     } catch (error: any) {
       setRegisterError(error.message);
     }
@@ -144,38 +154,39 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     setConfirmRegisterError(null);
     try {
       await authService.confirmSignUp(email, code);
-      navigate("/login");
+      navigate(AUTH_PATHS.LOGIN_PATH);
     } catch (error: any) {
       setConfirmRegisterError(error.message);
     }
   };
 
-  const handleResetPassword = async (email: string) => {
-    setResetPasswordError(null);
+  const handleForgotPassword = async (email: string) => {
+    setForgotPasswordError(null);
     try {
       await authService.forgotPassword(email);
-      navigate("/confirm-reset-password");
+      navigate(AUTH_PATHS.RESET_PASSWORD_PATH);
+    } catch (error: any) {
+      setForgotPasswordError(error.message);
+    }
+  };
+
+  const handleResetPassword = async (
+    email: string,
+    code: string,
+    password: string
+  ) => {
+    setResetPasswordError(null);
+    try {
+      await authService.forgotPasswordSubmit(email, code, password);
+      navigate(AUTH_PATHS.LOGIN_PATH);
     } catch (error: any) {
       setResetPasswordError(error.message);
     }
   };
 
-  const handleConfirmResetPassword = async (
-    email: string,
-    code: string,
-    password: string
-  ) => {
-    setConfirmResetPasswordError(null);
-    try {
-      await authService.forgotPasswordSubmit(email, code, password);
-      navigate("/login");
-    } catch (error: any) {
-      setConfirmResetPasswordError(error.message);
-    }
-  };
-
   const value = {
     token,
+    paths: AUTH_PATHS,
     login: {
       onLogin: handleLogin,
       error: {
@@ -211,11 +222,11 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
         reset: () => setResetPasswordError(null),
       },
     },
-    confirmResetPassword: {
-      onConfirmResetPassword: handleConfirmResetPassword,
+    forgotPassword: {
+      onForgotPassword: handleForgotPassword,
       error: {
-        message: confirmResetPasswordError,
-        reset: () => setConfirmResetPasswordError(null),
+        message: forgotPasswordError,
+        reset: () => setForgotPasswordError(null),
       },
     },
   };

@@ -18,6 +18,16 @@ declare module "auth/Register" {
   export default RemoteComponent;
 }
 
+declare module "auth/ForgotPassword" {
+  const RemoteComponent: React.ComponentType;
+  export default RemoteComponent;
+}
+
+declare module "auth/ResetPassword" {
+  const RemoteComponent: React.ComponentType;
+  export default RemoteComponent;
+}
+
 /* declare module "auth/PreventAuthRoute" {
   const RemoteComponent: FC<Props>;
   export default RemoteComponent;

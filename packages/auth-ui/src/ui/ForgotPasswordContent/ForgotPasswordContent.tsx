@@ -1,36 +1,35 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
-import { FormInputSecret, FormInputText } from "form";
+import { useAuth } from "auth-provider";
+import { FormInputText } from "form";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
-import { useAuth } from "auth-provider";
 
-import schema from "./login.schema";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import schema from "./forgot-password.schema";
 
-type LoginForm = {
+type ForgotPasswordForm = {
   email: string;
-  password: string;
 };
 
-export const LoginContent = () => {
+export const ForgotPasswordContent = () => {
   const theme = useTheme();
   const {
-    login: { onLogin, error },
+    forgotPassword: { onForgotPassword, error },
   } = useAuth();
 
-  const { formState, handleSubmit, control } = useForm<LoginForm>({
+  const { formState, handleSubmit, control } = useForm<ForgotPasswordForm>({
     defaultValues: {
       email: "",
-      password: "",
     },
     resolver: yupResolver(schema),
   });
   const { errors } = formState;
 
-  const onSubmit = async (data: LoginForm) => {
-    await onLogin(data.email, data.password);
+  const onSubmit = async (data: ForgotPasswordForm) => {
+    console.log(data);
+    await onForgotPassword(data.email);
   };
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export const LoginContent = () => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Connexion
+        Forgot password
       </Typography>
       <Box
         component="form"
@@ -73,18 +72,6 @@ export const LoginContent = () => {
               helperText={errors.email?.message}
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormInputSecret
-              name="password"
-              control={control}
-              label="Mot de passe"
-              required
-              fullWidth
-              autoComplete="current-password"
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            ></FormInputSecret>
-          </Grid>
         </Grid>
         <Button
           type="submit"
@@ -93,7 +80,7 @@ export const LoginContent = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          Login
+          Forgot password
         </Button>
         {error.message && (
           <Typography color={theme.palette.error.main}>

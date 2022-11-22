@@ -3,10 +3,14 @@ import { PreventAuth, RequireAuth } from "auth-routing";
 import { AppShell } from "ui";
 import LogoutButton from "./components/LogoutButton";
 import ConfirmRegisterContent from "./views/ConfirmRegisterContent";
+import ForgotPasswordContent from "./views/ForgotPasswordContent";
 import LoginContent from "./views/LoginContent";
 import RegisterContent from "./views/RegisterContent";
+import ResetPasswordContent from "./views/ResetPasswordContent";
+import { useAuth } from "auth-provider";
 
 function App() {
+  const { paths } = useAuth();
   return (
     <AppShell
       title="Fruits d'orient"
@@ -30,7 +34,7 @@ function App() {
           ),
         },
         {
-          path: "/register",
+          path: paths.REGISTER_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <RegisterContent />
@@ -38,7 +42,7 @@ function App() {
           ),
         },
         {
-          path: "/confirm-register",
+          path: paths.CONFIRM_REGISTER_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <ConfirmRegisterContent />
@@ -46,7 +50,7 @@ function App() {
           ),
         },
         {
-          path: "/login",
+          path: paths.LOGIN_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <LoginContent />
@@ -54,10 +58,18 @@ function App() {
           ),
         },
         {
-          path: "/reset-password",
+          path: paths.RESET_PASSWORD_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
-              <RegisterContent />
+              <ResetPasswordContent />
+            </PreventAuth>
+          ),
+        },
+        {
+          path: paths.FORGOT_PASSWORD_PATH,
+          element: () => (
+            <PreventAuth redirectTo="/home">
+              <ForgotPasswordContent />
             </PreventAuth>
           ),
         },
@@ -70,12 +82,12 @@ function App() {
         },
         {
           label: "Login",
-          path: "/login",
+          path: paths.LOGIN_PATH,
           icon: <HomeIcon />,
         },
         {
           label: "Register",
-          path: "/register",
+          path: paths.REGISTER_PATH,
           icon: <HomeIcon />,
         },
         {

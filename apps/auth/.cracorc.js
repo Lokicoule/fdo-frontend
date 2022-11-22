@@ -19,6 +19,8 @@ module.exports = () => ({
             "./LogoutButton": "./src/components/LogoutButton",
             "./Register": "./src/views/RegisterContent",
             "./ConfirmRegister": "./src/views/ConfirmRegisterContent",
+            "./ForgotPassword": "./src/views/ForgotPasswordContent",
+            "./ResetPassword": "./src/views/ResetPasswordContent",
             /*             "./useAuthStore": "./src/store",
             "./PreventAuthRoute": "./src/routes/PreventAuth",
             "./RequireAuthRoute": "./src/routes/RequireAuth", */

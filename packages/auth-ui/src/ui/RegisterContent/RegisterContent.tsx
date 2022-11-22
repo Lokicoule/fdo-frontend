@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
 import schema from "./register.schema";
 
-type SignUpForm = {
+type RegisterForm = {
   email: string;
   password: string;
   confirmPassword: string;
@@ -21,7 +21,7 @@ export const RegisterContent = () => {
     register: { onRegister, error },
   } = useAuth();
 
-  const { formState, handleSubmit, control } = useForm<SignUpForm>({
+  const { formState, handleSubmit, control } = useForm<RegisterForm>({
     defaultValues: {
       email: "",
       password: "",
@@ -31,7 +31,7 @@ export const RegisterContent = () => {
   });
   const { errors } = formState;
 
-  const onSubmit = async (data: SignUpForm) => {
+  const onSubmit = async (data: RegisterForm) => {
     await onRegister(data.email, data.password);
   };
 

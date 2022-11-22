@@ -237,6 +237,7 @@ importers:
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
       amazon-cognito-identity-js: ^5.2.12
+      auth-routing: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       react: ^18.2.0
@@ -246,6 +247,7 @@ importers:
       typescript: ^4.5.2
     dependencies:
       amazon-cognito-identity-js: 5.2.12
+      auth-routing: link:../auth-routing
       react-router-dom: 6.4.3_react@18.2.0
     devDependencies:
       '@types/node': 16.18.3
