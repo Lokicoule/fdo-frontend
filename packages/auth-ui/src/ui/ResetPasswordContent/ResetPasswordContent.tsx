@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -7,7 +6,7 @@ import { FormInputSecret, FormInputText } from "form";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
-import schema from "./reset-password.schema";
+import { useResetPasswordResolver } from "./useResetPasswordResolver";
 
 type ResetPasswordForm = {
   email: string;
@@ -22,16 +21,15 @@ export const ResetPasswordContent = () => {
     resetPassword: { onResetPassword, error },
   } = useAuth();
 
-  const { formState, handleSubmit, control } = useForm<ResetPasswordForm>({
-    defaultValues: {
-      email: "",
-      code: "",
-      password: "",
-      confirmPassword: "",
-    },
-    resolver: yupResolver(schema),
+  const resolver = useResetPasswordResolver();
+
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm<ResetPasswordForm>({
+    resolver,
   });
-  const { errors } = formState;
 
   const onSubmit = async (data: ResetPasswordForm) => {
     await onResetPassword(data.email, data.code, data.password);

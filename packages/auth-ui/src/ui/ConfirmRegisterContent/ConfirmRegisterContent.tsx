@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useAuth } from "auth-provider";
@@ -6,8 +5,7 @@ import { FormInputText } from "form";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
-
-import schema from "./confirm-register.schema";
+import { useConfirmRegisterResolver } from "./useConfirmRegisterResolver";
 
 type ConfirmSignUpForm = {
   email: string;
@@ -20,15 +18,15 @@ export const ConfirmRegisterContent = () => {
     confirmRegister: { onConfirmRegister, error },
   } = useAuth();
 
-  const { formState, handleSubmit, control } = useForm<ConfirmSignUpForm>({
-    defaultValues: {
-      email: "",
-      code: "",
-    },
-    resolver: yupResolver(schema),
-  });
+  const resolver = useConfirmRegisterResolver();
 
-  const { errors } = formState;
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm<ConfirmSignUpForm>({
+    resolver,
+  });
 
   const onSubmit = async (data: ConfirmSignUpForm) => {
     await onConfirmRegister(data.email, data.code);

@@ -1,13 +1,11 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { useAuth } from "auth-provider";
 import { FormInputSecret, FormInputText } from "form";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
-import { useAuth } from "auth-provider";
-
-import schema from "./login.schema";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useLoginResolver } from "./useLoginResolver";
 
 type LoginForm = {
   email: string;
@@ -20,14 +18,14 @@ export const LoginContent = () => {
     login: { onLogin, error },
   } = useAuth();
 
-  const { formState, handleSubmit, control } = useForm<LoginForm>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    resolver: yupResolver(schema),
+  const resolver = useLoginResolver();
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm<LoginForm>({
+    resolver,
   });
-  const { errors } = formState;
 
   const onSubmit = async (data: LoginForm) => {
     await onLogin(data.email, data.password);

@@ -1,13 +1,11 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useAuth } from "auth-provider";
 import { FormInputText } from "form";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
-
-import { useEffect } from "react";
-import schema from "./forgot-password.schema";
+import { useForgotPasswordResolver } from "./useForgotPasswordResolver";
 
 type ForgotPasswordForm = {
   email: string;
@@ -18,17 +16,17 @@ export const ForgotPasswordContent = () => {
   const {
     forgotPassword: { onForgotPassword, error },
   } = useAuth();
+  const resolver = useForgotPasswordResolver();
 
-  const { formState, handleSubmit, control } = useForm<ForgotPasswordForm>({
-    defaultValues: {
-      email: "",
-    },
-    resolver: yupResolver(schema),
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm<ForgotPasswordForm>({
+    resolver,
   });
-  const { errors } = formState;
 
   const onSubmit = async (data: ForgotPasswordForm) => {
-    console.log(data);
     await onForgotPassword(data.email);
   };
 

@@ -13,6 +13,7 @@ import { authService } from "./AuthService";
 
 interface AuthContextValue {
   token: string | null;
+  email: string | null;
   paths: typeof AUTH_PATHS;
   login: {
     error: { message: string | null; reset: () => void };
@@ -55,6 +56,7 @@ const AUTH_PATHS = {
 
 const AuthContext = createContext<AuthContextValue>({
   token: "",
+  email: null,
   paths: AUTH_PATHS,
   login: {
     error: { message: null, reset: () => {} },
@@ -186,6 +188,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
 
   const value = {
     token,
+    email: authService.getCurrentUser()?.getUsername() ?? null,
     paths: AUTH_PATHS,
     login: {
       onLogin: handleLogin,
