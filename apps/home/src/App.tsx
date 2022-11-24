@@ -1,6 +1,6 @@
 import HomeIcon from "@mui/icons-material/Home";
 import { useAuth } from "auth-provider";
-import { PreventAuth } from "auth-routing";
+import { PreventAuth, RequireAuth } from "auth-routing";
 import {
   ConfirmRegisterContent,
   ForgotPasswordContent,
@@ -100,6 +100,14 @@ function App() {
                 </React.Suspense>
               </ErrorBoundary>
             </PreventAuth>
+          ),
+        },
+        {
+          path: "/dashboard",
+          element: () => (
+            <RequireAuth>
+              <div>Dashboard</div>
+            </RequireAuth>
           ),
         },
         {

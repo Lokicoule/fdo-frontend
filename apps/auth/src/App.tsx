@@ -73,6 +73,14 @@ function App() {
             </PreventAuth>
           ),
         },
+        {
+          path: "/dashboard",
+          element: () => (
+            <RequireAuth>
+              <div>Dashboard</div>
+            </RequireAuth>
+          ),
+        },
       ]}
       navLinks={[
         {
