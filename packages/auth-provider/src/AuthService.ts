@@ -90,6 +90,13 @@ class AuthService {
   public getCurrentUser() {
     return this.cognitoClient.getMe();
   }
+
+  public async getEmailFromJwt(): Promise<string | null> {
+    const session = await this.cognitoClient.getTokens();
+    if (!session) return null;
+
+    return session.getIdToken().decodePayload()["email"];
+  }
 }
 
 export const authService = new AuthService();

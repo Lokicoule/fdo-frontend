@@ -9,6 +9,7 @@ export const FormInputText = ({ name, control, ...textFieldProps }: Props) => {
     <Controller
       name={name}
       control={control}
+      defaultValue=""
       render={({ field: { onChange, value } }) => (
         <TextField {...textFieldProps} onChange={onChange} value={value} />
       )}

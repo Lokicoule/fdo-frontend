@@ -54,6 +54,17 @@ const AUTH_PATHS = {
   CONFIRM_REGISTER_PATH: "/confirm-register",
 };
 
+async function synchronizeStoreFromCognito(
+  setEmail: (email: string | null) => void,
+  setToken: (token: string | null) => void
+) {
+  const token = await authService.getToken();
+  const email = await authService.getEmailFromJwt();
+  console.log(email);
+  setEmail(email);
+  setToken(token);
+}
+
 const AuthContext = createContext<AuthContextValue>({
   token: "",
   email: null,
@@ -89,6 +100,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { token, setToken } = useStore();
+  const { email, setEmail } = useStore();
 
   const authChannel = useRef(new BroadcastChannel("auth"));
 
@@ -105,19 +117,17 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     null
   );
 
-  authChannel.current.onmessage = async (event) => {
-    const token = await authService.getToken();
-    setToken(token);
+  authChannel.current.onmessage = async () => {
+    await synchronizeStoreFromCognito(setEmail, setToken);
   };
 
   useEffect(() => {
-    async function initializeToken() {
-      const token = await authService.getToken();
-      setToken(token);
+    async function initialize() {
+      await synchronizeStoreFromCognito(setEmail, setToken);
     }
 
-    initializeToken();
-  }, [setToken]);
+    initialize();
+  }, []);
 
   const handleLogin = async (email: string, password: string) => {
     setLoginError(null);
@@ -188,7 +198,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
 
   const value = {
     token,
-    email: authService.getCurrentUser()?.getUsername() ?? null,
+    email,
     paths: AUTH_PATHS,
     login: {
       onLogin: handleLogin,

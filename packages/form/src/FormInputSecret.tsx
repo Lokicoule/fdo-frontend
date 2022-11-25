@@ -55,6 +55,7 @@ export const FormInputSecret = ({
         )}
         name={name}
         control={control}
+        defaultValue=""
       />
       {error && (
         <FormHelperText error variant="filled" id={ariaId}>

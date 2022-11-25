@@ -3,8 +3,8 @@ import create from "zustand";
 type AuthStoreValue = {
   token: string | null;
   setToken: (token: string | null) => void;
-  increment: () => void;
-  counter: number;
+  email: string | null;
+  setEmail: (email: string | null) => void;
 };
 
 export const useStore = create<AuthStoreValue>((set) => ({
@@ -13,6 +13,9 @@ export const useStore = create<AuthStoreValue>((set) => ({
     console.log("setToken", token);
     return set({ token });
   },
-  counter: 0,
-  increment: () => set((state) => ({ counter: state.counter + 1 })),
+  email: null,
+  setEmail: (email: string | null) => {
+    console.log("setEmail", email);
+    return set({ email });
+  },
 }));

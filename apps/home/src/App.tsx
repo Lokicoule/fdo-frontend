@@ -11,6 +11,7 @@ import {
 } from "auth-ui";
 import React from "react";
 import { AppShell, BundleLoader, ErrorBoundary } from "ui";
+import { CreateUserContent } from "user-ui";
 
 const LogoutButtonRuntime = React.lazy(() => import("auth/LogoutButton"));
 const ConfirmRegisterRuntime = React.lazy(() => import("auth/ConfirmRegister"));
@@ -106,7 +107,7 @@ function App() {
           path: "/dashboard",
           element: () => (
             <RequireAuth>
-              <div>Dashboard</div>
+              <CreateUserContent />
             </RequireAuth>
           ),
         },

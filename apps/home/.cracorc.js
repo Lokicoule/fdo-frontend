@@ -28,6 +28,9 @@ module.exports = () => ({
             "auth-ui": {
               singleton: true,
             },
+            "user-ui": {
+              singleton: true,
+            },
             tsconfig: {
               singleton: true,
             },

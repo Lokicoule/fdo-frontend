@@ -19,6 +19,7 @@
     "auth-provider": "workspace:*",
     "auth-routing": "workspace:*",
     "auth-ui": "workspace:*",
+    "user-ui": "workspace:*",
     "form": "workspace:*",
     "hooks": "workspace:*",
     "react": "^18.2.0",
