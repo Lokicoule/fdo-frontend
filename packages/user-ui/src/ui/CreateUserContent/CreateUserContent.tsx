@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  Stack,
+  Container,
   Step,
   StepLabel,
   Stepper,
@@ -14,7 +14,6 @@ import { CompanyFormContent } from "./forms/Company/CompanyForm";
 import { UserFormContent } from "./forms/User/UserForm";
 
 import Paper from "@mui/material/Paper";
-import StepContent from "@mui/material/StepContent";
 import { CreateUserProvider, useCreateUser } from "./CreateUserContext";
 
 const CreateUser = () => {
@@ -60,26 +59,23 @@ const CreateUser = () => {
   );
 
   const handleReset = () => {
-    console.log(user);
-    console.log(company);
-    console.log(address);
     onReset();
     setActiveStep(0);
   };
 
   return (
-    <Stack sx={{ width: "100%" }} spacing={4}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((step) => (
-          <Step key={step.label}>
-            <StepLabel>{step.label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      {steps[activeStep] && (
-        <Paper sx={{ p: 2, m: 2, width: "100%" }}>
-          <Typography>{steps[activeStep].label}</Typography>
-          {steps[activeStep].element(
+    <Container maxWidth="md">
+      <Paper sx={{ p: 2, m: 2, width: "100%" }}>
+        <Stepper activeStep={activeStep} sx={{ p: 2, m: 2, width: "100%" }}>
+          {steps.map((step) => (
+            <Step key={step.label}>
+              <StepLabel>{step.label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        {steps[activeStep] &&
+          steps[activeStep].element(
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
                 disabled={activeStep === 0}
@@ -94,8 +90,7 @@ const CreateUser = () => {
               </Button>
             </Box>
           )}
-        </Paper>
-      )}
+      </Paper>
 
       {activeStep === steps.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
@@ -105,7 +100,7 @@ const CreateUser = () => {
           </Button>
         </Paper>
       )}
-    </Stack>
+    </Container>
   );
 };
 

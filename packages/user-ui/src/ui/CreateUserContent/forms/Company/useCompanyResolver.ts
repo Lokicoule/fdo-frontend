@@ -10,7 +10,7 @@ const validationSchema = yup.object().shape({
   rcsNumber: yup
     .string()
     .matches(
-      /^\w+((\-?| ?)\w+)? [a-bA-B] (\d{9}|((\d{3} ){2}\d{3}))$/,
+      /^RCS\s[A-Z]+\s([A-Z]\s)?[0-9]{3}\s[0-9]{3}\s[0-9]{3}$/,
       "Le numéro de registre du commerce et des sociétés est invalide"
     ),
   /* .when("siret", {
