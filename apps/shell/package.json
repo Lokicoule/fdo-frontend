@@ -1,5 +1,5 @@
 {
-  "name": "home",
+  "name": "shell",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,6 @@
     "@types/react-dom": "^18.0.9",
     "amazon-cognito-identity-js": "^5.2.12",
     "auth-provider": "workspace:*",
-    "auth-routing": "workspace:*",
     "auth-ui": "workspace:*",
     "user-ui": "workspace:*",
     "form": "workspace:*",

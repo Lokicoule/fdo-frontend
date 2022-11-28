@@ -12,7 +12,7 @@ module.exports = () => ({
     plugins: {
       add: [
         new ModuleFederationPlugin({
-          name: "home",
+          name: "shell",
           filename: "remoteEntry.js",
           remotes: {
             auth: "auth@http://localhost:3000/remoteEntry.js",
@@ -20,9 +20,6 @@ module.exports = () => ({
           shared: {
             ...deps,
             "auth-provider": {
-              singleton: true,
-            },
-            "auth-routing": {
               singleton: true,
             },
             "auth-ui": {

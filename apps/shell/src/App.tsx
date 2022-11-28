@@ -1,6 +1,4 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { useAuth } from "auth-provider";
-import { PreventAuth, RequireAuth } from "auth-routing";
 import {
   ConfirmRegisterContent,
   ForgotPasswordContent,
@@ -8,10 +6,14 @@ import {
   LogoutButton,
   RegisterContent,
   ResetPasswordContent,
+  PreventAuth,
+  RequireAuth,
 } from "auth-ui";
+
 import React from "react";
 import { AppShell, BundleLoader, ErrorBoundary } from "ui";
 import { CreateUserContent } from "user-ui";
+import { AUTH_PATHS } from "auth-provider";
 
 const LogoutButtonRuntime = React.lazy(() => import("auth/LogoutButton"));
 const ConfirmRegisterRuntime = React.lazy(() => import("auth/ConfirmRegister"));
@@ -21,8 +23,6 @@ const ResetPasswordRuntime = React.lazy(() => import("auth/ResetPassword"));
 const ForgotPasswordRuntime = React.lazy(() => import("auth/ForgotPassword"));
 
 function App() {
-  const { paths } = useAuth();
-
   return (
     <AppShell
       title="Fruits d'orient home"
@@ -44,7 +44,7 @@ function App() {
           element: () => <div>Home</div>,
         },
         {
-          path: paths.REGISTER_PATH,
+          path: AUTH_PATHS.REGISTER_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<RegisterContent />}>
@@ -56,7 +56,7 @@ function App() {
           ),
         },
         {
-          path: paths.CONFIRM_REGISTER_PATH,
+          path: AUTH_PATHS.CONFIRM_REGISTER_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<ConfirmRegisterContent />}>
@@ -68,7 +68,7 @@ function App() {
           ),
         },
         {
-          path: paths.LOGIN_PATH,
+          path: AUTH_PATHS.LOGIN_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<LoginContent />}>
@@ -80,7 +80,7 @@ function App() {
           ),
         },
         {
-          path: paths.RESET_PASSWORD_PATH,
+          path: AUTH_PATHS.RESET_PASSWORD_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<ResetPasswordContent />}>
@@ -92,7 +92,7 @@ function App() {
           ),
         },
         {
-          path: paths.FORGOT_PASSWORD_PATH,
+          path: AUTH_PATHS.FORGOT_PASSWORD_PATH,
           element: () => (
             <PreventAuth redirectTo="/home">
               <ErrorBoundary failover={<ForgotPasswordContent />}>
@@ -124,17 +124,17 @@ function App() {
         },
         {
           label: "Register",
-          path: paths.REGISTER_PATH,
+          path: AUTH_PATHS.REGISTER_PATH,
           icon: <HomeIcon />,
         },
         {
           label: "Login",
-          path: paths.LOGIN_PATH,
+          path: AUTH_PATHS.LOGIN_PATH,
           icon: <HomeIcon />,
         },
         {
           label: "Confirm Register",
-          path: paths.CONFIRM_REGISTER_PATH,
+          path: AUTH_PATHS.CONFIRM_REGISTER_PATH,
           icon: <HomeIcon />,
         },
         {
