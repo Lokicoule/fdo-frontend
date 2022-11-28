@@ -29,7 +29,7 @@ class AuthService {
   }
 
   public async signUp(email: string, password: string) {
-    if (Boolean(this.cognitoClient.getMe())) {
+    if (Boolean(this.cognitoClient.getCurrentUser())) {
       throw new Error("You are already logged in.");
     }
     await this.cognitoClient.signUp(
@@ -61,7 +61,7 @@ class AuthService {
   }
 
   public async signIn(email: string, password: string): Promise<string | null> {
-    if (Boolean(this.cognitoClient.getMe())) {
+    if (Boolean(this.cognitoClient.getCurrentUser())) {
       throw new Error("You are already logged in.");
     }
     const user = await this.cognitoClient.signIn(email, password);
@@ -74,28 +74,28 @@ class AuthService {
   }
 
   public async signOut() {
-    if (!Boolean(this.cognitoClient.getMe())) {
+    if (!Boolean(this.cognitoClient.getCurrentUser())) {
       throw new Error("You are already logged out.");
     }
     await this.cognitoClient.signOut();
   }
 
-  public async getToken(): Promise<string | null> {
-    const session = await this.cognitoClient.getTokens();
+  public async getAccessToken(): Promise<string | null> {
+    const session = await this.cognitoClient.getCurrentUserSession();
     if (!session) return null;
 
     return session.getAccessToken().getJwtToken();
   }
 
   public getCurrentUser() {
-    return this.cognitoClient.getMe();
+    return this.cognitoClient.getCurrentUser();
   }
 
-  public async getEmailFromJwt(): Promise<string | null> {
-    const session = await this.cognitoClient.getTokens();
+  public async getDataFromIdToken(key: string): Promise<string | null> {
+    const session = await this.cognitoClient.getCurrentUserSession();
     if (!session) return null;
 
-    return session.getIdToken().decodePayload()["email"];
+    return session.getIdToken().decodePayload()[key];
   }
 }
 

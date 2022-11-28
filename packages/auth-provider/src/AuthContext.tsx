@@ -3,18 +3,14 @@ import {
   FC,
   PropsWithChildren,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useStore } from "store";
 import { authService } from "./AuthService";
+import { useLogin, useLogout } from "./authStore";
 
 interface AuthContextValue {
-  token: string | null;
-  email: string | null;
-  paths: typeof AUTH_PATHS;
   login: {
     error: { message: string | null; reset: () => void };
     onLogin: (email: string, password: string) => Promise<void>;
@@ -45,7 +41,7 @@ interface AuthContextValue {
   };
 }
 
-const AUTH_PATHS = {
+export const AUTH_PATHS = {
   LOGIN_PATH: "/login",
   //LOGOUT_PATH: "/logout",
   FORGOT_PASSWORD_PATH: "/forgot-password",
@@ -54,21 +50,7 @@ const AUTH_PATHS = {
   CONFIRM_REGISTER_PATH: "/confirm-register",
 };
 
-async function synchronizeStoreFromCognito(
-  setEmail: (email: string | null) => void,
-  setToken: (token: string | null) => void
-) {
-  const token = await authService.getToken();
-  const email = await authService.getEmailFromJwt();
-  console.log(email);
-  setEmail(email);
-  setToken(token);
-}
-
 const AuthContext = createContext<AuthContextValue>({
-  token: "",
-  email: null,
-  paths: AUTH_PATHS,
   login: {
     error: { message: null, reset: () => {} },
     onLogin: () => Promise.resolve(),
@@ -99,8 +81,8 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   const { children } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const { token, setToken } = useStore();
-  const { email, setEmail } = useStore();
+  const login = useLogin();
+  const logout = useLogout();
 
   const authChannel = useRef(new BroadcastChannel("auth"));
 
@@ -117,23 +99,20 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     null
   );
 
-  authChannel.current.onmessage = async () => {
-    await synchronizeStoreFromCognito(setEmail, setToken);
-  };
-
-  useEffect(() => {
-    async function initialize() {
-      await synchronizeStoreFromCognito(setEmail, setToken);
+  authChannel.current.onmessage = (event: MessageEvent<any>) => {
+    const { type, payload } = event.data;
+    if (type === "login") {
+      login(payload.email);
+    } else if (type === "logout") {
+      logout();
     }
-
-    initialize();
-  }, []);
+  };
 
   const handleLogin = async (email: string, password: string) => {
     setLoginError(null);
     try {
       await authService.signIn(email, password);
-      authChannel.current.postMessage("login");
+      authChannel.current.postMessage({ type: "login", payload: { email } });
       const origin = location.state?.from?.pathname ?? "/home";
       navigate(origin);
     } catch (error: any) {
@@ -145,7 +124,7 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
     setLogoutError(null);
     try {
       await authService.signOut();
-      authChannel.current.postMessage("logout");
+      authChannel.current.postMessage({ type: "logout" });
       navigate(AUTH_PATHS.LOGIN_PATH);
     } catch (error: any) {
       setLogoutError(error.message);
@@ -197,8 +176,6 @@ export const AuthProvider: FC<PropsWithChildren> = (props) => {
   };
 
   const value = {
-    token,
-    email,
     paths: AUTH_PATHS,
     login: {
       onLogin: handleLogin,

@@ -12,7 +12,8 @@ import { NoUserPoolError } from "./errors/NoUserPoolError";
 import { CognitoErrorTypes } from "./types/CognitoTypes";
 
 interface ICognitoClient {
-  getMe(): CognitoUser | null;
+  getCurrentUser(): CognitoUser | null;
+  getCurrentUserSession(): Promise<CognitoUserSession | null>;
   signOut(): Promise<any>;
   signUp(
     username: string,
@@ -43,12 +44,12 @@ export class CognitoClient implements ICognitoClient {
     this.poolData = data;
   }
 
-  public getMe(): CognitoUser | null {
+  public getCurrentUser(): CognitoUser | null {
     return this.userPool.getCurrentUser();
   }
 
-  public getTokens(): Promise<CognitoUserSession | null> {
-    const user = this.getMe();
+  public getCurrentUserSession(): Promise<CognitoUserSession | null> {
+    const user = this.getCurrentUser();
     if (!user) return Promise.resolve(null);
 
     return new Promise((resolve, reject) => {

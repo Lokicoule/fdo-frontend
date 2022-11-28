@@ -1,15 +1,14 @@
 import Button from "@mui/material/Button";
-import { useAuth } from "auth-provider";
+import { useAuth, useIsLoggedIn } from "auth-provider";
 import { FC } from "react";
 
 export const LogoutButton: FC = () => {
   const {
     logout: { onLogout, error },
-    token,
   } = useAuth();
+  const isLoggedIn = useIsLoggedIn();
 
-  //tastify the error
-  return Boolean(token) ? (
+  return isLoggedIn() ? (
     <Button type="button" onClick={onLogout}>
       Sign Out
     </Button>

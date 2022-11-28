@@ -1,16 +1,15 @@
-import { useAuth } from "auth-provider";
 import { FC } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { useIsLoggedIn } from "auth-provider";
 
 type Props = { children: JSX.Element; redirectTo: string };
 
 export const PreventAuth: FC<Props> = (props): JSX.Element => {
   const { children, redirectTo } = props;
   const location = useLocation();
-  const { token } = useAuth();
-  console.log("token", token);
+  const isLoggedIn = useIsLoggedIn();
 
-  if (Boolean(token)) {
+  if (isLoggedIn()) {
     return <Navigate to={redirectTo} replace state={{ from: location }} />;
   }
 

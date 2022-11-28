@@ -1,11 +1,11 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { useAuth } from "auth-provider";
 import { FormInputSecret, FormInputText } from "form";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "ui";
+import { useAuth } from "auth-provider";
 import { useResetPasswordResolver } from "./useResetPasswordResolver";
 
 type ResetPasswordForm = {

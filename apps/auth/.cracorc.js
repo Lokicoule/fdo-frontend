@@ -30,9 +30,6 @@ module.exports = () => ({
             "auth-provider": {
               singleton: true,
             },
-            "auth-routing": {
-              singleton: true,
-            },
             "auth-ui": {
               singleton: true,
             },

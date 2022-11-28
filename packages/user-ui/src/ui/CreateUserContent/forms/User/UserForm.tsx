@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useCreateUser } from "../../CreateUserContext";
 
 import { useUserResolver } from "./useUserResolver";
-import { useAuth } from "auth-provider";
+import { useEmail } from "auth-provider";
 
 export type UserFormProps = {
   firstName: string;
@@ -21,8 +21,7 @@ type UserFormContentProps = {
 export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
   const { render } = props;
   const { onUserSubmit, user } = useCreateUser();
-  const { email } = useAuth();
-
+  const email = useEmail();
   const resolver = useUserResolver();
   const { formState, handleSubmit, control } = useForm<UserFormProps>({
     defaultValues: {
