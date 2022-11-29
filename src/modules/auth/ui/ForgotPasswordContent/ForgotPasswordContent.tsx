@@ -1,10 +1,9 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useTheme, Box, Avatar, Typography, Grid, Button } from "@mui/material";
-import { useState } from "react";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "../../../../components";
 import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useAuth } from "../../context/AuthContext";
+import { useFacadePasswordReset } from "./useFacadePasswordReset";
 import { useForgotPasswordResolver } from "./useForgotPasswordResolver";
 
 type ForgotPasswordForm = {
@@ -13,9 +12,8 @@ type ForgotPasswordForm = {
 
 export const ForgotPasswordContent = () => {
   const theme = useTheme();
-  const [error, setError] = useState<Error | null>(null);
-  const { onForgotPassword } = useAuth();
   const resolver = useForgotPasswordResolver();
+  const { onPasswordReset, error } = useFacadePasswordReset();
 
   const {
     formState: { errors },
@@ -25,10 +23,8 @@ export const ForgotPasswordContent = () => {
     resolver,
   });
 
-  const onSubmit = (data: ForgotPasswordForm) => {
-    onForgotPassword(data.email).catch((e) => {
-      setError(e);
-    });
+  const onSubmit = async (data: ForgotPasswordForm) => {
+    await onPasswordReset(data.email);
   };
 
   return (

@@ -1,12 +1,11 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "../../../../components";
 import { FormInputSecret } from "../../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useAuth } from "../../context/AuthContext";
+import { useFacadeRegister } from "./useFacadeRegister";
 import { useRegisterResolver } from "./useRegisterResolver";
 
 type RegisterForm = {
@@ -17,8 +16,7 @@ type RegisterForm = {
 
 export const RegisterContent = () => {
   const theme = useTheme();
-  const { onRegister } = useAuth();
-  const [error, setError] = React.useState<Error | null>(null);
+  const { onRegister, error } = useFacadeRegister();
 
   const resolver = useRegisterResolver();
 
@@ -30,10 +28,8 @@ export const RegisterContent = () => {
     resolver,
   });
 
-  const onSubmit = (data: RegisterForm) => {
-    onRegister(data.email, data.password).catch((e) => {
-      setError(e);
-    });
+  const onSubmit = async (data: RegisterForm) => {
+    await onRegister(data.email, data.password);
   };
 
   return (

@@ -1,12 +1,11 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "../../../../components";
 import { FormInputSecret } from "../../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useAuth } from "../../context/AuthContext";
+import { useFacadeSubmitPasswordReset } from "./useFacadeSubmitPasswordReset";
 import { useResetPasswordResolver } from "./useResetPasswordResolver";
 
 type ResetPasswordForm = {
@@ -18,8 +17,7 @@ type ResetPasswordForm = {
 
 export const ResetPasswordContent = () => {
   const theme = useTheme();
-  const [error, setError] = React.useState<Error | null>(null);
-  const { onResetPassword } = useAuth();
+  const { onSubmitPasswordReset, error } = useFacadeSubmitPasswordReset();
 
   const resolver = useResetPasswordResolver();
 
@@ -31,10 +29,8 @@ export const ResetPasswordContent = () => {
     resolver,
   });
 
-  const onSubmit = (data: ResetPasswordForm) => {
-    onResetPassword(data.email, data.code, data.password).catch((e) => {
-      setError(e);
-    });
+  const onSubmit = async (data: ResetPasswordForm) => {
+    await onSubmitPasswordReset(data.email, data.code, data.password);
   };
 
   return (

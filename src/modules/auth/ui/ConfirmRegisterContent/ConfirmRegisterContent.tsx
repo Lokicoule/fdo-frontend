@@ -1,11 +1,10 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useTheme, Box, Avatar, Typography, Grid, Button } from "@mui/material";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Resolver, useForm } from "react-hook-form";
 import { LinkRouter } from "../../../../components";
 import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useAuth } from "../../context/AuthContext";
 import { useConfirmRegisterResolver } from "./useConfirmRegisterResolver";
+import { useFacadeSignUpConfirmation } from "./useFacadeSignUpConfirmation";
 
 type ConfirmSignUpForm = {
   email: string;
@@ -13,11 +12,9 @@ type ConfirmSignUpForm = {
 };
 
 export const ConfirmRegisterContent = () => {
-  const [error, setError] = React.useState<Error | null>(null);
-
   const theme = useTheme();
-  const { onConfirmRegister } = useAuth();
   const resolver = useConfirmRegisterResolver();
+  const { onSignUpConfirmation, error } = useFacadeSignUpConfirmation();
 
   const {
     formState: { errors },
@@ -27,10 +24,8 @@ export const ConfirmRegisterContent = () => {
     resolver,
   });
 
-  const onSubmit = (data: ConfirmSignUpForm) => {
-    onConfirmRegister(data.email, data.code).catch((e) => {
-      setError(e);
-    });
+  const onSubmit = async (data: ConfirmSignUpForm) => {
+    await onSignUpConfirmation(data.email, data.code);
   };
 
   return (

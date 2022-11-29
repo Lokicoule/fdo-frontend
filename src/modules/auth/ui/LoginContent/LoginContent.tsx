@@ -1,11 +1,11 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useTheme, Box, Avatar, Typography, Grid, Button } from "@mui/material";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LinkRouter } from "../../../../components";
 import { FormInputSecret } from "../../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useAuth } from "../../context/AuthContext";
+import { useFacadeLogin } from "./useFacadeLogin";
 import { useLoginResolver } from "./useLoginResolver";
 
 type LoginForm = {
@@ -15,8 +15,7 @@ type LoginForm = {
 
 export const LoginContent = () => {
   const theme = useTheme();
-  const { onLogin } = useAuth();
-  const [error, setError] = useState<Error | null>(null);
+  const { onLogin, error } = useFacadeLogin();
 
   const resolver = useLoginResolver();
   const {
@@ -27,10 +26,8 @@ export const LoginContent = () => {
     resolver,
   });
 
-  const onSubmit = (data: LoginForm) => {
-    onLogin(data.email, data.password).catch((e) => {
-      setError(e);
-    });
+  const onSubmit = async (data: LoginForm) => {
+    await onLogin(data.email, data.password);
   };
 
   return (
