@@ -1,17 +1,16 @@
 import HomeIcon from "@mui/icons-material/Home";
 import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
 import { AppShell } from "./layouts/AppShell";
-import PreventAuth from "./features/authentication/components/PreventAuth";
-import RequireAuth from "./features/authentication/components/RequireAuth";
 import {
-  ConfirmRegisterContent,
-  ForgotPasswordContent,
-  LoginContent,
   LogoutButton,
-  RegisterContent,
-  ResetPasswordContent,
+  RequireAuth,
 } from "./features/authentication/components";
 import { CreateUserContent } from "./features/user/components/CreateUserContent";
+import ConfirmRegisterPage from "./pages/ConfirmRegisterPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
   return (
@@ -29,43 +28,23 @@ function App() {
         },
         {
           path: AUTH_ROUTES.REGISTER,
-          element: () => (
-            <PreventAuth redirectTo="/home">
-              <RegisterContent />
-            </PreventAuth>
-          ),
+          element: RegisterPage,
         },
         {
           path: AUTH_ROUTES.CONFIRM_REGISTER,
-          element: () => (
-            <PreventAuth redirectTo="/home">
-              <ConfirmRegisterContent />
-            </PreventAuth>
-          ),
+          element: ConfirmRegisterPage,
         },
         {
           path: AUTH_ROUTES.LOGIN,
-          element: () => (
-            <PreventAuth redirectTo="/home">
-              <LoginContent />
-            </PreventAuth>
-          ),
+          element: LoginPage,
         },
         {
           path: AUTH_ROUTES.RESET_PASSWORD,
-          element: () => (
-            <PreventAuth redirectTo="/home">
-              <ResetPasswordContent />
-            </PreventAuth>
-          ),
+          element: ResetPasswordPage,
         },
         {
           path: AUTH_ROUTES.FORGOT_PASSWORD,
-          element: () => (
-            <PreventAuth redirectTo="/home">
-              <ForgotPasswordContent />
-            </PreventAuth>
-          ),
+          element: ForgotPasswordPage,
         },
         {
           path: "/dashboard",

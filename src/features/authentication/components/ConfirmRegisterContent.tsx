@@ -1,14 +1,16 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import exp from "constants";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { LinkRouter } from "../../../../components";
-import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useYupValidationResolver } from "../../../../hooks/useYupValidationResolver";
-import { useFacadePasswordReset } from "../../hooks/useFacadePasswordReset";
+import { LinkRouter } from "../../../components";
+import { FormInputText } from "../../../components/Form/FormInputText";
+import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
+import { useFacadeSignUpConfirmation } from "../hooks/useFacadeSignUpConfirmation";
 
-type ForgotPasswordForm = {
+type ConfirmSignUpForm = {
   email: string;
+  code: string;
 };
 
 const validationSchema = yup.object().shape({
@@ -16,26 +18,27 @@ const validationSchema = yup.object().shape({
     .string()
     .email("L'adresse email est invalide")
     .required("L'adresse email est requise."),
+  code: yup.string().required("Le code de vérification est requis."),
 });
 
-const useForgotPasswordResolver = () =>
+const useConfirmRegisterResolver = () =>
   useYupValidationResolver(validationSchema);
 
-export const ForgotPasswordContent = () => {
+export const ConfirmRegisterContent = () => {
   const theme = useTheme();
-  const resolver = useForgotPasswordResolver();
-  const { onPasswordReset, error } = useFacadePasswordReset();
+  const resolver = useConfirmRegisterResolver();
+  const { onSignUpConfirmation, error } = useFacadeSignUpConfirmation();
 
   const {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<ForgotPasswordForm>({
+  } = useForm<ConfirmSignUpForm>({
     resolver,
   });
 
-  const onSubmit = async (data: ForgotPasswordForm) => {
-    await onPasswordReset(data.email);
+  const onSubmit = async (data: ConfirmSignUpForm) => {
+    await onSignUpConfirmation(data.email, data.code);
   };
 
   return (
@@ -50,7 +53,7 @@ export const ForgotPasswordContent = () => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Forgot password
+        Confirmation
       </Typography>
       <Box
         component="form"
@@ -72,6 +75,18 @@ export const ForgotPasswordContent = () => {
               helperText={errors.email?.message}
             />
           </Grid>
+          <Grid item xs={12}>
+            <FormInputText
+              name="code"
+              control={control}
+              label="Code de confirmation"
+              required
+              fullWidth
+              autoComplete="current-password"
+              error={!!errors.code}
+              helperText={errors.code?.message}
+            ></FormInputText>
+          </Grid>
         </Grid>
         <Button
           type="submit"
@@ -80,7 +95,7 @@ export const ForgotPasswordContent = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          Forgot password
+          Confirmer
         </Button>
         {error && (
           <Typography color={theme.palette.error.main}>
@@ -89,8 +104,8 @@ export const ForgotPasswordContent = () => {
         )}
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <LinkRouter to="/auth/sign-up" variant="body2">
-              Vous n&#39;avez pas de compte ? Inscrivez-vous
+            <LinkRouter to="/auth/sign-in" variant="body2">
+              Already have an account? Sign in
             </LinkRouter>
           </Grid>
         </Grid>
@@ -99,4 +114,4 @@ export const ForgotPasswordContent = () => {
   );
 };
 
-export default ForgotPasswordContent;
+export default ConfirmRegisterContent;

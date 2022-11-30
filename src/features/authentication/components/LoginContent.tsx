@@ -1,20 +1,17 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { LinkRouter } from "../../../../components";
-import { FormInputSecret } from "../../../../components/Form/FormInputSecret";
-import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useYupValidationResolver } from "../../../../hooks/useYupValidationResolver";
-import { PASSWORD_RULES } from "../../constants/password.constants";
-import { useFacadeSubmitPasswordReset } from "../../hooks/useFacadeSubmitPasswordReset";
+import { LinkRouter } from "../../../components";
+import { FormInputSecret } from "../../../components/Form/FormInputSecret";
+import { FormInputText } from "../../../components/Form/FormInputText";
+import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
+import { PASSWORD_RULES } from "../constants/password.constants";
+import { useFacadeLogin } from "../hooks/useFacadeLogin";
 
-type ResetPasswordForm = {
+type LoginForm = {
   email: string;
-  code: string;
   password: string;
-  confirmPassword: string;
 };
 
 const validationSchema = yup.object().shape({
@@ -22,7 +19,6 @@ const validationSchema = yup.object().shape({
     .string()
     .email("L'adresse email est invalide")
     .required("L'adresse email est requise."),
-  code: yup.string().required("Le code de vérification est requis."),
   password: yup
     .string()
     .min(
@@ -42,25 +38,23 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-const useResetPasswordResolver = () =>
-  useYupValidationResolver(validationSchema);
+const useLoginResolver = () => useYupValidationResolver(validationSchema);
 
-export const ResetPasswordContent = () => {
+export const LoginContent = () => {
   const theme = useTheme();
-  const { onSubmitPasswordReset, error } = useFacadeSubmitPasswordReset();
+  const { onLogin, error } = useFacadeLogin();
 
-  const resolver = useResetPasswordResolver();
-
+  const resolver = useLoginResolver();
   const {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<ResetPasswordForm>({
+  } = useForm<LoginForm>({
     resolver,
   });
 
-  const onSubmit = async (data: ResetPasswordForm) => {
-    await onSubmitPasswordReset(data.email, data.code, data.password);
+  const onSubmit = async (data: LoginForm) => {
+    await onLogin(data.email, data.password);
   };
 
   return (
@@ -75,7 +69,7 @@ export const ResetPasswordContent = () => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        New password
+        Connexion
       </Typography>
       <Box
         component="form"
@@ -98,18 +92,6 @@ export const ResetPasswordContent = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormInputText
-              name="code"
-              control={control}
-              label="Code de confirmation"
-              required
-              fullWidth
-              autoComplete="current-password"
-              error={!!errors.code}
-              helperText={errors.code?.message}
-            ></FormInputText>
-          </Grid>
-          <Grid item xs={12}>
             <FormInputSecret
               name="password"
               control={control}
@@ -121,17 +103,6 @@ export const ResetPasswordContent = () => {
               helperText={errors.password?.message}
             ></FormInputSecret>
           </Grid>
-          <Grid item xs={12}>
-            <FormInputSecret
-              name="confirmPassword"
-              control={control}
-              label="Confirmation de mot de passe"
-              required
-              fullWidth
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword?.message}
-            ></FormInputSecret>
-          </Grid>
         </Grid>
         <Button
           type="submit"
@@ -140,7 +111,7 @@ export const ResetPasswordContent = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          New password
+          Login
         </Button>
         {error && (
           <Typography color={theme.palette.error.main}>
@@ -149,8 +120,8 @@ export const ResetPasswordContent = () => {
         )}
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <LinkRouter to="/auth/sign-in" variant="body2">
-              Already have an account? Sign in
+            <LinkRouter to="/auth/sign-up" variant="body2">
+              Vous n&#39;avez pas de compte ? Inscrivez-vous
             </LinkRouter>
           </Grid>
         </Grid>
@@ -159,4 +130,4 @@ export const ResetPasswordContent = () => {
   );
 };
 
-export default ResetPasswordContent;
+export default LoginContent;

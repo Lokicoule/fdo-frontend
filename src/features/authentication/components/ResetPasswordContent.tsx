@@ -3,15 +3,16 @@ import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { LinkRouter } from "../../../../components";
-import { FormInputSecret } from "../../../../components/Form/FormInputSecret";
-import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useYupValidationResolver } from "../../../../hooks/useYupValidationResolver";
-import { PASSWORD_RULES } from "../../constants/password.constants";
-import { useFacadeRegister } from "../../hooks/useFacadeRegister";
+import { LinkRouter } from "../../../components";
+import { FormInputSecret } from "../../../components/Form/FormInputSecret";
+import { FormInputText } from "../../../components/Form/FormInputText";
+import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
+import { PASSWORD_RULES } from "../constants/password.constants";
+import { useFacadeSubmitPasswordReset } from "../hooks/useFacadeSubmitPasswordReset";
 
-type RegisterForm = {
+type ResetPasswordForm = {
   email: string;
+  code: string;
   password: string;
   confirmPassword: string;
 };
@@ -21,6 +22,7 @@ const validationSchema = yup.object().shape({
     .string()
     .email("L'adresse email est invalide")
     .required("L'adresse email est requise."),
+  code: yup.string().required("Le code de vérification est requis."),
   password: yup
     .string()
     .min(
@@ -40,24 +42,25 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-const useRegisterResolver = () => useYupValidationResolver(validationSchema);
+const useResetPasswordResolver = () =>
+  useYupValidationResolver(validationSchema);
 
-export const RegisterContent = () => {
+export const ResetPasswordContent = () => {
   const theme = useTheme();
-  const { onRegister, error } = useFacadeRegister();
+  const { onSubmitPasswordReset, error } = useFacadeSubmitPasswordReset();
 
-  const resolver = useRegisterResolver();
+  const resolver = useResetPasswordResolver();
 
   const {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<RegisterForm>({
+  } = useForm<ResetPasswordForm>({
     resolver,
   });
 
-  const onSubmit = async (data: RegisterForm) => {
-    await onRegister(data.email, data.password);
+  const onSubmit = async (data: ResetPasswordForm) => {
+    await onSubmitPasswordReset(data.email, data.code, data.password);
   };
 
   return (
@@ -72,7 +75,7 @@ export const RegisterContent = () => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Enregistrement
+        New password
       </Typography>
       <Box
         component="form"
@@ -93,6 +96,18 @@ export const RegisterContent = () => {
               error={!!errors.email}
               helperText={errors.email?.message}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <FormInputText
+              name="code"
+              control={control}
+              label="Code de confirmation"
+              required
+              fullWidth
+              autoComplete="current-password"
+              error={!!errors.code}
+              helperText={errors.code?.message}
+            ></FormInputText>
           </Grid>
           <Grid item xs={12}>
             <FormInputSecret
@@ -125,7 +140,7 @@ export const RegisterContent = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          Create account
+          New password
         </Button>
         {error && (
           <Typography color={theme.palette.error.main}>
@@ -144,4 +159,4 @@ export const RegisterContent = () => {
   );
 };
 
-export default RegisterContent;
+export default ResetPasswordContent;

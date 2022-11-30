@@ -1,17 +1,19 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { LinkRouter } from "../../../../components";
-import { FormInputSecret } from "../../../../components/Form/FormInputSecret";
-import { FormInputText } from "../../../../components/Form/FormInputText";
-import { useYupValidationResolver } from "../../../../hooks/useYupValidationResolver";
-import { PASSWORD_RULES } from "../../constants/password.constants";
-import { useFacadeLogin } from "../../hooks/useFacadeLogin";
+import { LinkRouter } from "../../../components";
+import { FormInputSecret } from "../../../components/Form/FormInputSecret";
+import { FormInputText } from "../../../components/Form/FormInputText";
+import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
+import { PASSWORD_RULES } from "../constants/password.constants";
+import { useFacadeRegister } from "../hooks/useFacadeRegister";
 
-type LoginForm = {
+type RegisterForm = {
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 const validationSchema = yup.object().shape({
@@ -38,23 +40,24 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-const useLoginResolver = () => useYupValidationResolver(validationSchema);
+const useRegisterResolver = () => useYupValidationResolver(validationSchema);
 
-export const LoginContent = () => {
+export const RegisterContent = () => {
   const theme = useTheme();
-  const { onLogin, error } = useFacadeLogin();
+  const { onRegister, error } = useFacadeRegister();
 
-  const resolver = useLoginResolver();
+  const resolver = useRegisterResolver();
+
   const {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<LoginForm>({
+  } = useForm<RegisterForm>({
     resolver,
   });
 
-  const onSubmit = async (data: LoginForm) => {
-    await onLogin(data.email, data.password);
+  const onSubmit = async (data: RegisterForm) => {
+    await onRegister(data.email, data.password);
   };
 
   return (
@@ -69,7 +72,7 @@ export const LoginContent = () => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Connexion
+        Enregistrement
       </Typography>
       <Box
         component="form"
@@ -103,6 +106,17 @@ export const LoginContent = () => {
               helperText={errors.password?.message}
             ></FormInputSecret>
           </Grid>
+          <Grid item xs={12}>
+            <FormInputSecret
+              name="confirmPassword"
+              control={control}
+              label="Confirmation de mot de passe"
+              required
+              fullWidth
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
+            ></FormInputSecret>
+          </Grid>
         </Grid>
         <Button
           type="submit"
@@ -111,7 +125,7 @@ export const LoginContent = () => {
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >
-          Login
+          Create account
         </Button>
         {error && (
           <Typography color={theme.palette.error.main}>
@@ -120,8 +134,8 @@ export const LoginContent = () => {
         )}
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <LinkRouter to="/auth/sign-up" variant="body2">
-              Vous n&#39;avez pas de compte ? Inscrivez-vous
+            <LinkRouter to="/auth/sign-in" variant="body2">
+              Already have an account? Sign in
             </LinkRouter>
           </Grid>
         </Grid>
@@ -130,4 +144,4 @@ export const LoginContent = () => {
   );
 };
 
-export default LoginContent;
+export default RegisterContent;
