@@ -4,13 +4,23 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { styled, ThemeProvider } from "@mui/material/styles";
-import { useToggle } from "../../hooks";
+import {
+  createTheme,
+  styled,
+  ThemeProvider,
+  useTheme,
+} from "@mui/material/styles";
 import * as React from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+import {
+  useIsDrawerOpen,
+  useMode,
+  useToggleDrawer,
+} from "../../features/preference/stores/preferenceStore";
+import { usePreferenceStore } from "../../features/preference/hooks/usePreferenceStore";
+import { useAuthStore } from "../../features/authentication/hooks/useAuthStore";
 import { Header } from "./Header";
 import { Navbar } from "./Navbar/Navbar";
-import { ThemeColorProvider, useThemeColorMode } from "./ThemeColor";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -74,46 +84,60 @@ function MainLink({
 }
 
 export const AppShell: React.FC<AppShellProps> = (props) => {
-  const { title, routes, navLinks, colorScheme, render } = props;
-  const [open, setOpen] = useToggle();
+  const { title, routes, navLinks, render } = props;
+  const { isReady } = useAuthStore();
+  const app = usePreferenceStore();
 
-  const { theme, themeColor } = useThemeColorMode(colorScheme);
+  const isDrawerOpen = useIsDrawerOpen();
+  const toggleDrawer = useToggleDrawer();
+  const mode = useMode();
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: mode ?? "light",
+        },
+      }),
+    [mode]
+  );
+
+  if (!isReady || !app.isReady) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
-      <ThemeColorProvider value={themeColor}>
-        <ThemeProvider theme={theme}>
-          <Box sx={{ display: "flex" }}>
-            <CssBaseline />
-            <Header
-              title={title}
-              open={open}
-              onOpen={setOpen}
-              render={render}
-            />
-            <Navbar
-              open={open}
-              onClick={setOpen}
-              render={navLinks.map((link) => (
-                <MainLink {...link} open={open} key={link.label} />
+      <ThemeProvider theme={theme}>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <Header
+            title={title}
+            open={isDrawerOpen}
+            onOpen={toggleDrawer}
+            render={render}
+          />
+          <Navbar
+            open={isDrawerOpen}
+            onClick={toggleDrawer}
+            render={navLinks.map((link) => (
+              <MainLink {...link} open={isDrawerOpen} key={link.label} />
+            ))}
+          ></Navbar>
+          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <DrawerHeader />
+            <Routes>
+              {routes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<route.element />}
+                />
               ))}
-            ></Navbar>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-              <DrawerHeader />
-              <Routes>
-                {routes.map((route) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<route.element />}
-                  />
-                ))}
-              </Routes>
-              <Outlet />
-            </Box>
+            </Routes>
+            <Outlet />
           </Box>
-        </ThemeProvider>
-      </ThemeColorProvider>
+        </Box>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

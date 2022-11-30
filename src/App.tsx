@@ -1,8 +1,8 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { AUTH_ROUTES } from "./modules/auth/constants/auth-routes.constants";
+import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
 import { AppShell } from "./layouts/AppShell";
-import { PreventAuth } from "./modules/auth/routing/PreventAuth";
-import { RequireAuth } from "./modules/auth/routing/RequireAuth";
+import PreventAuth from "./features/authentication/components/PreventAuth";
+import RequireAuth from "./features/authentication/components/RequireAuth";
 import {
   ConfirmRegisterContent,
   ForgotPasswordContent,
@@ -10,14 +10,13 @@ import {
   LogoutButton,
   RegisterContent,
   ResetPasswordContent,
-} from "./modules/auth/ui";
-import { CreateUserContent } from "./modules/user/ui/CreateUserContent";
+} from "./features/authentication/components";
+import { CreateUserContent } from "./features/user/components/CreateUserContent";
 
 function App() {
   return (
     <AppShell
       title="Fruits d'orient home"
-      colorScheme="dark"
       render={<LogoutButton />}
       routes={[
         {

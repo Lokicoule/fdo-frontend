@@ -2,17 +2,17 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
-import { useThemeColor } from "./ThemeColorContext";
+import { useToggleMode } from "../../../features/preference/stores/preferenceStore";
 
 export function ThemeColor() {
   const theme = useTheme();
-  const { toggleThemeColor } = useThemeColor();
+  const toggleMode = useToggleMode();
 
   return (
     <IconButton
       color="inherit"
       aria-label="toggle theme color"
-      onClick={toggleThemeColor}
+      onClick={toggleMode}
     >
       {theme.palette.mode === "dark" ? (
         <Brightness7Icon />
