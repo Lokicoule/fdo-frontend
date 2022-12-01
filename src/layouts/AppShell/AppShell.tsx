@@ -7,8 +7,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import * as React from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
-import { LoadingPage } from "../../pages/LoadingPage";
 import { Header } from "./components/Header";
+import { Loading } from "./components/Loading";
 import { Navbar } from "./components/Navbar";
 import { useApplicationStore } from "./hooks/useApplicationStore";
 import { useIsDrawerOpen, useToggleDrawer } from "./stores/applicationStore";
@@ -79,8 +79,8 @@ export const AppShell: React.FC<AppShellProps> = (props) => {
   const toggleDrawer = useToggleDrawer();
 
   if (!isReady) {
-    return <LoadingPage />;
-  }
+    return <Loading />;
+  } else return <Loading />;
 
   return (
     <BrowserRouter>
