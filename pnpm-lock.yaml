@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@emotion/is-prop-valid': ^1.2.0
   '@emotion/react': ^11.10.5
   '@emotion/styled': ^11.10.5
   '@hookform/resolvers': ^2.9.10
@@ -21,6 +22,7 @@ specifiers:
   zustand: ^4.1.4
 
 dependencies:
+  '@emotion/is-prop-valid': 1.2.0
   '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
   '@emotion/styled': 11.10.5_otcjdfkheatawhug6fwk7ldzni
   '@hookform/resolvers': 2.9.10_react-hook-form@7.39.7

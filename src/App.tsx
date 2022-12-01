@@ -12,6 +12,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { ModeButton } from "./features/preferences/components";
+import "./App.css";
 
 function App() {
   return (
