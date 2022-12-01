@@ -5,7 +5,6 @@ import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { ThemeColor } from "../ThemeColor/ThemeColor";
 
 const drawerWidth = 240;
 
@@ -55,7 +54,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
           {title}
         </Typography>
         {render}
-        <ThemeColor />
       </Toolbar>
     </AppBar>
   );

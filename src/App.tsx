@@ -5,18 +5,24 @@ import {
   LogoutButton,
   RequireAuth,
 } from "./features/authentication/components";
-import { CreateUserContent } from "./features/user/components/CreateUserContent";
-import ConfirmRegisterPage from "./pages/ConfirmRegisterPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+import { CreateUserContent } from "./features/users/components/CreateUserContent";
+import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage";
+import { ModeButton } from "./features/preferences/components";
 
 function App() {
   return (
     <AppShell
       title="Fruits d'orient home"
-      render={<LogoutButton />}
+      menu={
+        <>
+          <LogoutButton />
+          <ModeButton />
+        </>
+      }
       routes={[
         {
           path: "/",

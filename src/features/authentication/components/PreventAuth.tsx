@@ -15,5 +15,3 @@ export const PreventAuth: FC<Props> = (props): JSX.Element => {
 
   return children;
 };
-
-export default PreventAuth;

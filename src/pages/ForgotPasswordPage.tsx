@@ -7,5 +7,3 @@ export const ForgotPasswordPage = () => {
     </PreventAuth>
   );
 };
-
-export default ForgotPasswordPage;

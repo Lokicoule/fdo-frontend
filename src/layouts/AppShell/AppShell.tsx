@@ -4,23 +4,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import {
-  createTheme,
-  styled,
-  ThemeProvider,
-  useTheme,
-} from "@mui/material/styles";
+import { styled, ThemeProvider } from "@mui/material/styles";
 import * as React from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
-import {
-  useIsDrawerOpen,
-  useMode,
-  useToggleDrawer,
-} from "../../features/preference/stores/preferenceStore";
-import { usePreferenceStore } from "../../features/preference/hooks/usePreferenceStore";
-import { useAuthStore } from "../../features/authentication/hooks/useAuthStore";
-import { Header } from "./Header";
-import { Navbar } from "./Navbar/Navbar";
+import { Header } from "./components/Header";
+import { Navbar } from "./components/Navbar";
+import { useApplicationStore } from "./hooks/useApplicationStore";
+import { useIsDrawerOpen, useToggleDrawer } from "./stores/applicationStore";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -29,8 +19,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }));
-
-type ColorScheme = "light" | "dark";
 
 export type Route = {
   element: React.FunctionComponent;
@@ -47,8 +35,7 @@ export type AppShellProps = {
   title: string;
   routes: Route[];
   navLinks: NavLink[];
-  colorScheme?: ColorScheme;
-  render?: React.ReactNode;
+  menu?: React.ReactNode;
 };
 
 function MainLink({
@@ -84,24 +71,13 @@ function MainLink({
 }
 
 export const AppShell: React.FC<AppShellProps> = (props) => {
-  const { title, routes, navLinks, render } = props;
-  const { isReady } = useAuthStore();
-  const app = usePreferenceStore();
+  const { title, routes, navLinks, menu } = props;
+  const { isReady, theme } = useApplicationStore();
 
   const isDrawerOpen = useIsDrawerOpen();
   const toggleDrawer = useToggleDrawer();
-  const mode = useMode();
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: mode ?? "light",
-        },
-      }),
-    [mode]
-  );
 
-  if (!isReady || !app.isReady) {
+  if (!isReady) {
     return <div>Loading...</div>;
   }
 
@@ -114,7 +90,7 @@ export const AppShell: React.FC<AppShellProps> = (props) => {
             title={title}
             open={isDrawerOpen}
             onOpen={toggleDrawer}
-            render={render}
+            render={menu}
           />
           <Navbar
             open={isDrawerOpen}

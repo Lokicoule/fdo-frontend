@@ -10,5 +10,3 @@ export const ConfirmRegisterPage = () => {
     </PreventAuth>
   );
 };
-
-export default ConfirmRegisterPage;

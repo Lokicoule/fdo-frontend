@@ -17,5 +17,3 @@ export const RequireAuth: FC<Props> = ({ children }: Props): JSX.Element => {
 
   return children;
 };
-
-export default RequireAuth;

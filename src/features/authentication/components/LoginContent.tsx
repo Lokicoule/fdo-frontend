@@ -129,5 +129,3 @@ export const LoginContent = () => {
     </Box>
   );
 };
-
-export default LoginContent;

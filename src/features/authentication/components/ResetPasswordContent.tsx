@@ -158,5 +158,3 @@ export const ResetPasswordContent = () => {
     </Box>
   );
 };
-
-export default ResetPasswordContent;

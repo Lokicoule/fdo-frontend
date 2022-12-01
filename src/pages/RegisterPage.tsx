@@ -7,5 +7,3 @@ export const RegisterPage = () => {
     </PreventAuth>
   );
 };
-
-export default RegisterPage;

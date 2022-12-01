@@ -143,5 +143,3 @@ export const RegisterContent = () => {
     </Box>
   );
 };
-
-export default RegisterContent;

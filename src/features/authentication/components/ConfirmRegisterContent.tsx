@@ -113,5 +113,3 @@ export const ConfirmRegisterContent = () => {
     </Box>
   );
 };
-
-export default ConfirmRegisterContent;

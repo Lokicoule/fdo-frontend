@@ -7,5 +7,3 @@ export const LoginPage = () => {
     </PreventAuth>
   );
 };
-
-export default LoginPage;

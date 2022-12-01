@@ -7,5 +7,3 @@ export const ResetPasswordPage = () => {
     </PreventAuth>
   );
 };
-
-export default ResetPasswordPage;

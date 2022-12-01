@@ -98,5 +98,3 @@ export const ForgotPasswordContent = () => {
     </Box>
   );
 };
-
-export default ForgotPasswordContent;
