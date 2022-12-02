@@ -33,11 +33,16 @@ export type NavLink = {
   icon: JSX.Element;
 };
 
+export type MenuElement = {
+  key: string;
+  element: JSX.Element;
+};
+
 export type AppShellProps = {
   title: string;
   routes: Route[];
   navLinks: NavLink[];
-  menuButtons?: React.ReactNode[];
+  menuButtons?: MenuElement[];
 };
 
 function MainLink({
@@ -92,8 +97,15 @@ export const AppShell: React.FC<AppShellProps> = (props) => {
             title={title}
             open={isDrawerOpen}
             onOpen={toggleDrawer}
-            render={menuButtons?.map((button, index) => (
-              <React.Fragment key={index}>{button}</React.Fragment>
+            render={menuButtons?.map((button, i) => (
+              <div
+                style={{
+                  marginRight: `${i + 1 <= menuButtons.length ? 10 : 0}px`,
+                }}
+                key={button.key}
+              >
+                {button.element}
+              </div>
             ))}
           />
           <Navbar

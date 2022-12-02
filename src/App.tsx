@@ -4,6 +4,7 @@ import { RequireAuth } from "./features/authentication/components";
 import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
 import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "./features/profile/components/ProfileMenu";
+import { SearchMenu } from "./features/search/components/SearchMenu";
 import { CreateUserContent } from "./features/users/components/CreateUserContent";
 import { AppShell } from "./layouts/AppShell";
 import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
@@ -16,7 +17,20 @@ function App() {
   return (
     <AppShell
       title="Fruits d'orient home"
-      menuButtons={[<ThemeMenu />, <ProfileMenu />]}
+      menuButtons={[
+        {
+          key: "search_menu",
+          element: <SearchMenu />,
+        },
+        {
+          key: "theme_menu",
+          element: <ThemeMenu />,
+        },
+        {
+          key: "profile_menu",
+          element: <ProfileMenu />,
+        },
+      ]}
       routes={[
         {
           path: "/",

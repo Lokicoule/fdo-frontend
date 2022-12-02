@@ -1,4 +1,5 @@
 import MenuIcon from "@mui/icons-material/Menu";
+import { Box, MenuList } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
@@ -53,7 +54,14 @@ export const Header: React.FC<HeaderProps> = (props) => {
         <Typography variant="h6" noWrap component="div" flexGrow={1}>
           {title}
         </Typography>
-        {render}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {render}
+        </Box>
       </Toolbar>
     </AppBar>
   );
