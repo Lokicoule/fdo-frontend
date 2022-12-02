@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Tooltip } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { FormInputText } from "../../../../../../components/Form/FormInputText";
 import { useEmail } from "../../../../../authentication/stores/authStore";
@@ -46,57 +46,65 @@ export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
     >
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <FormInputText
-            name="firstName"
-            control={control}
-            label="Prénom"
-            required
-            fullWidth
-            autoComplete="firstName"
-            autoFocus
-            error={!!errors.firstName}
-            helperText={errors.firstName?.message}
-          />
+          <Tooltip title="Prénom">
+            <FormInputText
+              name="firstName"
+              control={control}
+              label="Prénom"
+              required
+              fullWidth
+              autoComplete="firstName"
+              autoFocus
+              error={!!errors.firstName}
+              helperText={errors.firstName?.message}
+            />
+          </Tooltip>
         </Grid>
         <Grid item xs={6}>
-          <FormInputText
-            name="lastName"
-            control={control}
-            label="Nom"
-            required
-            fullWidth
-            autoComplete="lastName"
-            autoFocus
-            error={!!errors.lastName}
-            helperText={errors.lastName?.message}
-          />
+          <Tooltip title="Nom">
+            <FormInputText
+              name="lastName"
+              control={control}
+              label="Nom"
+              required
+              fullWidth
+              autoComplete="lastName"
+              autoFocus
+              error={!!errors.lastName}
+              helperText={errors.lastName?.message}
+            />
+          </Tooltip>
         </Grid>
         <Grid item xs={12}>
-          <FormInputText
-            disabled={Boolean(email)}
-            name="email"
-            control={control}
-            label="Email"
-            required
-            fullWidth
-            autoComplete="email"
-            autoFocus
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
+          <Tooltip title="Email">
+            <FormInputText
+              disabled={Boolean(email)}
+              name="email"
+              control={control}
+              label="Email"
+              required
+              fullWidth
+              autoComplete="email"
+              autoFocus
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+          </Tooltip>
         </Grid>
         <Grid item xs={12}>
-          <FormInputText
-            name="phone"
-            control={control}
-            label="Phone"
-            required
-            fullWidth
-            autoComplete="phone"
-            autoFocus
-            error={!!errors.phone}
-            helperText={errors.phone?.message}
-          />
+          <Tooltip title="Téléphone">
+            <FormInputText
+              name="phone"
+              control={control}
+              label="Phone"
+              required
+              fullWidth
+              autoComplete="phone"
+              autoFocus
+              error={!!errors.phone}
+              helperText={errors.phone?.message}
+            />
+          </Tooltip>
         </Grid>
       </Grid>
       {render}
