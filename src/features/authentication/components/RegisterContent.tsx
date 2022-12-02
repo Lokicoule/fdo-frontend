@@ -16,7 +16,7 @@ import { FormInputSecret } from "../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../components/Form/FormInputText";
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
 import { PASSWORD_RULES } from "../constants/password.constants";
-import { useFacadeRegister } from "../hooks/useFacadeRegister";
+import { useAuthService } from "../hooks/useAuthService";
 
 type RegisterForm = {
   email: string;
@@ -52,7 +52,7 @@ const useRegisterResolver = () => useYupValidationResolver(validationSchema);
 
 export const RegisterContent = () => {
   const theme = useTheme();
-  const { onRegister, error } = useFacadeRegister();
+  const { onRegister, error } = useAuthService();
 
   const resolver = useRegisterResolver();
 

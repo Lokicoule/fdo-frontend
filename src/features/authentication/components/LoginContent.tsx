@@ -16,7 +16,7 @@ import { FormInputSecret } from "../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../components/Form/FormInputText";
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
 import { PASSWORD_RULES } from "../constants/password.constants";
-import { useFacadeLogin } from "../hooks/useFacadeLogin";
+import { useAuthService } from "../hooks/useAuthService";
 
 type LoginForm = {
   email: string;
@@ -51,7 +51,7 @@ const useLoginResolver = () => useYupValidationResolver(validationSchema);
 
 export const LoginContent = () => {
   const theme = useTheme();
-  const { onLogin, error } = useFacadeLogin();
+  const { onLogin, error } = useAuthService();
 
   const resolver = useLoginResolver();
   const {

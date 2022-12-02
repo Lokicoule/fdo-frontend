@@ -14,7 +14,7 @@ import * as yup from "yup";
 import { LinkRouter } from "../../../components";
 import { FormInputText } from "../../../components/Form/FormInputText";
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
-import { useFacadePasswordReset } from "../hooks/useFacadePasswordReset";
+import { useAuthService } from "../hooks/useAuthService";
 
 type ForgotPasswordForm = {
   email: string;
@@ -33,7 +33,7 @@ const useForgotPasswordResolver = () =>
 export const ForgotPasswordContent = () => {
   const theme = useTheme();
   const resolver = useForgotPasswordResolver();
-  const { onPasswordReset, error } = useFacadePasswordReset();
+  const { onPasswordReset, error } = useAuthService();
 
   const {
     formState: { errors },

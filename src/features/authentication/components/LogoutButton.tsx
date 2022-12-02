@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button";
 import { useIsLoggedIn } from "../stores/authStore";
-import { useFacadeLogout } from "../hooks/useFacadeLogout";
+import { useAuthService } from "../hooks/useAuthService";
 
 export const LogoutButton: React.FC = () => {
-  const { onLogout } = useFacadeLogout();
+  const { onLogout } = useAuthService();
   const isLoggedIn = useIsLoggedIn();
 
   return isLoggedIn() ? (

@@ -16,10 +16,10 @@ import {
 import { Link } from "react-router-dom";
 import { MenuButton } from "../../../components/MenuButton";
 import { useEmail, useIsLoggedIn } from "../../authentication";
-import { useFacadeLogout } from "../../authentication/hooks/useFacadeLogout";
+import { useAuthService } from "../../authentication/hooks/useAuthService";
 
 export const ProfileMenu: React.FC = () => {
-  const { onLogout } = useFacadeLogout();
+  const { onLogout } = useAuthService();
   const isLoggedIn = useIsLoggedIn();
   const email = useEmail();
 

@@ -16,7 +16,7 @@ import { FormInputSecret } from "../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../components/Form/FormInputText";
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
 import { PASSWORD_RULES } from "../constants/password.constants";
-import { useFacadeSubmitPasswordReset } from "../hooks/useFacadeSubmitPasswordReset";
+import { useAuthService } from "../hooks/useAuthService";
 
 type ResetPasswordForm = {
   email: string;
@@ -55,7 +55,7 @@ const useResetPasswordResolver = () =>
 
 export const ResetPasswordContent = () => {
   const theme = useTheme();
-  const { onSubmitPasswordReset, error } = useFacadeSubmitPasswordReset();
+  const { onSubmitPasswordReset, error } = useAuthService();
 
   const resolver = useResetPasswordResolver();
 

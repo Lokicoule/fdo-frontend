@@ -14,7 +14,7 @@ import * as yup from "yup";
 import { LinkRouter } from "../../../components";
 import { FormInputText } from "../../../components/Form/FormInputText";
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
-import { useFacadeSignUpConfirmation } from "../hooks/useFacadeSignUpConfirmation";
+import { useAuthService } from "../hooks/useAuthService";
 
 type ConfirmSignUpForm = {
   email: string;
@@ -35,7 +35,7 @@ const useConfirmRegisterResolver = () =>
 export const ConfirmRegisterContent = () => {
   const theme = useTheme();
   const resolver = useConfirmRegisterResolver();
-  const { onSignUpConfirmation, error } = useFacadeSignUpConfirmation();
+  const { onSignUpConfirmation, error } = useAuthService();
 
   const {
     formState: { errors },
