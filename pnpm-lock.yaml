@@ -16,6 +16,7 @@ specifiers:
   react-dom: ^18.2.0
   react-hook-form: ^7.39.7
   react-router-dom: ^6.4.3
+  react-transition-group: ^4.4.5
   typescript: ^4.6.4
   vite: ^3.2.3
   yup: ^0.32.11
@@ -33,6 +34,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.39.7_react@18.2.0
   react-router-dom: 6.4.3_biqbaboplfbrettd7655fr4n2y
+  react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
   yup: 0.32.11
   zustand: 4.1.4_react@18.2.0
 

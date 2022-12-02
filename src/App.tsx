@@ -1,29 +1,22 @@
 import HomeIcon from "@mui/icons-material/Home";
+import "./App.css";
+import { RequireAuth } from "./features/authentication/components";
 import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
-import { AppShell } from "./layouts/AppShell";
-import {
-  LogoutButton,
-  RequireAuth,
-} from "./features/authentication/components";
+import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
+import { ProfileMenu } from "./features/profile/components/ProfileMenu";
 import { CreateUserContent } from "./features/users/components/CreateUserContent";
+import { AppShell } from "./layouts/AppShell";
 import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
-import { ModeButton } from "./features/preferences/components";
-import "./App.css";
 
 function App() {
   return (
     <AppShell
       title="Fruits d'orient home"
-      menu={
-        <>
-          <LogoutButton />
-          <ModeButton />
-        </>
-      }
+      menuButtons={[<ThemeMenu />, <ProfileMenu />]}
       routes={[
         {
           path: "/",

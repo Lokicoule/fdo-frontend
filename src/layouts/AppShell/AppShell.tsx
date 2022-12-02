@@ -4,6 +4,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import * as React from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
@@ -36,7 +37,7 @@ export type AppShellProps = {
   title: string;
   routes: Route[];
   navLinks: NavLink[];
-  menu?: React.ReactNode;
+  menuButtons?: React.ReactNode[];
 };
 
 function MainLink({
@@ -72,7 +73,7 @@ function MainLink({
 }
 
 export const AppShell: React.FC<AppShellProps> = (props) => {
-  const { title, routes, navLinks, menu } = props;
+  const { title, routes, navLinks, menuButtons } = props;
   const { isReady, theme } = useApplicationStore();
 
   const isDrawerOpen = useIsDrawerOpen();
@@ -80,7 +81,7 @@ export const AppShell: React.FC<AppShellProps> = (props) => {
 
   if (!isReady) {
     return <Loading />;
-  } else return <Loading />;
+  }
 
   return (
     <BrowserRouter>
@@ -91,7 +92,9 @@ export const AppShell: React.FC<AppShellProps> = (props) => {
             title={title}
             open={isDrawerOpen}
             onOpen={toggleDrawer}
-            render={menu}
+            render={menuButtons?.map((button, index) => (
+              <React.Fragment key={index}>{button}</React.Fragment>
+            ))}
           />
           <Navbar
             open={isDrawerOpen}
