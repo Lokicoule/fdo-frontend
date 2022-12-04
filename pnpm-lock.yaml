@@ -12,6 +12,7 @@ specifiers:
   '@types/react-dom': ^18.0.8
   '@vitejs/plugin-react': ^2.2.0
   amazon-cognito-identity-js: ^5.2.12
+  i18n-iso-countries: ^7.5.0
   react: ^18.2.0
   react-dom: ^18.2.0
   react-hook-form: ^7.39.7
@@ -30,6 +31,7 @@ dependencies:
   '@mui/icons-material': 5.10.16_ge2ne5gh5gcqikeclw577gsblu
   '@mui/material': 5.10.16_thp4wrxo45nyllusrnt46mid4u
   amazon-cognito-identity-js: 5.2.12
+  i18n-iso-countries: 7.5.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.39.7_react@18.2.0
@@ -871,6 +873,10 @@ packages:
       ms: 2.1.2
     dev: true
 
+  /diacritics/1.3.0:
+    resolution: {integrity: sha512-wlwEkqcsaxvPJML+rDh/2iS824jbREk6DUMUKkEaSlxdYHeS43cClJtsWglvw2RfeXGm6ohKDqsXteJ5sP5enA==}
+    dev: false
+
   /dom-helpers/5.2.1:
     resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
     dependencies:
@@ -1155,6 +1161,13 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
+
+  /i18n-iso-countries/7.5.0:
+    resolution: {integrity: sha512-PtfKJNWLVhhU0KBX/8asmywjAcuyQk07mmmMwxFJcddTNBJJ1yvpY2qxVmyxbtVF+9+6eg9phgpv83XPUKU5CA==}
+    engines: {node: '>= 12'}
+    dependencies:
+      diacritics: 1.3.0
     dev: false
 
   /ieee754/1.2.1:

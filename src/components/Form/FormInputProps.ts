@@ -16,4 +16,5 @@ export type FormInputProps = {
   error?: boolean;
   helperText?: string | undefined;
   defaultValue?: string;
+  tooltip?: string;
 };

@@ -1,10 +1,10 @@
 import { Box, Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { FormInputText } from "../../../../../../components/Form/FormInputText";
-import { useEmail } from "../../../../../authentication/stores/authStore";
-import { useCreateUser } from "../../CreateUserContext";
-
-import { useUserResolver } from "./useUserResolver";
+import * as yup from "yup";
+import { FormInputText } from "../../../../../components/Form/FormInputText";
+import { useYupValidationResolver } from "../../../../../hooks/useYupValidationResolver";
+import { useEmail } from "../../../../authentication/stores/authStore";
+import { useCreateUser } from "../CreateUserContext";
 
 export type UserFormProps = {
   firstName: string;
@@ -17,6 +17,27 @@ type UserFormContentProps = {
   onSubmit: () => void;
   render: JSX.Element;
 };
+
+const validationSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .matches(/^[a-zA-Z]+$/, "Le nom ne peut contenir que des lettres")
+    .required("Le prénom est requis."),
+  lastName: yup.string().required("Le nom est requis."),
+  email: yup
+    .string()
+    .email("L'adresse email est invalide")
+    .required("L'adresse email est requise."),
+  phone: yup
+    .string()
+    .matches(
+      /^(\+33|0)[1-9]\s?(\d{2}\s?){4}$/,
+      "Le numéro de téléphone est invalide"
+    )
+    .required("Le numéro de téléphone est requis."),
+});
+
+const useUserResolver = () => useYupValidationResolver(validationSchema);
 
 export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
   const { render } = props;

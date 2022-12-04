@@ -1,7 +1,8 @@
 import {
   Box,
   Button,
-  Container,
+  Dialog,
+  DialogContent,
   Step,
   StepLabel,
   Stepper,
@@ -9,12 +10,13 @@ import {
 } from "@mui/material";
 
 import React from "react";
-import { AddressFormContent } from "./forms/Address/AddressForm";
-import { CompanyFormContent } from "./forms/Company/CompanyForm";
-import { UserFormContent } from "./forms/User/UserForm";
+import { AddressFormContent } from "./forms/AddressForm";
+import { CompanyFormContent } from "./forms/CompanyForm";
+import { UserFormContent } from "./forms/UserForm";
 
 import Paper from "@mui/material/Paper";
 import { CreateUserProvider, useCreateUser } from "./CreateUserContext";
+import Review from "./Review";
 
 const CreateUser = () => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -50,7 +52,7 @@ const CreateUser = () => {
         element: (renderFormButtons: JSX.Element) => (
           <AddressFormContent
             onSubmit={handleNext}
-            render={renderFormButtons}
+            renderButtons={renderFormButtons}
           />
         ),
       },
@@ -64,8 +66,8 @@ const CreateUser = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Paper sx={{ p: 2, m: 2, width: "100%" }}>
+    <Dialog open={true}>
+      <DialogContent>
         <Stepper activeStep={activeStep} sx={{ p: 2, m: 2, width: "100%" }}>
           {steps.map((step) => (
             <Step key={step.label}>
@@ -90,17 +92,18 @@ const CreateUser = () => {
               </Button>
             </Box>
           )}
-      </Paper>
 
-      {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            Reset
-          </Button>
-        </Paper>
-      )}
-    </Container>
+        {activeStep === steps.length && (
+          <Paper sx={{ p: 2 }}>
+            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Review></Review>
+            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+              Reset
+            </Button>
+          </Paper>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 

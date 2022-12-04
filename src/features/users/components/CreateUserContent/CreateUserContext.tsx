@@ -1,7 +1,7 @@
 import React from "react";
-import { AddressFormProps } from "./forms/Address/AddressForm";
-import { CompanyFormProps } from "./forms/Company/CompanyForm";
-import { UserFormProps } from "./forms/User/UserForm";
+import { AddressFormProps } from "./forms/AddressForm";
+import { CompanyFormProps } from "./forms/CompanyForm";
+import { UserFormProps } from "./forms/UserForm";
 
 interface CreateUserContextValue {
   user?: UserFormProps | null;

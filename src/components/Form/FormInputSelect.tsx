@@ -1,9 +1,16 @@
-import { FormControl, FormHelperText, InputLabel, Select } from "@mui/material";
-import { FC, PropsWithChildren } from "react";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Select,
+  SelectProps,
+} from "@mui/material";
+import { FC } from "react";
 import { Controller } from "react-hook-form";
 import { FormInputProps } from "./FormInputProps";
 
-type FormInputSelectProps = PropsWithChildren<FormInputProps>;
+export type FormInputSelectProps = SelectProps &
+  Pick<FormInputProps, "control" | "name" | "helperText">;
 
 export const FormInputSelect: FC<FormInputSelectProps> = ({
   name,
