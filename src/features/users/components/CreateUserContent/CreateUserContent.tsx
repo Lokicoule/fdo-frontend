@@ -41,6 +41,10 @@ function getSteps() {
   return ["User", "Company", "Address", "Review"];
 }
 
+const createUserValidationSchema = userValidationSchema
+  .concat(companyValidationSchema)
+  .concat(addressValidationSchema);
+
 function getStepContent(step: number) {
   switch (step) {
     case 0:
@@ -65,9 +69,7 @@ function getValidationSchema(step: number) {
     case 2:
       return addressValidationSchema;
     case 3:
-      return userValidationSchema
-        .concat(companyValidationSchema)
-        .concat(addressValidationSchema);
+      return createUserValidationSchema;
     default:
       throw new Error("Unknown step");
   }
