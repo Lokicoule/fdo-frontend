@@ -1,128 +1,61 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
-import { useCreateUser } from "./CreateUserContext";
-import { Divider, Paper } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { useFormContext } from "react-hook-form";
+import { FormContentProps } from "./CreateUserContent";
+import Paper from "@mui/material/Paper";
 
-const products = [
-  {
-    name: "Product 1",
-    desc: "A nice thing",
-    price: "$9.99",
-  },
-  {
-    name: "Product 2",
-    desc: "Another thing",
-    price: "$3.45",
-  },
-  {
-    name: "Product 3",
-    desc: "Something else",
-    price: "$6.51",
-  },
-  {
-    name: "Product 4",
-    desc: "Best thing of all",
-    price: "$14.11",
-  },
-  { name: "Shipping", desc: "", price: "Free" },
-];
-const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
-const payments = [
-  { name: "Card type", detail: "Visa" },
-  { name: "Card holder", detail: "Mr John Smith" },
-  { name: "Card number", detail: "xxxx-xxxx-xxxx-1234" },
-  { name: "Expiry date", detail: "04/2024" },
-];
-
-export default function Review() {
-  const { address, company, user } = useCreateUser();
-
-  if (!user || !company || !address) {
-    return null;
-  }
-
-  const userDetails = [
-    { label: "Nom", value: user.lastName },
-    { label: "Prénom", value: user.firstName },
-    { label: "Adresse email", value: user.email },
-    { label: "Numéro de téléphone", value: user.phone },
+function getUserDetails(userDetails: FormContentProps) {
+  return [
+    { label: "Nom", value: userDetails.lastName },
+    { label: "Prénom", value: userDetails.firstName },
+    { label: "Adresse email", value: userDetails.email },
+    { label: "Numéro de téléphone", value: userDetails.phone },
   ];
+}
 
-  const companyDetails = [
-    { label: "Nom d'entreprise", value: company.name },
-    { label: "Numéro TVA", value: company.vatNumber },
-    { label: "Numéro RCS", value: company.rcsNumber },
-    { label: "SIREN", value: company.siren },
-    { label: "SIRET", value: company.siret },
+function getCompanyDetails(companyDetails: FormContentProps) {
+  return [
+    { label: "Nom d'entreprise", value: companyDetails.companyName },
+    { label: "Numéro TVA", value: companyDetails.vatNumber },
+    { label: "Numéro RCS", value: companyDetails.rcsNumber },
+    { label: "SIREN", value: companyDetails.siren },
+    { label: "SIRET", value: companyDetails.siret },
   ];
+}
 
-  const addressDetails = [
-    { label: "Adresse", value: address.address },
-    { label: "Complément d'adresse", value: address.additionalAddress },
-    { label: "Code postal", value: address.zipCode },
-    { label: "Ville", value: address.city },
-    { label: "Pays", value: address.country },
+function getAddressDetails(addressDetails: FormContentProps) {
+  return [
+    { label: "Adresse", value: addressDetails.address },
+    { label: "Complément d'adresse", value: addressDetails.additionalAddress },
+    { label: "Code postal", value: addressDetails.zipCode },
+    { label: "Ville", value: addressDetails.city },
+    { label: "Pays", value: addressDetails.country },
   ];
+}
 
+interface ReviewProps {
+  title: string;
+  values: { label: string; value: string }[];
+}
+
+const StepReview: React.FC<ReviewProps> = ({ title, values }) => {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-        Informations personelles
+        {title}
       </Typography>
       <Grid container>
-        {userDetails.map((user) => (
-          <React.Fragment key={user.label}>
-            <Grid item xs={6}>
-              <Typography fontWeight={"bold"} variant="overline" gutterBottom>
-                {user.label}
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography fontStyle={"oblique"} variant="overline" gutterBottom>
-                {user.value}
-              </Typography>
-            </Grid>
-          </React.Fragment>
-        ))}
-      </Grid>
-      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-        Entreprise
-      </Typography>
-      <Grid container>
-        {companyDetails.map((user) => (
-          <React.Fragment key={user.label}>
+        {values.map(({ label, value }) => (
+          <React.Fragment key={label}>
             <Grid item xs={6}>
               <Typography fontWeight="bold" variant="overline" gutterBottom>
-                {user.label}
+                {label}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography fontStyle="oblique" variant="overline" gutterBottom>
-                {user.value}
-              </Typography>
-            </Grid>
-          </React.Fragment>
-        ))}
-      </Grid>
-
-      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-        Adresse
-      </Typography>
-      <Grid container>
-        {addressDetails.map((user) => (
-          <React.Fragment key={user.label}>
-            <Grid item xs={6}>
-              <Typography fontWeight={"bold"} variant="overline" gutterBottom>
-                {user.label}
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography fontStyle={"oblique"} variant="overline" gutterBottom>
-                {user.value}
+              <Typography fontStyle="oblique" gutterBottom>
+                {value}
               </Typography>
             </Grid>
           </React.Fragment>
@@ -130,4 +63,20 @@ export default function Review() {
       </Grid>
     </React.Fragment>
   );
-}
+};
+
+export const ReviewContent: React.FC = () => {
+  const { getValues } = useFormContext<FormContentProps>();
+
+  const userDetails = getUserDetails(getValues());
+  const companyDetails = getCompanyDetails(getValues());
+  const addressDetails = getAddressDetails(getValues());
+
+  return (
+    <Paper square variant="outlined" elevation={24} sx={{ p: 2 }}>
+      <StepReview title="Informations personnelle" values={userDetails} />
+      <StepReview title="Entreprise" values={companyDetails} />
+      <StepReview title="Adresse" values={addressDetails} />
+    </Paper>
+  );
+};
