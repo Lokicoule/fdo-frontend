@@ -1,3 +1,5 @@
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import { fetchData } from '../../../libs/graphql-fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -138,3 +140,29 @@ export type _Service = {
   __typename?: '_Service';
   sdl?: Maybe<Scalars['String']>;
 };
+
+export type CreateUserMutationVariables = Exact<{
+  createUserInput: UserCreateInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'UserDto', email: string, id: string } | null };
+
+
+export const CreateUserDocument = `
+    mutation CreateUser($createUserInput: UserCreateInput!) {
+  createUser(createUserInput: $createUserInput) {
+    email
+    id
+  }
+}
+    `;
+export const useCreateUserMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreateUserMutation, TError, CreateUserMutationVariables, TContext>) =>
+    useMutation<CreateUserMutation, TError, CreateUserMutationVariables, TContext>(
+      ['CreateUser'],
+      (variables?: CreateUserMutationVariables) => fetchData<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, variables)(),
+      options
+    );

@@ -4,8 +4,11 @@ import * as React from "react";
 import { useFormContext } from "react-hook-form";
 import { FormContentProps } from "./CreateUserContent";
 import Paper from "@mui/material/Paper";
+import { UserFormProps } from "./UserForm";
+import { CompanyFormProps } from "./CompanyForm";
+import { AddressFormProps } from "./AddressForm";
 
-function getUserDetails(userDetails: FormContentProps) {
+function getUserDetails(userDetails: UserFormProps) {
   return [
     { label: "Nom", value: userDetails.lastName },
     { label: "Prénom", value: userDetails.firstName },
@@ -14,7 +17,7 @@ function getUserDetails(userDetails: FormContentProps) {
   ];
 }
 
-function getCompanyDetails(companyDetails: FormContentProps) {
+function getCompanyDetails(companyDetails: CompanyFormProps) {
   return [
     { label: "Nom d'entreprise", value: companyDetails.companyName },
     { label: "Numéro TVA", value: companyDetails.vatNumber },
@@ -24,7 +27,7 @@ function getCompanyDetails(companyDetails: FormContentProps) {
   ];
 }
 
-function getAddressDetails(addressDetails: FormContentProps) {
+function getAddressDetails(addressDetails: AddressFormProps) {
   return [
     { label: "Adresse", value: addressDetails.address },
     { label: "Complément d'adresse", value: addressDetails.additionalAddress },
@@ -73,7 +76,7 @@ export const ReviewContent: React.FC = () => {
   const addressDetails = getAddressDetails(getValues());
 
   return (
-    <Paper square variant="outlined" elevation={24} sx={{ p: 2 }}>
+    <Paper square elevation={3} sx={{ p: 2 }}>
       <StepReview title="Informations personnelle" values={userDetails} />
       <StepReview title="Entreprise" values={companyDetails} />
       <StepReview title="Adresse" values={addressDetails} />

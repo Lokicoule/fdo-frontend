@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Box,
   Button,
@@ -6,10 +8,17 @@ import {
   Step,
   StepLabel,
   Stepper,
-  Typography,
 } from "@mui/material";
 
-import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
+import { useYupValidationResolver } from "../../../../hooks";
+import { useEmail } from "../../../authentication/stores/authStore";
+import {
+  useCreateUserMutation,
+  UserCreateInput,
+} from "../../graphql/users.client";
+
 import {
   AddressFormContent,
   AddressFormProps,
@@ -20,22 +29,16 @@ import {
   CompanyFormProps,
   companyValidationSchema,
 } from "./CompanyForm";
+import { ReviewContent } from "./Review";
 import {
   UserFormContent,
   UserFormProps,
   userValidationSchema,
 } from "./UserForm";
 
-import Paper from "@mui/material/Paper";
-
-import { ReviewContent } from "./Review";
-import { FormProvider, useForm } from "react-hook-form";
-import { useYupValidationResolver } from "../../../../hooks";
-import { useEmail } from "../../../authentication/stores/authStore";
-
-export type FormContentProps = AddressFormProps &
+export type FormContentProps = UserFormProps &
   CompanyFormProps &
-  UserFormProps;
+  AddressFormProps;
 
 function getSteps() {
   return ["User", "Company", "Address", "Review"];
@@ -79,7 +82,7 @@ export const CreateUserContent = () => {
   const email = useEmail();
   const [activeStep, setActiveStep] = React.useState(0);
   const validationSchema = getValidationSchema(activeStep);
-
+  const { mutate, isLoading, isError, error } = useCreateUserMutation();
   const methods = useForm<FormContentProps>({
     defaultValues: {
       email: email ?? "",
@@ -96,6 +99,29 @@ export const CreateUserContent = () => {
   const handleNext = async (data: FormContentProps) => {
     const isStepValid = await trigger();
     if (!isStepValid || activeStep === steps.length - 1) {
+      const userInput: UserCreateInput = {
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        company: {
+          name: data.companyName,
+          rcsNumber: data.rcsNumber,
+          vatNumber: data.vatNumber,
+          siret: data.siret,
+          siren: data.siren,
+        },
+        address: {
+          address: data.address,
+          city: data.city,
+          country: data.country,
+          zipCode: data.zipCode,
+          additionalAddress: data.additionalAddress,
+        },
+      };
+      mutate({
+        createUserInput: userInput,
+      });
       return;
     }
 
