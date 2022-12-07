@@ -5,14 +5,12 @@ import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.con
 import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "./features/profile/components/ProfileMenu";
 import { SearchMenu } from "./features/search/components/SearchMenu";
-import { CreateUserContent } from "./features/users/components/CreateUserContent";
 import { AppShell } from "./layouts/AppShell";
 import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
-import { USER_ROUTES } from "./features/users/constants/user-routes.constants";
 import { RequireUserGroup } from "./features/users/components/RequireUserGroup";
 import { PreventUserGroup } from "./features/users/components/PreventUserGroup";
 
@@ -70,16 +68,6 @@ function App() {
         {
           path: AUTH_ROUTES.FORGOT_PASSWORD,
           element: ForgotPasswordPage,
-        },
-        {
-          path: USER_ROUTES.CREATE_USER,
-          element: () => (
-            <RequireAuth>
-              <PreventUserGroup>
-                <CreateUserContent />
-              </PreventUserGroup>
-            </RequireAuth>
-          ),
         },
         {
           path: "/dashboard",

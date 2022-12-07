@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
-import { FormContentProps } from "./CreateUserContent";
+import { FormContentProps } from "../CreateUserModal";
 import Paper from "@mui/material/Paper";
 import { UserFormProps } from "./UserForm";
 import { CompanyFormProps } from "./CompanyForm";

@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { FormInputText } from "../../../../components/Form/FormInputText";
-import { SelectCountry } from "../../../../components/SelectCountry";
+import { FormInputText } from "../../../../../components/Form/FormInputText";
+import { SelectCountry } from "../../../../../components/SelectCountry";
 import * as yup from "yup";
 
 export type AddressFormProps = {

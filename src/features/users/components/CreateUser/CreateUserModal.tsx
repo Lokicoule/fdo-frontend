@@ -24,18 +24,18 @@ import {
   AddressFormContent,
   AddressFormProps,
   addressValidationSchema,
-} from "./AddressForm";
+} from "./components/AddressForm";
 import {
   CompanyFormContent,
   CompanyFormProps,
   companyValidationSchema,
-} from "./CompanyForm";
-import { ReviewContent } from "./Review";
+} from "./components/CompanyForm";
+import { ReviewContent } from "./components/Review";
 import {
   UserFormContent,
   UserFormProps,
   userValidationSchema,
-} from "./UserForm";
+} from "./components/UserForm";
 
 export type FormContentProps = UserFormProps &
   CompanyFormProps &
@@ -79,7 +79,7 @@ function getValidationSchema(step: number) {
   }
 }
 
-export const CreateUserContent = () => {
+export const CreateUserModal = () => {
   const email = useEmail();
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = React.useState(true);
