@@ -1,18 +1,16 @@
 import HomeIcon from "@mui/icons-material/Home";
 import "./App.css";
-import { RequireAuth } from "./features/authentication/components";
 import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
 import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "./features/profile/components/ProfileMenu";
 import { SearchMenu } from "./features/search/components/SearchMenu";
+import { RequireUserGroup } from "./features/users/components/RequireUserGroup";
 import { AppShell } from "./layouts/AppShell";
 import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
-import { RequireUserGroup } from "./features/users/components/RequireUserGroup";
-import { PreventUserGroup } from "./features/users/components/PreventUserGroup";
 
 function App() {
   return (
@@ -101,11 +99,6 @@ function App() {
         {
           label: "Confirm Register",
           path: AUTH_ROUTES.CONFIRM_REGISTER,
-          icon: <HomeIcon />,
-        },
-        {
-          label: "Create User",
-          path: USER_ROUTES.CREATE_USER,
           icon: <HomeIcon />,
         },
         {

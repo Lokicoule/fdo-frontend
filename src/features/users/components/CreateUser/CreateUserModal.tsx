@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -79,6 +80,45 @@ function getValidationSchema(step: number) {
   }
 }
 
+function mapUserDetails(
+  userDetails: UserFormProps
+): Omit<UserCreateInput, "address" | "company"> {
+  return {
+    firstName: userDetails.firstName,
+    lastName: userDetails.lastName,
+    email: userDetails.email,
+    phone: userDetails.phone,
+  };
+}
+
+function mapCompanyDetails(
+  companyDetails: CompanyFormProps
+): Pick<UserCreateInput, "company"> {
+  return {
+    company: {
+      name: companyDetails.companyName,
+      siret: companyDetails.siret,
+      vatNumber: companyDetails.vatNumber,
+      rcsNumber: companyDetails.rcsNumber,
+      siren: companyDetails.siren,
+    },
+  };
+}
+
+function mapAddressDetails(
+  addressDetails: AddressFormProps
+): Pick<UserCreateInput, "address"> {
+  return {
+    address: {
+      address: addressDetails.address,
+      city: addressDetails.city,
+      country: addressDetails.country,
+      zipCode: addressDetails.zipCode,
+      additionalAddress: addressDetails?.additionalAddress,
+    },
+  };
+}
+
 export const CreateUserModal = () => {
   const email = useEmail();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -109,32 +149,13 @@ export const CreateUserModal = () => {
   const handleNext = async (data: FormContentProps) => {
     const isStepValid = await trigger();
     if (!isStepValid || activeStep === steps.length - 1) {
-      const userInput: UserCreateInput = {
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
-        company: {
-          name: data.companyName,
-          rcsNumber: data.rcsNumber,
-          vatNumber: data.vatNumber,
-          siret: data.siret,
-          siren: data.siren,
-        },
-        address: {
-          address: data.address,
-          city: data.city,
-          country: data.country,
-          zipCode: data.zipCode,
-          additionalAddress: data.additionalAddress,
-        },
-      };
       mutate({
-        createUserInput: userInput,
+        createUserInput: {
+          ...mapUserDetails(data),
+          ...mapCompanyDetails(data),
+          ...mapAddressDetails(data),
+        },
       });
-      if (isError) {
-        console.log(error);
-      }
 
       return;
     }
@@ -152,7 +173,7 @@ export const CreateUserModal = () => {
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} maxWidth="sm">
       <DialogContent>
         <Stepper activeStep={activeStep} sx={{ p: 2, m: 2, width: "100%" }}>
           {steps.map((step: string) => (
@@ -170,6 +191,11 @@ export const CreateUserModal = () => {
             sx={{ mt: 3 }}
           >
             {getStepContent(activeStep)}
+            {isError && (
+              <Alert severity="error">
+                Something went wrong: {error?.message}
+              </Alert>
+            )}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
                 disabled={activeStep === 0}
