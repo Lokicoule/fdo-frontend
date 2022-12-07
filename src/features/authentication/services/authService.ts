@@ -89,11 +89,22 @@ class AuthService {
     return this.cognitoClient.getCurrentUser();
   }
 
-  public async getDataFromIdToken(key: string): Promise<string | null> {
+  public async getDataFromIdToken(key: string): Promise<any | null> {
     const session = await this.cognitoClient.getCurrentUserSession();
     if (!session) return null;
 
     return session.getIdToken().decodePayload()[key];
+  }
+
+  public async getGroups(): Promise<string[] | null> {
+    const groups = await this.getDataFromIdToken("cognito:groups");
+    if (!groups) return null;
+
+    return groups;
+  }
+
+  public async refreshToken() {
+    await this.cognitoClient.refreshToken();
   }
 }
 

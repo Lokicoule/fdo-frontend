@@ -6,6 +6,7 @@ import {
   CognitoUserSession,
   ICognitoUserData,
   ICognitoUserPoolData,
+  UserData,
 } from "amazon-cognito-identity-js";
 import { CognitoError } from "./errors/CognitoError";
 import { NoUserPoolError } from "./errors/NoUserPoolError";
@@ -54,6 +55,28 @@ export class CognitoClient implements ICognitoClient {
 
     return new Promise((resolve, reject) => {
       user.getSession(
+        (
+          err: any,
+          session:
+            | CognitoUserSession
+            | PromiseLike<CognitoUserSession | null>
+            | null
+        ) => {
+          if (err) return reject(err);
+          resolve(session);
+        }
+      );
+    });
+  }
+
+  public async refreshToken(): Promise<CognitoUserSession | null> {
+    const user = this.getCurrentUser();
+    const userSession = await this.getCurrentUserSession();
+    if (!user || !userSession) return null;
+
+    return new Promise((resolve, reject) => {
+      user.refreshSession(
+        userSession.getRefreshToken(),
         (
           err: any,
           session:

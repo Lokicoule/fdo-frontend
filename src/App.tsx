@@ -12,6 +12,9 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
+import { USER_ROUTES } from "./features/users/constants/user-routes.constants";
+import { RequireUserGroup } from "./features/users/components/RequireUserGroup";
+import { PreventUserGroup } from "./features/users/components/PreventUserGroup";
 
 function App() {
   return (
@@ -34,11 +37,19 @@ function App() {
       routes={[
         {
           path: "/",
-          element: () => <div>Home</div>,
+          element: () => (
+            <RequireUserGroup>
+              <div>Home</div>
+            </RequireUserGroup>
+          ),
         },
         {
           path: "/home",
-          element: () => <div>Home</div>,
+          element: () => (
+            <RequireUserGroup>
+              <div>Home</div>
+            </RequireUserGroup>
+          ),
         },
         {
           path: AUTH_ROUTES.REGISTER,
@@ -61,11 +72,21 @@ function App() {
           element: ForgotPasswordPage,
         },
         {
-          path: "/dashboard",
+          path: USER_ROUTES.CREATE_USER,
           element: () => (
             <RequireAuth>
-              <CreateUserContent />
+              <PreventUserGroup>
+                <CreateUserContent />
+              </PreventUserGroup>
             </RequireAuth>
+          ),
+        },
+        {
+          path: "/dashboard",
+          element: () => (
+            <RequireUserGroup>
+              <div>Dashboard</div>
+            </RequireUserGroup>
           ),
         },
         {
@@ -92,6 +113,11 @@ function App() {
         {
           label: "Confirm Register",
           path: AUTH_ROUTES.CONFIRM_REGISTER,
+          icon: <HomeIcon />,
+        },
+        {
+          label: "Create User",
+          path: USER_ROUTES.CREATE_USER,
           icon: <HomeIcon />,
         },
         {

@@ -17,7 +17,8 @@ export const useAuthService = () => {
     setLoading(true);
     try {
       await authService.doSignInWithEmailAndPassword(email, password);
-      login(email);
+      const groups = await authService.getGroups();
+      login(email, groups);
       const origin = location.state?.from?.pathname ?? "/home";
       navigate(origin);
     } catch (error: any) {

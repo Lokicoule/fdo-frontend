@@ -19,6 +19,7 @@ import {
   UserCreateInput,
 } from "../../graphql/users.client";
 
+import { useAuthStore } from "../../../authentication/hooks/useAuthStore";
 import {
   AddressFormContent,
   AddressFormProps,
@@ -81,8 +82,17 @@ function getValidationSchema(step: number) {
 export const CreateUserContent = () => {
   const email = useEmail();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [open, setOpen] = React.useState(true);
+  const { onReload } = useAuthStore();
   const validationSchema = getValidationSchema(activeStep);
-  const { mutate, isLoading, isError, error } = useCreateUserMutation();
+
+  const { mutate, isLoading, isError, error } = useCreateUserMutation({
+    onSuccess: async () => {
+      await onReload();
+      setOpen(false);
+    },
+  });
+
   const methods = useForm<FormContentProps>({
     defaultValues: {
       email: email ?? "",
@@ -122,6 +132,10 @@ export const CreateUserContent = () => {
       mutate({
         createUserInput: userInput,
       });
+      if (isError) {
+        console.log(error);
+      }
+
       return;
     }
 
@@ -138,7 +152,7 @@ export const CreateUserContent = () => {
   };
 
   return (
-    <Dialog open={true}>
+    <Dialog open={open}>
       <DialogContent>
         <Stepper activeStep={activeStep} sx={{ p: 2, m: 2, width: "100%" }}>
           {steps.map((step: string) => (
@@ -170,7 +184,12 @@ export const CreateUserContent = () => {
                 </Button>
               )}
               <Box sx={{ flex: "1 1 auto" }} />
-              <Button variant="contained" type="submit" sx={{ mt: 1, mr: 1 }}>
+              <Button
+                disabled={isLoading}
+                variant="contained"
+                type="submit"
+                sx={{ mt: 1, mr: 1 }}
+              >
                 {activeStep === steps.length - 1 ? "Finish" : "Continue"}
               </Button>
             </Box>

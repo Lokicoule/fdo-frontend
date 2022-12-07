@@ -9,13 +9,23 @@ export const useAuthStore = () => {
   async function initAuthStore() {
     setIsReady(false);
     try {
-      const email = await authService.getDataFromIdToken("email");
+      const [email, groups] = await Promise.all([
+        authService.getDataFromIdToken("email"),
+        authService.getGroups(),
+      ]);
+      console.log("email", email);
+      console.log("groups", groups);
       if (email) {
-        login(email);
+        login(email, groups);
       }
     } finally {
       setIsReady(true);
     }
+  }
+
+  async function handleReload() {
+    await authService.refreshToken();
+    await initAuthStore();
   }
 
   React.useEffect(() => {
@@ -24,5 +34,6 @@ export const useAuthStore = () => {
 
   return {
     isReady,
+    onReload: handleReload,
   };
 };
