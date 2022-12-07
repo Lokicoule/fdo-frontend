@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import * as yup from "yup";
 import { FormInputText } from "../../../../../components/Form/FormInputText";
 
-export type CompanyFormProps = {
+type Props = {
   companyName: string;
   vatNumber: string;
   rcsNumber: string;
@@ -11,9 +11,7 @@ export type CompanyFormProps = {
   siret: string;
 };
 
-type CompanyFormContentProps = {};
-
-export const companyValidationSchema = yup.object().shape({
+const validationSchema = yup.object().shape({
   companyName: yup.string().trim().required("Le nom est requis."),
   vatNumber: yup
     .string()
@@ -42,11 +40,11 @@ export const companyValidationSchema = yup.object().shape({
     ),
 });
 
-export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
+const CompanyFormContent: React.FunctionComponent = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<CompanyFormProps>();
+  } = useFormContext<Props>();
 
   return (
     <Grid container spacing={2}>
@@ -59,7 +57,7 @@ export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
           fullWidth
           autoFocus
           error={!!errors.companyName}
-          helperText={errors.companyName?.message}
+          fieldError={errors.companyName?.message}
         />
       </Grid>
       <Grid item xs={12}>
@@ -70,7 +68,7 @@ export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
           required
           fullWidth
           error={!!errors.vatNumber}
-          helperText={errors.vatNumber?.message}
+          fieldError={errors.vatNumber?.message}
           placeholder="FR 00 123456789 (2 lettres, 2 chiffres, 9 chiffres)"
           tooltip="Le numéro de TVA intracommunautaire est composé de 2 lettres suivies de 11 chiffres dont 2 qui correspondent à une clé informatique et les 9 autres au numéro SIREN de l'entreprise."
         />
@@ -82,7 +80,7 @@ export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
           label="RCS"
           fullWidth
           error={!!errors.rcsNumber}
-          helperText={errors.rcsNumber?.message}
+          fieldError={errors.rcsNumber?.message}
           placeholder="RCS Paris 123456789"
           tooltip="Le numéro RCS est composé de la mention RCS suivie du lieu d'immatriculation de l'entreprise et de son numéro SIREN."
         />
@@ -94,7 +92,7 @@ export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
           label="SIREN"
           fullWidth
           error={!!errors.siren}
-          helperText={errors.siren?.message}
+          fieldError={errors.siren?.message}
           placeholder="123 456 789 ou 123456789"
           tooltip="Le numéro SIREN est composé de 9 chiffres."
         />
@@ -106,7 +104,7 @@ export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
           label="SIRET"
           fullWidth
           error={!!errors.siret}
-          helperText={errors.siret?.message}
+          fieldError={errors.siret?.message}
           placeholder="123 456 789 12345 ou 123456789 12345 (SIREN, 5 chiffres du NIC)"
           tooltip="Le numéro de SIRET est composé des 9 chiffres du SIREN associés aux 5 chiffres du NIC."
         />
@@ -114,3 +112,6 @@ export const CompanyFormContent: React.FC<CompanyFormContentProps> = () => {
     </Grid>
   );
 };
+
+export type { Props as CompanyFormProps };
+export { CompanyFormContent, validationSchema as CompanyFormValidationSchema };

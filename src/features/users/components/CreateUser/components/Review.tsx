@@ -1,12 +1,15 @@
+import React from "react";
+
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { useFormContext } from "react-hook-form";
-import { FormContentProps } from "../CreateUserModal";
 import Paper from "@mui/material/Paper";
-import { UserFormProps } from "./UserForm";
-import { CompanyFormProps } from "./CompanyForm";
+import Typography from "@mui/material/Typography";
+
+import { useFormContext } from "react-hook-form";
+
+import { CreateUserFormProps } from "../CreateUserModal";
 import { AddressFormProps } from "./AddressForm";
+import { CompanyFormProps } from "./CompanyForm";
+import { UserFormProps } from "./UserForm";
 
 function getUserDetails(userDetails: UserFormProps) {
   return [
@@ -37,12 +40,14 @@ function getAddressDetails(addressDetails: AddressFormProps) {
   ];
 }
 
-interface ReviewProps {
+type StepReviewProps = {
   title: string;
   values: { label: string; value: string }[];
-}
+};
 
-const StepReview: React.FC<ReviewProps> = ({ title, values }) => {
+const StepReview: React.FunctionComponent<StepReviewProps> = (props) => {
+  const { title, values } = props;
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
@@ -68,8 +73,8 @@ const StepReview: React.FC<ReviewProps> = ({ title, values }) => {
   );
 };
 
-export const ReviewContent: React.FC = () => {
-  const { getValues } = useFormContext<FormContentProps>();
+const ReviewContent: React.FunctionComponent = () => {
+  const { getValues } = useFormContext<CreateUserFormProps>();
 
   const userDetails = getUserDetails(getValues());
   const companyDetails = getCompanyDetails(getValues());
@@ -83,3 +88,5 @@ export const ReviewContent: React.FC = () => {
     </Paper>
   );
 };
+
+export { ReviewContent };

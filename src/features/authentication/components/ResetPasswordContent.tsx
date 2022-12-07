@@ -105,7 +105,7 @@ export const ResetPasswordContent = () => {
                 autoComplete="email"
                 autoFocus
                 error={!!errors.email}
-                helperText={errors.email?.message}
+                fieldError={errors.email?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,10 +115,9 @@ export const ResetPasswordContent = () => {
                 label="Code de confirmation"
                 required
                 fullWidth
-                autoComplete="current-password"
                 error={!!errors.code}
-                helperText={errors.code?.message}
-              ></FormInputText>
+                fieldError={errors.code?.message}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormInputSecret
@@ -129,8 +128,8 @@ export const ResetPasswordContent = () => {
                 fullWidth
                 autoComplete="current-password"
                 error={!!errors.password}
-                helperText={errors.password?.message}
-              ></FormInputSecret>
+                fieldError={errors.password?.message}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormInputSecret
@@ -140,8 +139,8 @@ export const ResetPasswordContent = () => {
                 required
                 fullWidth
                 error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-              ></FormInputSecret>
+                fieldError={errors.confirmPassword?.message}
+              />
             </Grid>
           </Grid>
           <Button

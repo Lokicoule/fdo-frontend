@@ -1,67 +1,62 @@
+import React from "react";
+
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  Alert,
   FormControl,
-  FormHelperText,
   InputLabel,
   OutlinedInput,
   OutlinedInputProps,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import { Control, Controller } from "react-hook-form";
-import { useToggle } from "../../hooks/useToggle";
 
-export type FormInputSecretProps = OutlinedInputProps & {
-  control: Control<any, any>;
-  name: string;
-  helperText?: string | undefined;
-};
-export const FormInputSecret = ({
-  control,
-  name,
-  fullWidth,
-  label,
-  required,
-  error,
-  helperText,
-  ...inputProps
-}: FormInputSecretProps) => {
+import { Controller } from "react-hook-form";
+
+import { useToggle } from "../../hooks/useToggle";
+import { FormInputProps } from "./FormInputProps";
+
+type Props = OutlinedInputProps & Omit<FormInputProps, "tooltip">;
+
+const FormInputSecret: React.FunctionComponent<Props> = (props) => {
+  const { name, label, control, fieldError, ...inputProps } = props;
   const [showPassword, toggleShowPassword] = useToggle(false);
-  const labelId = `secret-${name}-label`;
-  const ariaId = `secret-${name}-error`;
 
   return (
-    <FormControl variant="outlined" required={required} fullWidth={fullWidth}>
-      <InputLabel htmlFor={labelId}>{label}</InputLabel>
-      <Controller
-        render={({ field: { onChange, value } }) => (
-          <OutlinedInput
-            {...inputProps}
-            fullWidth={fullWidth}
-            id={labelId}
-            type={showPassword ? "text" : "password"}
-            onChange={onChange}
-            value={value}
-            error={error}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={toggleShowPassword} edge="end">
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label={label}
-          />
-        )}
-        name={name}
-        control={control}
-        defaultValue=""
-      />
-      {error && (
-        <FormHelperText error variant="filled" id={ariaId}>
-          {helperText}
-        </FormHelperText>
+    <>
+      <FormControl error={inputProps.error} fullWidth={inputProps.fullWidth}>
+        <InputLabel htmlFor={name}>{label}</InputLabel>
+        <Controller
+          render={({ field: { onChange, value } }) => (
+            <OutlinedInput
+              {...inputProps}
+              id={name}
+              type={showPassword ? "text" : "password"}
+              onChange={onChange}
+              value={value}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={toggleShowPassword} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label={label}
+            />
+          )}
+          name={name}
+          control={control}
+          defaultValue={inputProps.defaultValue ?? ""}
+        />
+      </FormControl>
+      {fieldError && (
+        <Alert severity="error" sx={{ mt: 1 }}>
+          {fieldError}
+        </Alert>
       )}
-    </FormControl>
+    </>
   );
 };
+
+export type FormInputSecretProps = Props;
+export { FormInputSecret };

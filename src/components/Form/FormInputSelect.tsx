@@ -1,47 +1,54 @@
+import React from "react";
+
 import {
+  Alert,
   FormControl,
   FormHelperText,
   InputLabel,
   Select,
   SelectProps,
 } from "@mui/material";
-import { FC } from "react";
+
 import { Controller } from "react-hook-form";
+
 import { FormInputProps } from "./FormInputProps";
 
-export type FormInputSelectProps = SelectProps &
-  Pick<FormInputProps, "control" | "name" | "helperText">;
+type Props = SelectProps & Omit<FormInputProps, "tooltip">;
 
-export const FormInputSelect: FC<FormInputSelectProps> = ({
-  name,
-  label,
-  defaultValue = "",
-  control,
-  error,
-  helperText,
-  children,
-}) => {
+const FormInputSelect: React.FunctionComponent<Props> = (props) => {
+  const { name, label, control, fieldError, children, ...selectProps } = props;
+
   const labelId = `${name}-label`;
   const ariaId = `${name}-error`;
   return (
-    <FormControl error={error} fullWidth>
-      <InputLabel id={labelId}>{label}</InputLabel>
-      <Controller
-        render={({ field }) => (
-          <Select
-            {...field}
-            labelId={labelId}
-            label={label}
-            aria-describedby={ariaId}
-          >
-            {children}
-          </Select>
-        )}
-        name={name}
-        control={control}
-        defaultValue={defaultValue}
-      />
-      {error && <FormHelperText id={ariaId}>{helperText}</FormHelperText>}
-    </FormControl>
+    <>
+      <FormControl error={selectProps.error} fullWidth={selectProps.fullWidth}>
+        <InputLabel id={labelId}>{label}</InputLabel>
+        <Controller
+          render={({ field }) => (
+            <Select
+              {...field}
+              {...selectProps}
+              labelId={labelId}
+              label={label}
+              aria-describedby={ariaId}
+            >
+              {children}
+            </Select>
+          )}
+          name={name}
+          control={control}
+          defaultValue={selectProps.defaultValue ?? ""}
+        />
+      </FormControl>
+      {fieldError && (
+        <Alert severity="error" sx={{ mt: 1 }}>
+          {fieldError}
+        </Alert>
+      )}
+    </>
   );
 };
+
+export type FormInputSelectProps = Props;
+export { FormInputSelect };

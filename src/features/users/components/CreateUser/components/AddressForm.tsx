@@ -1,10 +1,14 @@
+import React from "react";
+
 import { Grid } from "@mui/material";
+
 import { useFormContext } from "react-hook-form";
-import { FormInputText } from "../../../../../components/Form/FormInputText";
-import { SelectCountry } from "../../../../../components/SelectCountry";
 import * as yup from "yup";
 
-export type AddressFormProps = {
+import { FormInputText } from "../../../../../components/Form/FormInputText";
+import { SelectCountry } from "../../../../../components/SelectCountry";
+
+type Props = {
   address: string;
   additionalAddress: string;
   city: string;
@@ -12,9 +16,7 @@ export type AddressFormProps = {
   zipCode: string;
 };
 
-type AddressFormContentProps = {};
-
-export const addressValidationSchema = yup.object().shape({
+const validationSchema = yup.object().shape({
   address: yup.string().required("L'adresse est requise."),
   additionalAddress: yup.string(),
   city: yup.string().required("La ville est requise."),
@@ -25,11 +27,11 @@ export const addressValidationSchema = yup.object().shape({
     .required("Le code postal est requis."),
 });
 
-export const AddressFormContent: React.FC<AddressFormContentProps> = () => {
+const AddressFormContent: React.FunctionComponent = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<AddressFormProps>();
+  } = useFormContext<Props>();
 
   return (
     <Grid container spacing={2}>
@@ -40,7 +42,7 @@ export const AddressFormContent: React.FC<AddressFormContentProps> = () => {
           required
           fullWidth
           error={Boolean(errors.country)}
-          helperText={errors?.country?.message}
+          fieldError={errors?.country?.message}
           control={control}
         />
       </Grid>
@@ -51,7 +53,7 @@ export const AddressFormContent: React.FC<AddressFormContentProps> = () => {
           required
           fullWidth
           error={Boolean(errors.address)}
-          helperText={errors.address?.message}
+          fieldError={errors.address?.message}
           control={control}
         />
       </Grid>
@@ -61,7 +63,7 @@ export const AddressFormContent: React.FC<AddressFormContentProps> = () => {
           label="Complément d'adresse"
           fullWidth
           error={Boolean(errors.additionalAddress)}
-          helperText={errors.additionalAddress?.message}
+          fieldError={errors.additionalAddress?.message}
           placeholder="Apt, suite, unité, nom de l'entreprise (facultatif)"
           control={control}
         />
@@ -74,7 +76,7 @@ export const AddressFormContent: React.FC<AddressFormContentProps> = () => {
           required
           fullWidth
           error={Boolean(errors.zipCode)}
-          helperText={errors.zipCode?.message}
+          fieldError={errors.zipCode?.message}
           placeholder="40200"
           control={control}
         />
@@ -86,10 +88,13 @@ export const AddressFormContent: React.FC<AddressFormContentProps> = () => {
           required
           fullWidth
           error={Boolean(errors.city)}
-          helperText={errors.city?.message}
+          fieldError={errors.city?.message}
           control={control}
         />
       </Grid>
     </Grid>
   );
 };
+
+export type { Props as AddressFormProps };
+export { AddressFormContent, validationSchema as AddressFormValidationSchema };

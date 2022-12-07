@@ -79,9 +79,8 @@ export const ForgotPasswordContent = () => {
                 required
                 fullWidth
                 autoComplete="email"
-                autoFocus
                 error={!!errors.email}
-                helperText={errors.email?.message}
+                fieldError={errors.email?.message}
               />
             </Grid>
           </Grid>

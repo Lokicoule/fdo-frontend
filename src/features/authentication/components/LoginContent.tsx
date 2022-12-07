@@ -100,7 +100,7 @@ export const LoginContent = () => {
                 autoComplete="email"
                 autoFocus
                 error={!!errors.email}
-                helperText={errors.email?.message}
+                fieldError={errors.email?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -112,7 +112,7 @@ export const LoginContent = () => {
                 fullWidth
                 autoComplete="current-password"
                 error={!!errors.password}
-                helperText={errors.password?.message}
+                fieldError={errors.password?.message}
               ></FormInputSecret>
             </Grid>
           </Grid>

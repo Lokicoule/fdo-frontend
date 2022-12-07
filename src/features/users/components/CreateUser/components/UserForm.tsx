@@ -1,19 +1,21 @@
+import React from "react";
+
 import { Grid } from "@mui/material";
+
 import { useFormContext } from "react-hook-form";
 import * as yup from "yup";
+
 import { FormInputText } from "../../../../../components/Form/FormInputText";
 import { useEmail } from "../../../../authentication";
 
-export type UserFormProps = {
+type Props = {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
 };
 
-type UserFormContentProps = {};
-
-export const userValidationSchema = yup.object().shape({
+const validationSchema = yup.object().shape({
   firstName: yup
     .string()
     .matches(/^[a-zA-Z]+$/, "Le nom ne peut contenir que des lettres")
@@ -32,13 +34,13 @@ export const userValidationSchema = yup.object().shape({
     .required("Le numéro de téléphone est requis."),
 });
 
-export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
+const UserFormContent: React.FunctionComponent = () => {
   const email = useEmail();
 
   const {
     control,
     formState: { errors },
-  } = useFormContext<UserFormProps>();
+  } = useFormContext<Props>();
 
   return (
     <Grid container spacing={2}>
@@ -50,9 +52,8 @@ export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
           required
           fullWidth
           autoComplete="firstName"
-          autoFocus
           error={!!errors.firstName}
-          helperText={errors.firstName?.message}
+          fieldError={errors.firstName?.message}
         />
       </Grid>
       <Grid item xs={6}>
@@ -63,9 +64,8 @@ export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
           required
           fullWidth
           autoComplete="lastName"
-          autoFocus
           error={!!errors.lastName}
-          helperText={errors.lastName?.message}
+          fieldError={errors.lastName?.message}
         />
       </Grid>
       <Grid item xs={12}>
@@ -77,9 +77,8 @@ export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
           required
           fullWidth
           autoComplete="email"
-          autoFocus
           error={!!errors.email}
-          helperText={errors.email?.message}
+          fieldError={errors.email?.message}
         />
       </Grid>
       <Grid item xs={12}>
@@ -90,11 +89,13 @@ export const UserFormContent: React.FC<UserFormContentProps> = (props) => {
           required
           fullWidth
           autoComplete="phone"
-          autoFocus
           error={!!errors.phone}
-          helperText={errors.phone?.message}
+          fieldError={errors.phone?.message}
         />
       </Grid>
     </Grid>
   );
 };
+
+export type { Props as UserFormProps };
+export { UserFormContent, validationSchema as UserFormValidationSchema };

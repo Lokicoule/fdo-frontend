@@ -81,9 +81,8 @@ export const ConfirmRegisterContent = () => {
                 required
                 fullWidth
                 autoComplete="email"
-                autoFocus
                 error={!!errors.email}
-                helperText={errors.email?.message}
+                fieldError={errors.email?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -93,10 +92,9 @@ export const ConfirmRegisterContent = () => {
                 label="Code de confirmation"
                 required
                 fullWidth
-                autoComplete="current-password"
                 error={!!errors.code}
-                helperText={errors.code?.message}
-              ></FormInputText>
+                fieldError={errors.code?.message}
+              />
             </Grid>
           </Grid>
           <Button

@@ -11,7 +11,7 @@ export const RequireUserGroup = (props: Props): JSX.Element => {
   const { children } = props;
   const userGroups = useGroups();
 
-  if (userGroups?.includes("User")) {
+  if (!userGroups?.includes("User")) {
     return (
       <RequireAuth>
         <CreateUserModal />

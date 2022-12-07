@@ -102,7 +102,7 @@ export const RegisterContent = () => {
                 autoComplete="email"
                 autoFocus
                 error={!!errors.email}
-                helperText={errors.email?.message}
+                fieldError={errors.email?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,8 +114,8 @@ export const RegisterContent = () => {
                 fullWidth
                 autoComplete="current-password"
                 error={!!errors.password}
-                helperText={errors.password?.message}
-              ></FormInputSecret>
+                fieldError={errors.password?.message}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormInputSecret
@@ -125,8 +125,8 @@ export const RegisterContent = () => {
                 required
                 fullWidth
                 error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-              ></FormInputSecret>
+                fieldError={errors.confirmPassword?.message}
+              />
             </Grid>
           </Grid>
           <Button

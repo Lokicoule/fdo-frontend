@@ -24,31 +24,29 @@ import { useAuthStore } from "../../../authentication/hooks/useAuthStore";
 import {
   AddressFormContent,
   AddressFormProps,
-  addressValidationSchema,
+  AddressFormValidationSchema,
 } from "./components/AddressForm";
 import {
   CompanyFormContent,
   CompanyFormProps,
-  companyValidationSchema,
+  CompanyFormValidationSchema,
 } from "./components/CompanyForm";
 import { ReviewContent } from "./components/Review";
 import {
   UserFormContent,
   UserFormProps,
-  userValidationSchema,
+  UserFormValidationSchema,
 } from "./components/UserForm";
 
-export type FormContentProps = UserFormProps &
-  CompanyFormProps &
-  AddressFormProps;
+type Props = UserFormProps & CompanyFormProps & AddressFormProps;
 
 function getSteps() {
   return ["User", "Company", "Address", "Review"];
 }
 
-const createUserValidationSchema = userValidationSchema
-  .concat(companyValidationSchema)
-  .concat(addressValidationSchema);
+const CreateUserFormValidationSchema = UserFormValidationSchema.concat(
+  CompanyFormValidationSchema
+).concat(AddressFormValidationSchema);
 
 function getStepContent(step: number) {
   switch (step) {
@@ -68,13 +66,13 @@ function getStepContent(step: number) {
 function getValidationSchema(step: number) {
   switch (step) {
     case 0:
-      return userValidationSchema;
+      return UserFormValidationSchema;
     case 1:
-      return companyValidationSchema;
+      return CompanyFormValidationSchema;
     case 2:
-      return addressValidationSchema;
+      return AddressFormValidationSchema;
     case 3:
-      return createUserValidationSchema;
+      return CreateUserFormValidationSchema;
     default:
       throw new Error("Unknown step");
   }
@@ -119,7 +117,7 @@ function mapAddressDetails(
   };
 }
 
-export const CreateUserModal = () => {
+const CreateUserModal = () => {
   const email = useEmail();
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -133,7 +131,7 @@ export const CreateUserModal = () => {
     },
   });
 
-  const methods = useForm<FormContentProps>({
+  const methods = useForm<Props>({
     defaultValues: {
       email: email ?? "",
     },
@@ -146,7 +144,7 @@ export const CreateUserModal = () => {
 
   const steps = getSteps();
 
-  const handleNext = async (data: FormContentProps) => {
+  const handleNext = async (data: Props) => {
     const isStepValid = await trigger();
     if (!isStepValid || activeStep === steps.length - 1) {
       mutate({
@@ -191,11 +189,7 @@ export const CreateUserModal = () => {
             sx={{ mt: 3 }}
           >
             {getStepContent(activeStep)}
-            {isError && (
-              <Alert severity="error">
-                Something went wrong: {error?.message}
-              </Alert>
-            )}
+            {isError && <Alert severity="error">Something went wrong</Alert>}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
                 disabled={activeStep === 0}
@@ -225,3 +219,6 @@ export const CreateUserModal = () => {
     </Dialog>
   );
 };
+
+export type { Props as CreateUserFormProps };
+export { CreateUserModal };
