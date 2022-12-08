@@ -1,7 +1,8 @@
-import { Menu } from "@mui/material";
-import React from "react";
+import { useState } from "react";
 
-type MenuButtonProps = {
+import { Menu } from "@mui/material";
+
+export type MenuButtonProps = {
   renderMenu?:
     | ((props: {
         anchorEl: HTMLElement | null;
@@ -13,11 +14,11 @@ type MenuButtonProps = {
   }) => React.ReactNode;
 };
 
-export const MenuButton: React.FC<MenuButtonProps> = ({
+export const MenuButton: React.FunctionComponent<MenuButtonProps> = ({
   renderButton,
   renderMenu,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

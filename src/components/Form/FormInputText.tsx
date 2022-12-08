@@ -1,14 +1,14 @@
-import React from "react";
-
 import { Alert, TextField, TextFieldProps, Tooltip } from "@mui/material";
 
 import { Controller } from "react-hook-form";
 
 import { FormInputProps } from "./FormInputProps";
 
-type Props = TextFieldProps & FormInputProps;
+export type FormInputTextProps = TextFieldProps & FormInputProps;
 
-const FormInputText: React.FunctionComponent<Props> = (props) => {
+export const FormInputText: React.FunctionComponent<FormInputTextProps> = (
+  props
+) => {
   const { name, control, tooltip, fieldError, ...textFieldProps } = props;
 
   const renderTextField = (props: TextFieldProps) => {
@@ -16,7 +16,7 @@ const FormInputText: React.FunctionComponent<Props> = (props) => {
   };
 
   const renderTooltip = (props: TextFieldProps) => {
-    return <Tooltip title={tooltip?.title}>{renderTextField(props)}</Tooltip>;
+    return <Tooltip title={tooltip}>{renderTextField(props)}</Tooltip>;
   };
 
   return (
@@ -39,6 +39,3 @@ const FormInputText: React.FunctionComponent<Props> = (props) => {
     </>
   );
 };
-
-export type FormInputTextProps = Props;
-export { FormInputText };

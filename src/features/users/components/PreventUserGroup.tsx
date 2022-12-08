@@ -1,9 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
+
 import { useGroups } from "../../authentication/stores/authStore";
 
-type Props = { children: JSX.Element };
+export type PreventUserGroupProps = { children: JSX.Element };
 
-export const PreventUserGroup = (props: Props): JSX.Element => {
+export const PreventUserGroup = (props: PreventUserGroupProps): JSX.Element => {
   const { children } = props;
   const location = useLocation();
   const userGroups = useGroups();

@@ -1,12 +1,15 @@
-import React from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { useLogin, useLogout } from "../stores/authStore";
+
 import { authService } from "../services/authService";
+
 import { AUTH_ROUTES } from "../constants/auth-routes.constants";
 
 export const useAuthService = () => {
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();

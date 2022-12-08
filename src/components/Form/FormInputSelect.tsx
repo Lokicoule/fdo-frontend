@@ -1,9 +1,6 @@
-import React from "react";
-
 import {
   Alert,
   FormControl,
-  FormHelperText,
   InputLabel,
   Select,
   SelectProps,
@@ -13,9 +10,12 @@ import { Controller } from "react-hook-form";
 
 import { FormInputProps } from "./FormInputProps";
 
-type Props = SelectProps & Omit<FormInputProps, "tooltip">;
+export type FormInputSelectProps = SelectProps &
+  Omit<FormInputProps, "tooltip">;
 
-const FormInputSelect: React.FunctionComponent<Props> = (props) => {
+export const FormInputSelect: React.FunctionComponent<FormInputSelectProps> = (
+  props
+) => {
   const { name, label, control, fieldError, children, ...selectProps } = props;
 
   const labelId = `${name}-label`;
@@ -49,6 +49,3 @@ const FormInputSelect: React.FunctionComponent<Props> = (props) => {
     </>
   );
 };
-
-export type FormInputSelectProps = Props;
-export { FormInputSelect };

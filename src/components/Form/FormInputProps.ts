@@ -7,4 +7,4 @@ type Props = {
   tooltip?: string;
 };
 
-export type FormInputProps = Props;
+export type { Props as FormInputProps };

@@ -79,7 +79,7 @@ function MainLink({
   );
 }
 
-export const AppShell: React.FC<AppShellProps> = (props) => {
+export const AppShell: React.FunctionComponent<AppShellProps> = (props) => {
   const { title, routes, navLinks, menuButtons } = props;
   const { isReady, theme } = useApplicationStore();
 

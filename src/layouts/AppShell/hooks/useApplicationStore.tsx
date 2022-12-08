@@ -1,5 +1,7 @@
+import { useMemo } from "react";
+
 import createTheme from "@mui/material/styles/createTheme";
-import React from "react";
+
 import { useAuthStore } from "../../../features/authentication/hooks";
 import { usePreferenceStore } from "../../../features/preferences/hooks/usePreferenceStore";
 import { useMode } from "../../../features/preferences/stores/preferenceStore";
@@ -9,7 +11,7 @@ export const useApplicationStore = () => {
   const authStore = useAuthStore();
   const mode = useMode();
 
-  const theme = React.useMemo(
+  const theme = useMemo(
     () =>
       createTheme({
         palette: {

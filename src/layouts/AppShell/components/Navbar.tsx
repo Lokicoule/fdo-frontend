@@ -62,7 +62,7 @@ type NavbarProps = {
   onClick: () => void;
 };
 
-export const Navbar: React.FC<NavbarProps> = (props) => {
+export const Navbar: React.FunctionComponent<NavbarProps> = (props) => {
   const { render, open, onClick } = props;
   const theme = useTheme();
 

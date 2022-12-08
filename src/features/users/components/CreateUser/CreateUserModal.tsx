@@ -1,26 +1,16 @@
-import React from "react";
+import { useState } from "react";
 
-import {
-  Alert,
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  Step,
-  StepLabel,
-  Stepper,
-} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
 
 import { FormProvider, useForm } from "react-hook-form";
 
-import { useYupValidationResolver } from "../../../../hooks";
-import { useEmail } from "../../../authentication/stores/authStore";
-import {
-  useCreateUserMutation,
-  UserCreateInput,
-} from "../../graphql/users.client";
-
-import { useAuthStore } from "../../../authentication/hooks/useAuthStore";
 import {
   AddressFormContent,
   AddressFormProps,
@@ -38,7 +28,18 @@ import {
   UserFormValidationSchema,
 } from "./components/UserForm";
 
-type Props = UserFormProps & CompanyFormProps & AddressFormProps;
+import { useYupValidationResolver } from "../../../../hooks";
+import { useAuthStore } from "../../../authentication/hooks/useAuthStore";
+import { useEmail } from "../../../authentication/stores/authStore";
+
+import {
+  useCreateUserMutation,
+  UserCreateInput,
+} from "../../graphql/users.client";
+
+export type CreateUserFormProps = UserFormProps &
+  CompanyFormProps &
+  AddressFormProps;
 
 function getSteps() {
   return ["User", "Company", "Address", "Review"];
@@ -117,12 +118,11 @@ function mapAddressDetails(
   };
 }
 
-const CreateUserModal = () => {
+export const CreateUserModal = () => {
   const email = useEmail();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [open, setOpen] = React.useState(true);
+  const [activeStep, setActiveStep] = useState(0);
+  const [open, setOpen] = useState(true);
   const { onReload } = useAuthStore();
-  const validationSchema = getValidationSchema(activeStep);
 
   const { mutate, isLoading, isError, error } = useCreateUserMutation({
     onSuccess: async () => {
@@ -131,12 +131,12 @@ const CreateUserModal = () => {
     },
   });
 
-  const methods = useForm<Props>({
+  const methods = useForm<CreateUserFormProps>({
     defaultValues: {
       email: email ?? "",
     },
     mode: "onChange",
-    resolver: useYupValidationResolver(validationSchema),
+    resolver: useYupValidationResolver(getValidationSchema(activeStep)),
     shouldUnregister: false,
   });
 
@@ -144,7 +144,7 @@ const CreateUserModal = () => {
 
   const steps = getSteps();
 
-  const handleNext = async (data: Props) => {
+  const handleNext = async (data: CreateUserFormProps) => {
     const isStepValid = await trigger();
     if (!isStepValid || activeStep === steps.length - 1) {
       mutate({
@@ -219,6 +219,3 @@ const CreateUserModal = () => {
     </Dialog>
   );
 };
-
-export type { Props as CreateUserFormProps };
-export { CreateUserModal };

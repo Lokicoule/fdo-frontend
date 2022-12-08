@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -49,13 +49,13 @@ const StepReview: React.FunctionComponent<StepReviewProps> = (props) => {
   const { title, values } = props;
 
   return (
-    <React.Fragment>
+    <>
       <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
         {title}
       </Typography>
       <Grid container>
         {values.map(({ label, value }) => (
-          <React.Fragment key={label}>
+          <Fragment key={label}>
             <Grid item xs={6}>
               <Typography fontWeight="bold" variant="overline" gutterBottom>
                 {label}
@@ -66,14 +66,14 @@ const StepReview: React.FunctionComponent<StepReviewProps> = (props) => {
                 {value}
               </Typography>
             </Grid>
-          </React.Fragment>
+          </Fragment>
         ))}
       </Grid>
-    </React.Fragment>
+    </>
   );
 };
 
-const ReviewContent: React.FunctionComponent = () => {
+export const ReviewContent: React.FunctionComponent = () => {
   const { getValues } = useFormContext<CreateUserFormProps>();
 
   const userDetails = getUserDetails(getValues());
@@ -88,5 +88,3 @@ const ReviewContent: React.FunctionComponent = () => {
     </Paper>
   );
 };
-
-export { ReviewContent };

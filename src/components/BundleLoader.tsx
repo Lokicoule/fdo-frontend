@@ -9,7 +9,7 @@ const LoaderWrapper = styled("div")({
   width: "100%",
 });
 
-export const BundleLoader = () => (
+export const BundleLoader: React.FunctionComponent = () => (
   <LoaderWrapper>
     <LinearProgress color="primary" />
   </LoaderWrapper>

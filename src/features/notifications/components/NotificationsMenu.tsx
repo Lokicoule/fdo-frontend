@@ -1,16 +1,15 @@
-import { Notifications } from "@mui/icons-material";
-import {
-  Tooltip,
-  IconButton,
-  Badge,
-  MenuItem,
-  ListItemIcon,
-  Avatar,
-  ListItemText,
-} from "@mui/material";
+import Notifications from "@mui/icons-material/Notifications";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+
 import { MenuButton } from "../../../components/MenuButton";
 
-export const NotificationsMenu: React.FC = () => {
+export const NotificationsMenu: React.FunctionComponent = () => {
   const notifications = [
     {
       id: 1,

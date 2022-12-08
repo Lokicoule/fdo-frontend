@@ -1,14 +1,13 @@
-import {
-  Box,
-  IconButton,
-  ListItemIcon,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+
 import { MenuButton } from "../../../components/MenuButton";
 
-export const LanguageMenu: React.FC = () => {
+export const LanguageMenu: React.FunctionComponent = () => {
   const languages = [
     { code: "en", name: "English" },
     { code: "fr", name: "Français" },

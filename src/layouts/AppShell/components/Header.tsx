@@ -1,19 +1,18 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import { Box, MenuList } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
+import styled from "@mui/material/styles/styled";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
 
 const drawerWidth = 240;
 
-interface HeaderProps extends MuiAppBarProps {
+type HeaderProps = MuiAppBarProps & {
   open?: boolean;
   onOpen?: () => void;
   render?: React.ReactNode;
-}
+};
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -33,7 +32,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export const Header: React.FC<HeaderProps> = (props) => {
+export const Header: React.FunctionComponent<HeaderProps> = (props) => {
   const { open, title, onOpen, render } = props;
 
   return (

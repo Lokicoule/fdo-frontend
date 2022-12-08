@@ -1,11 +1,14 @@
-import { FC } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AUTH_ROUTES } from "../constants/auth-routes.constants";
 import { useIsLoggedIn } from "../stores/authStore";
 
-type Props = { children: JSX.Element };
+export type RequireAuthProps = { children: JSX.Element };
 
-export const RequireAuth: FC<Props> = ({ children }: Props): JSX.Element => {
+export const RequireAuth: React.FunctionComponent<RequireAuthProps> = (
+  props
+): JSX.Element => {
+  const { children } = props;
+
   const location = useLocation();
   const isLoggedIn = useIsLoggedIn();
 

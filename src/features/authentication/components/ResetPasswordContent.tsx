@@ -1,24 +1,26 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+
 import { LinkRouter } from "../../../components";
 import { FormInputSecret } from "../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../components/Form/FormInputText";
+
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
-import { PASSWORD_RULES } from "../constants/password.constants";
 import { useAuthService } from "../hooks/useAuthService";
 
-type ResetPasswordForm = {
+import { PASSWORD_RULES } from "../constants/password.constants";
+
+type FormProps = {
   email: string;
   code: string;
   password: string;
@@ -50,24 +52,17 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-const useResetPasswordResolver = () =>
-  useYupValidationResolver(validationSchema);
-
-export const ResetPasswordContent = () => {
-  const theme = useTheme();
+export const ResetPasswordContent: React.FunctionComponent = () => {
   const { onSubmitPasswordReset, error } = useAuthService();
 
-  const resolver = useResetPasswordResolver();
-
-  const {
-    formState: { errors },
-    handleSubmit,
-    control,
-  } = useForm<ResetPasswordForm>({
-    resolver,
+  const methods = useForm<FormProps>({
+    resolver: useYupValidationResolver(validationSchema),
   });
 
-  const onSubmit = async (data: ResetPasswordForm) => {
+  const { control, handleSubmit, formState } = methods;
+  const { errors } = formState;
+
+  const onSubmit = async (data: FormProps) => {
     await onSubmitPasswordReset(data.email, data.code, data.password);
   };
 
@@ -153,9 +148,9 @@ export const ResetPasswordContent = () => {
             New password
           </Button>
           {error && (
-            <Typography color={theme.palette.error.main}>
+            <Alert severity="error" sx={{ mt: 1 }}>
               {error.message}
-            </Typography>
+            </Alert>
           )}
           <Grid container justifyContent="flex-end">
             <Grid item>

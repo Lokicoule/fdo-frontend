@@ -1,6 +1,6 @@
-import React from "react";
+import { Component } from "react";
 
-export class ErrorBoundary extends React.Component<
+export class ErrorBoundary extends Component<
   {
     children: React.ReactNode;
     failover: React.ReactNode;

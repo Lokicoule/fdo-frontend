@@ -1,18 +1,17 @@
-import { Search as SearchIcon } from "@mui/icons-material";
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  Popover,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import React from "react";
+import { MouseEvent, useState } from "react";
 
-export const SearchMenu: React.FC = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+import SearchIcon from "@mui/icons-material/Search";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Popover from "@mui/material/Popover";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+export const SearchMenu: React.FunctionComponent = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

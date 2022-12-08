@@ -1,5 +1,3 @@
-import React from "react";
-
 import { MenuItem } from "@mui/material";
 
 import countries from "i18n-iso-countries";
@@ -11,9 +9,11 @@ import { FormInputSelect, FormInputSelectProps } from "./Form/FormInputSelect";
 countries.registerLocale(countriesEN);
 countries.registerLocale(countriesFR);
 
-type Props = Omit<FormInputSelectProps, "children">;
+export type SelectCountryProps = Omit<FormInputSelectProps, "children">;
 
-const SelectCountry: React.FunctionComponent<Props> = (props) => {
+export const SelectCountry: React.FunctionComponent<SelectCountryProps> = (
+  props
+) => {
   const { defaultValue = "FR", ...selectProps } = props;
   const countriesList = countries.getNames("fr", { select: "official" });
   //const countriesListFr = countries.getNames("fr", { select: "official" });
@@ -28,6 +28,3 @@ const SelectCountry: React.FunctionComponent<Props> = (props) => {
     </FormInputSelect>
   );
 };
-
-export type SelectCountryProps = Props;
-export { SelectCountry };

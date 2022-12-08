@@ -1,22 +1,25 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+
 import { LinkRouter } from "../../../components";
 import { FormInputText } from "../../../components/Form/FormInputText";
+
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
 import { useAuthService } from "../hooks/useAuthService";
 
-type ForgotPasswordForm = {
+import { AUTH_ROUTES } from "../constants";
+
+type FormProps = {
   email: string;
 };
 
@@ -27,23 +30,17 @@ const validationSchema = yup.object().shape({
     .required("L'adresse email est requise."),
 });
 
-const useForgotPasswordResolver = () =>
-  useYupValidationResolver(validationSchema);
-
-export const ForgotPasswordContent = () => {
-  const theme = useTheme();
-  const resolver = useForgotPasswordResolver();
+export const ForgotPasswordContent: React.FunctionComponent = () => {
   const { onPasswordReset, error } = useAuthService();
 
-  const {
-    formState: { errors },
-    handleSubmit,
-    control,
-  } = useForm<ForgotPasswordForm>({
-    resolver,
+  const methods = useForm<FormProps>({
+    resolver: useYupValidationResolver(validationSchema),
   });
 
-  const onSubmit = async (data: ForgotPasswordForm) => {
+  const { control, handleSubmit, formState } = methods;
+  const { errors } = formState;
+
+  const onSubmit = async (data: FormProps) => {
     await onPasswordReset(data.email);
   };
 
@@ -94,13 +91,13 @@ export const ForgotPasswordContent = () => {
             Forgot password
           </Button>
           {error && (
-            <Typography color={theme.palette.error.main}>
+            <Alert severity="error" sx={{ mt: 1 }}>
               {error.message}
-            </Typography>
+            </Alert>
           )}
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <LinkRouter to="/auth/sign-up" variant="body2">
+              <LinkRouter to={AUTH_ROUTES.REGISTER} variant="body2">
                 Vous n&#39;avez pas de compte ? Inscrivez-vous
               </LinkRouter>
             </Grid>

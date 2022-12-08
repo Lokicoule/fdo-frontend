@@ -1,24 +1,22 @@
-import React from "react";
-
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  Alert,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  OutlinedInputProps,
-} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput, { OutlinedInputProps } from "@mui/material/OutlinedInput";
 
 import { Controller } from "react-hook-form";
 
 import { useToggle } from "../../hooks/useToggle";
 import { FormInputProps } from "./FormInputProps";
 
-type Props = OutlinedInputProps & Omit<FormInputProps, "tooltip">;
+export type FormInputSecretProps = OutlinedInputProps &
+  Omit<FormInputProps, "tooltip">;
 
-const FormInputSecret: React.FunctionComponent<Props> = (props) => {
+export const FormInputSecret: React.FunctionComponent<FormInputSecretProps> = (
+  props
+) => {
   const { name, label, control, fieldError, ...inputProps } = props;
   const [showPassword, toggleShowPassword] = useToggle(false);
 
@@ -57,6 +55,3 @@ const FormInputSecret: React.FunctionComponent<Props> = (props) => {
     </>
   );
 };
-
-export type FormInputSecretProps = Props;
-export { FormInputSecret };

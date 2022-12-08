@@ -1,8 +1,10 @@
 import Button from "@mui/material/Button";
+
 import { useIsLoggedIn } from "../stores/authStore";
+
 import { useAuthService } from "../hooks/useAuthService";
 
-export const LogoutButton: React.FC = () => {
+export const LogoutButton: React.FunctionComponent = () => {
   const { onLogout } = useAuthService();
   const isLoggedIn = useIsLoggedIn();
 

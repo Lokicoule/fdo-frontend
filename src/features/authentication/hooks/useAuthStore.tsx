@@ -1,10 +1,12 @@
-import React from "react";
+import { useEffect, useState } from "react";
+
 import { authService } from "../services";
+
 import { useLogin } from "../stores/authStore";
 
 export const useAuthStore = () => {
   const login = useLogin();
-  const [isReady, setIsReady] = React.useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   async function initAuthStore() {
     setIsReady(false);
@@ -28,7 +30,7 @@ export const useAuthStore = () => {
     await initAuthStore();
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     initAuthStore();
   }, []);
 

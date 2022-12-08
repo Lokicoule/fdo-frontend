@@ -18,7 +18,7 @@ import { MenuButton } from "../../../components/MenuButton";
 import { useEmail, useIsLoggedIn } from "../../authentication";
 import { useAuthService } from "../../authentication/hooks/useAuthService";
 
-export const ProfileMenu: React.FC = () => {
+export const ProfileMenu: React.FunctionComponent = () => {
   const { onLogout } = useAuthService();
   const isLoggedIn = useIsLoggedIn();
   const email = useEmail();

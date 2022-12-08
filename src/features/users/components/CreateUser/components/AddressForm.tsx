@@ -1,6 +1,4 @@
-import React from "react";
-
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 import { useFormContext } from "react-hook-form";
 import * as yup from "yup";
@@ -8,7 +6,7 @@ import * as yup from "yup";
 import { FormInputText } from "../../../../../components/Form/FormInputText";
 import { SelectCountry } from "../../../../../components/SelectCountry";
 
-type Props = {
+type FormProps = {
   address: string;
   additionalAddress: string;
   city: string;
@@ -31,7 +29,7 @@ const AddressFormContent: React.FunctionComponent = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<Props>();
+  } = useFormContext<FormProps>();
 
   return (
     <Grid container spacing={2}>
@@ -96,5 +94,5 @@ const AddressFormContent: React.FunctionComponent = () => {
   );
 };
 
-export type { Props as AddressFormProps };
+export type { FormProps as AddressFormProps };
 export { AddressFormContent, validationSchema as AddressFormValidationSchema };
