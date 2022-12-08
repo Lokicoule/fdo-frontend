@@ -5,13 +5,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { LinkRouter } from "../../../components";
 import { FormInputText } from "../../../components/Form/FormInputText";
 
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
@@ -97,9 +97,9 @@ export const ForgotPasswordContent: React.FunctionComponent = () => {
           )}
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <LinkRouter to={AUTH_ROUTES.REGISTER} variant="body2">
+              <Link href={AUTH_ROUTES.REGISTER} variant="body2">
                 Vous n&#39;avez pas de compte ? Inscrivez-vous
-              </LinkRouter>
+              </Link>
             </Grid>
           </Grid>
         </Box>

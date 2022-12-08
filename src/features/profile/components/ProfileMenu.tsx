@@ -1,21 +1,23 @@
 import {
+  Login as LoginIcon,
+  Logout as LogoutIcon,
   PersonAdd as PersonAddIcon,
   Settings as SettingsIcon,
-  Logout as LogoutIcon,
-  Login as LoginIcon,
 } from "@mui/icons-material";
 import {
-  Tooltip,
-  IconButton,
   Avatar,
-  MenuItem,
-  ListItemIcon,
-  Typography,
   Divider,
+  IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  MenuItem,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { MenuButton } from "../../../components/MenuButton";
-import { useEmail, useIsLoggedIn } from "../../authentication";
+import { AUTH_ROUTES, useEmail, useIsLoggedIn } from "../../authentication";
 import { useAuthService } from "../../authentication/hooks/useAuthService";
 
 export const ProfileMenu: React.FunctionComponent = () => {
@@ -34,7 +36,7 @@ export const ProfileMenu: React.FunctionComponent = () => {
           </IconButton>
         </Tooltip>
       )}
-      renderMenu={({ onClose }) => {
+      renderMenu={({ onClose, LinkComponent }) => {
         return isLoggedIn()
           ? [
               <MenuItem onClick={onClose} key="add-account">
@@ -58,17 +60,21 @@ export const ProfileMenu: React.FunctionComponent = () => {
               </MenuItem>,
             ]
           : [
-              <MenuItem LinkComponent={Link} href="login" key="login">
-                <ListItemIcon>
-                  <LoginIcon fontSize="small" />
-                </ListItemIcon>
-                <Typography variant="inherit">Login</Typography>
+              <MenuItem key="login">
+                <LinkComponent to={AUTH_ROUTES.LOGIN}>
+                  <ListItemIcon>
+                    <LoginIcon fontSize="small" />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Login</Typography>
+                </LinkComponent>
               </MenuItem>,
-              <MenuItem LinkComponent={Link} href="register" key="register">
-                <ListItemIcon>
-                  <PersonAddIcon fontSize="small" />
-                </ListItemIcon>
-                <Typography variant="inherit">Register</Typography>
+              <MenuItem onClick={onClose} key="register">
+                <LinkComponent to={AUTH_ROUTES.REGISTER}>
+                  <ListItemIcon>
+                    <PersonAddIcon fontSize="small" />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Register</Typography>
+                </LinkComponent>
               </MenuItem>,
             ];
       }}

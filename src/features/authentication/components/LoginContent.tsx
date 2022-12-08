@@ -7,11 +7,11 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { LinkRouter } from "../../../components";
 import { FormInputSecret } from "../../../components/Form/FormInputSecret";
 import { FormInputText } from "../../../components/Form/FormInputText";
 
@@ -19,6 +19,7 @@ import { useYupValidationResolver } from "../../../hooks/useYupValidationResolve
 import { useAuthService } from "../hooks/useAuthService";
 
 import { PASSWORD_RULES } from "../constants/password.constants";
+import { AUTH_ROUTES } from "../constants";
 
 type FormProps = {
   email: string;
@@ -129,9 +130,9 @@ export const LoginContent: React.FunctionComponent = () => {
           )}
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <LinkRouter to="/auth/sign-up" variant="body2">
+              <Link href={AUTH_ROUTES.REGISTER} variant="body2">
                 Vous n&#39;avez pas de compte ? Inscrivez-vous
-              </LinkRouter>
+              </Link>
             </Grid>
           </Grid>
         </Box>

@@ -7,12 +7,12 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { FormInputText } from "../../../components/Form/FormInputText";
-import { LinkRouter } from "../../../components/LinkRouter";
 
 import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
 import { useAuthService } from "../hooks/useAuthService";
@@ -110,9 +110,9 @@ export const ConfirmRegisterContent: React.FunctionComponent = () => {
           )}
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <LinkRouter to={AUTH_ROUTES.LOGIN} variant="body2">
+              <Link href={AUTH_ROUTES.LOGIN} variant="body2">
                 Already have an account? Sign in
-              </LinkRouter>
+              </Link>
             </Grid>
           </Grid>
         </Box>
