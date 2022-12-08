@@ -11,7 +11,7 @@ export function fetchData<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     const authHeaders = {} as AuthHeaderProps;
-    const accessToken = await authService.getAccessToken();
+    const accessToken = await authService.getIdToken();
 
     if (Boolean(accessToken)) {
       authHeaders["authorization"] = `Bearer ${accessToken}`;

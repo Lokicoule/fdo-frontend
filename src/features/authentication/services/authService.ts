@@ -85,6 +85,13 @@ class AuthService {
     return session.getAccessToken().getJwtToken();
   }
 
+  public async getIdToken(): Promise<string | null> {
+    const session = await this.cognitoClient.getCurrentUserSession();
+    if (!session) return null;
+
+    return session.getIdToken().getJwtToken();
+  }
+
   public getCurrentUser() {
     return this.cognitoClient.getCurrentUser();
   }

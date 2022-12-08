@@ -1,10 +1,8 @@
 import { Control } from "react-hook-form";
 
-type Props = {
+export type FormInputProps = {
   name: string;
   control: Control<any, any>;
   fieldError?: string;
   tooltip?: string;
 };
-
-export type { Props as FormInputProps };
