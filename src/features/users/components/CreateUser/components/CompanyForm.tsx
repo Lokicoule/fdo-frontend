@@ -5,7 +5,7 @@ import * as yup from "yup";
 
 import { FormInputText } from "../../../../../components/Form/FormInputText";
 
-type FormProps = {
+export type CompanyFormProps = {
   companyName: string;
   vatNumber: string;
   rcsNumber: string;
@@ -13,7 +13,7 @@ type FormProps = {
   siret: string;
 };
 
-const validationSchema = yup.object().shape({
+export const CompanyFormValidationSchema = yup.object().shape({
   companyName: yup.string().trim().required("Le nom est requis."),
   vatNumber: yup
     .string()
@@ -42,11 +42,11 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-const CompanyFormContent: React.FunctionComponent = () => {
+export const CompanyFormContent: React.FunctionComponent = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<FormProps>();
+  } = useFormContext<CompanyFormProps>();
 
   return (
     <Grid container spacing={2}>
@@ -114,6 +114,3 @@ const CompanyFormContent: React.FunctionComponent = () => {
     </Grid>
   );
 };
-
-export type { FormProps as CompanyFormProps };
-export { CompanyFormContent, validationSchema as CompanyFormValidationSchema };

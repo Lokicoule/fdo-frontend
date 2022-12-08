@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { FormInputText } from "../../../../../components/Form/FormInputText";
 import { SelectCountry } from "../../../../../components/SelectCountry";
 
-type FormProps = {
+export type AddressFormProps = {
   address: string;
   additionalAddress: string;
   city: string;
@@ -14,7 +14,7 @@ type FormProps = {
   zipCode: string;
 };
 
-const validationSchema = yup.object().shape({
+export const AddressFormValidationSchema = yup.object().shape({
   address: yup.string().required("L'adresse est requise."),
   additionalAddress: yup.string(),
   city: yup.string().required("La ville est requise."),
@@ -25,11 +25,11 @@ const validationSchema = yup.object().shape({
     .required("Le code postal est requis."),
 });
 
-const AddressFormContent: React.FunctionComponent = () => {
+export const AddressFormContent: React.FunctionComponent = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<FormProps>();
+  } = useFormContext<AddressFormProps>();
 
   return (
     <Grid container spacing={2}>
@@ -93,6 +93,3 @@ const AddressFormContent: React.FunctionComponent = () => {
     </Grid>
   );
 };
-
-export type { FormProps as AddressFormProps };
-export { AddressFormContent, validationSchema as AddressFormValidationSchema };

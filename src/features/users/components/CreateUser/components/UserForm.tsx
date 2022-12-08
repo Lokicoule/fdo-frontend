@@ -6,14 +6,14 @@ import * as yup from "yup";
 import { FormInputText } from "../../../../../components/Form/FormInputText";
 import { useEmail } from "../../../../authentication";
 
-type FormProps = {
+export type UserFormProps = {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
 };
 
-const validationSchema = yup.object().shape({
+export const UserFormValidationSchema = yup.object().shape({
   firstName: yup
     .string()
     .matches(/^[a-zA-Z]+$/, "Le nom ne peut contenir que des lettres")
@@ -32,13 +32,13 @@ const validationSchema = yup.object().shape({
     .required("Le numéro de téléphone est requis."),
 });
 
-const UserFormContent: React.FunctionComponent = () => {
+export const UserFormContent: React.FunctionComponent = () => {
   const email = useEmail();
 
   const {
     control,
     formState: { errors },
-  } = useFormContext<FormProps>();
+  } = useFormContext<UserFormProps>();
 
   return (
     <Grid container spacing={2}>
@@ -94,6 +94,3 @@ const UserFormContent: React.FunctionComponent = () => {
     </Grid>
   );
 };
-
-export type { FormProps as UserFormProps };
-export { UserFormContent, validationSchema as UserFormValidationSchema };
