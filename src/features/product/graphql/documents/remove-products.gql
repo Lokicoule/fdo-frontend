@@ -1,0 +1,3 @@
+mutation RemoveProducts($ids: [String!]!) {
+  removeProducts(ids: $ids)
+}

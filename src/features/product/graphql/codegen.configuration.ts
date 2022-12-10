@@ -1,10 +1,10 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: "http://localhost:8081/graphql",
-  documents: ["src/**/users/**/*.graphql", "src/**/users/**/*.gql"],
+  schema: "http://localhost:8084/graphql",
+  documents: ["src/**/product/**/*.graphql", "src/**/product/**/*.gql"],
   generates: {
-    "src/features/users/graphql/users.client.ts": {
+    "src/features/product/graphql/product.client.ts": {
       plugins: [
         "typescript",
         "typescript-operations",

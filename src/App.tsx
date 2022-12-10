@@ -4,7 +4,7 @@ import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.con
 import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "./features/profile/components/ProfileMenu";
 import { SearchMenu } from "./features/search/components/SearchMenu";
-import { RequireUserGroup } from "./features/users/components/RequireUserGroup";
+import { RequireUserGroup } from "./features/user/components/RequireUserGroup";
 import { AppShell } from "./layouts/AppShell";
 import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";

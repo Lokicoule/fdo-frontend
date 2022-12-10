@@ -1,0 +1,9 @@
+query GetProduct($getProductId: String!) {
+  getProduct(id: $getProductId) {
+    code
+    id
+    createdAt
+    label
+    updatedAt
+  }
+}
