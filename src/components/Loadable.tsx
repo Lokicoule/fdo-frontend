@@ -1,6 +1,5 @@
 import {
   ComponentElement,
-  lazy,
   LazyExoticComponent,
   ReactNode,
   Suspense,
@@ -23,36 +22,7 @@ const BundleLoader: React.FunctionComponent = () => (
   </LoaderWrapper>
 );
 
-type AsyncComponentFactory = () => Promise<{
-  default: React.ComponentType;
-}>;
-
-export const Loadable = <P extends object>(
-  factory: AsyncComponentFactory
-): React.ComponentType<P> => {
-  const Component = lazy(factory);
-
-  return (props: P): ComponentElement<React.ComponentType<P>, any> => (
-    <Suspense fallback={<BundleLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
-};
-
-export const GenericLoadable = <P extends object>(
-  Component: React.ComponentType<P>,
-  fallback?: ReactNode
-): React.ComponentType<P> => {
-  const fallbackComponent = fallback || <BundleLoader />;
-
-  return (props: P): ComponentElement<React.ComponentType<P>, any> => (
-    <Suspense fallback={fallbackComponent}>
-      <Component {...props} />
-    </Suspense>
-  );
-};
-
-export const LazyLoadable = (
+export const Loadable = (
   Component: LazyExoticComponent<React.ComponentType>,
   fallback?: ReactNode
 ): React.ComponentType => {

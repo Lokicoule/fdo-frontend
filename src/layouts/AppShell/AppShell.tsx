@@ -10,7 +10,7 @@ import { styled, ThemeProvider } from "@mui/material/styles";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { queryClient } from "../../libs/react-query-client";
+import { queryClient } from "~/libs/react-query-client";
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Header } from "./components/Header";

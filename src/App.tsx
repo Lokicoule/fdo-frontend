@@ -1,29 +1,43 @@
+import { lazy } from "react";
+
 import HomeIcon from "@mui/icons-material/Home";
+
+import { Loadable } from "~/components/Loadable";
+import { AUTH_ROUTES } from "~/features/authentication/constants/auth-routes.constants";
+import { ThemeMenu } from "~/features/preferences/components/ThemeMenu";
+import { ProfileMenu } from "~/features/profile/components/ProfileMenu";
+import { SearchMenu } from "~/features/search/components/SearchMenu";
+import { RequireUserGroup } from "~/features/user/components/RequireUserGroup";
+import { AppShell } from "~/layouts/AppShell";
+import { ConfirmRegisterPage } from "~/pages/ConfirmRegisterPage";
+import { ForgotPasswordPage } from "~/pages/ForgotPasswordPage";
+import { LoginPage } from "~/pages/LoginPage";
+import { RegisterPage } from "~/pages/RegisterPage";
+import { ResetPasswordPage } from "~/pages/ResetPasswordPage";
 import "./App.css";
-import { LazyLoadable } from "./components/Loadable";
-import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
-import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
-import { ProfileMenu } from "./features/profile/components/ProfileMenu";
-import { SearchMenu } from "./features/search/components/SearchMenu";
-import { RequireUserGroup } from "./features/user/components/RequireUserGroup";
-import { AppShell } from "./layouts/AppShell";
-import { lazyLoader } from "./libs/lazy-load";
-import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
-import { LoginPage } from "./pages/LoginPage";
-import { RegisterPage } from "./pages/RegisterPage";
-import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 
-const Error403Page = LazyLoadable(
-  lazyLoader("../pages/Error403Page", "Error403Page")
+const Error403Page = Loadable(
+  lazy(() =>
+    import("~/pages/errors/Error403Page").then((module) => ({
+      default: module.Error403Page,
+    }))
+  )
 );
 
-const Error404Page = LazyLoadable(
-  lazyLoader("../pages/Error404Page", "Error404Page")
+const Error404Page = Loadable(
+  lazy(() =>
+    import("~/pages/errors/Error404Page").then((module) => ({
+      default: module.Error404Page,
+    }))
+  )
 );
 
-const Error500Page = LazyLoadable(
-  lazyLoader("../pages/Error500Page", "Error500Page")
+const Error500Page = Loadable(
+  lazy(() =>
+    import("~/pages/errors/Error500Page").then((module) => ({
+      default: module.Error500Page,
+    }))
+  )
 );
 
 function getMenus() {

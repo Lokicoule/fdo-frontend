@@ -1,4 +1,4 @@
-import { MenuButton } from "../../../components/MenuButton";
+import { MenuButton } from "~/components/MenuButton";
 import { ThemeButton } from "./ThemeButton";
 
 export const ThemeMenu: React.FunctionComponent = () => {

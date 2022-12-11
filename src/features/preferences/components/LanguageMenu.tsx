@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
-import { MenuButton } from "../../../components/MenuButton";
+import { MenuButton } from "~/components/MenuButton";
 
 export const LanguageMenu: React.FunctionComponent = () => {
   const languages = [

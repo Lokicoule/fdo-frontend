@@ -1,10 +1,15 @@
-import { Suspense } from "react";
-import { Loading } from "../../../layouts/AppShell/components/Loading";
-import { lazyLoader } from "../../../libs/lazy-load";
-import { RequireAuth } from "../../authentication";
-import { useGroups } from "../../authentication/stores/authStore";
+import { lazy } from "react";
 
-const CreateUserModal = lazyLoader("./CreateUser", "CreateUserModal");
+import { Loadable } from "~/components/Loadable";
+import { RequireAuth, useGroups } from "~/features/authentication";
+
+const CreateUserModal = Loadable(
+  lazy(() =>
+    import("./CreateUser/CreateUserModal").then((module) => ({
+      default: module.CreateUserModal,
+    }))
+  )
+);
 
 export type RequireUserGroupProps = { children: JSX.Element };
 
@@ -17,11 +22,9 @@ export const RequireUserGroup: React.FunctionComponent<
 
   if (!userGroups?.includes("User")) {
     return (
-      <Suspense fallback={<Loading />}>
-        <RequireAuth>
-          <CreateUserModal />
-        </RequireAuth>
-      </Suspense>
+      <RequireAuth>
+        <CreateUserModal />
+      </RequireAuth>
     );
   }
 

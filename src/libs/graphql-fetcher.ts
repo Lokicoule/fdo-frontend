@@ -1,4 +1,4 @@
-import { authService } from "../features/authentication/services/authService";
+import { authService } from "~/features/authentication/services/authService";
 
 type AuthHeaderProps = {
   authorization: string;

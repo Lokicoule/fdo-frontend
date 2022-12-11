@@ -8,7 +8,7 @@ import OutlinedInput, { OutlinedInputProps } from "@mui/material/OutlinedInput";
 
 import { Controller } from "react-hook-form";
 
-import { useToggle } from "../../hooks/useToggle";
+import { useToggle } from "~/hooks/useToggle";
 import { FormInputProps } from "./FormInputProps";
 
 export type FormInputSecretProps = OutlinedInputProps &

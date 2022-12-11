@@ -12,10 +12,10 @@ import Link from "@mui/material/Link";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { FormInputSecret } from "../../../components/Form/FormInputSecret";
-import { FormInputText } from "../../../components/Form/FormInputText";
+import { FormInputSecret } from "~/components/Form/FormInputSecret";
+import { FormInputText } from "~/components/Form/FormInputText";
 
-import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
+import { useYupValidationResolver } from "~/hooks/useYupValidationResolver";
 import { useAuthService } from "../hooks/useAuthService";
 
 import { PASSWORD_RULES } from "../constants/password.constants";

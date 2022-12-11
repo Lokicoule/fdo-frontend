@@ -11,9 +11,9 @@ import Typography from "@mui/material/Typography";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { FormInputText } from "../../../components/Form/FormInputText";
+import { FormInputText } from "~/components/Form/FormInputText";
 
-import { useYupValidationResolver } from "../../../hooks/useYupValidationResolver";
+import { useYupValidationResolver } from "~/hooks/useYupValidationResolver";
 
 import { useCreateProductMutation } from "../graphql/product.client";
 

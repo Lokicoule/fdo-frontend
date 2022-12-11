@@ -1,24 +1,22 @@
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+
+import { MenuButton } from "~/components/MenuButton";
 import {
-  Login as LoginIcon,
-  Logout as LogoutIcon,
-  PersonAdd as PersonAddIcon,
-  Settings as SettingsIcon,
-} from "@mui/icons-material";
-import {
-  Avatar,
-  Divider,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import { MenuButton } from "../../../components/MenuButton";
-import { AUTH_ROUTES, useEmail, useIsLoggedIn } from "../../authentication";
-import { useAuthService } from "../../authentication/hooks/useAuthService";
+  AUTH_ROUTES,
+  useAuthService,
+  useEmail,
+  useIsLoggedIn,
+} from "~/features/authentication";
 
 export const ProfileMenu: React.FunctionComponent = () => {
   const { onLogout } = useAuthService();

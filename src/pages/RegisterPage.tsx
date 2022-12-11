@@ -1,4 +1,4 @@
-import { RegisterContent, PreventAuth } from "../features/authentication";
+import { RegisterContent, PreventAuth } from "~/features/authentication";
 
 export const RegisterPage = () => {
   return (

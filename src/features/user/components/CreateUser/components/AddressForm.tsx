@@ -3,8 +3,8 @@ import Grid from "@mui/material/Grid";
 import { useFormContext } from "react-hook-form";
 import * as yup from "yup";
 
-import { FormInputText } from "../../../../../components/Form/FormInputText";
-import { SelectCountry } from "../../../../../components/SelectCountry";
+import { FormInputText } from "~/components/Form/FormInputText";
+import { SelectCountry } from "~/components/SelectCountry";
 
 export type AddressFormProps = {
   address: string;

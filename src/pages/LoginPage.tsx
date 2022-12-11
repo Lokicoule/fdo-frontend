@@ -1,4 +1,4 @@
-import { LoginContent, PreventAuth } from "../features/authentication";
+import { LoginContent, PreventAuth } from "~/features/authentication";
 
 export const LoginPage = () => {
   return (

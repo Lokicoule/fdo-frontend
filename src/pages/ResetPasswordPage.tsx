@@ -1,4 +1,4 @@
-import { ResetPasswordContent, PreventAuth } from "../features/authentication";
+import { ResetPasswordContent, PreventAuth } from "~/features/authentication";
 
 export const ResetPasswordPage = () => {
   return (

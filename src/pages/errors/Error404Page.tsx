@@ -1,4 +1,4 @@
-import { PageErrorTemplate } from "../../components/PageErrorTemplate";
+import { PageErrorTemplate } from "~/components/PageErrorTemplate";
 
 export const Error404Page: React.FunctionComponent = () => {
   return (

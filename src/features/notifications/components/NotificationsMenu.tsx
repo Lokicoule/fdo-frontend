@@ -7,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 
-import { MenuButton } from "../../../components/MenuButton";
+import { MenuButton } from "~/components/MenuButton";
 
 export const NotificationsMenu: React.FunctionComponent = () => {
   const notifications = [

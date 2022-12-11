@@ -2,9 +2,9 @@ import { useMemo } from "react";
 
 import createTheme from "@mui/material/styles/createTheme";
 
-import { useAuthStore } from "../../../features/authentication/hooks";
-import { usePreferenceStore } from "../../../features/preferences/hooks/usePreferenceStore";
-import { useMode } from "../../../features/preferences/stores/preferenceStore";
+import { useAuthStore } from "~/features/authentication/hooks";
+import { usePreferenceStore } from "~/features/preferences/hooks/usePreferenceStore";
+import { useMode } from "~/features/preferences/stores/preferenceStore";
 
 import {
   Link as RouterLink,

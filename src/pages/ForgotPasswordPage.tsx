@@ -1,4 +1,4 @@
-import { ForgotPasswordContent, PreventAuth } from "../features/authentication";
+import { ForgotPasswordContent, PreventAuth } from "~/features/authentication";
 
 export const ForgotPasswordPage = () => {
   return (

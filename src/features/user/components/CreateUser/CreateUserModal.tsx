@@ -28,9 +28,8 @@ import {
   UserFormValidationSchema,
 } from "./components/UserForm";
 
-import { useYupValidationResolver } from "../../../../hooks";
-import { useAuthStore } from "../../../authentication/hooks/useAuthStore";
-import { useEmail } from "../../../authentication/stores/authStore";
+import { useYupValidationResolver } from "~/hooks";
+import { useAuthStore, useEmail } from "~/features/authentication";
 
 import {
   useCreateUserMutation,

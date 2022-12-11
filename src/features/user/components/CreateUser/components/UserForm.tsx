@@ -3,8 +3,8 @@ import Grid from "@mui/material/Grid";
 import { useFormContext } from "react-hook-form";
 import * as yup from "yup";
 
-import { FormInputText } from "../../../../../components/Form/FormInputText";
-import { useEmail } from "../../../../authentication";
+import { FormInputText } from "~/components/Form/FormInputText";
+import { useEmail } from "~/features/authentication";
 
 export type UserFormProps = {
   firstName: string;

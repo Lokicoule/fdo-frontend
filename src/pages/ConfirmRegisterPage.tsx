@@ -1,7 +1,4 @@
-import {
-  ConfirmRegisterContent,
-  PreventAuth,
-} from "../features/authentication";
+import { ConfirmRegisterContent, PreventAuth } from "~/features/authentication";
 
 export const ConfirmRegisterPage = () => {
   return (

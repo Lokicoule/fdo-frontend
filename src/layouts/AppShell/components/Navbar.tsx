@@ -5,7 +5,6 @@ import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
-import * as React from "react";
 
 const drawerWidth = 240;
 

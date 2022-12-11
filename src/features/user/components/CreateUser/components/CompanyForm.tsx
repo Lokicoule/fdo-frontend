@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import { useFormContext } from "react-hook-form";
 import * as yup from "yup";
 
-import { FormInputText } from "../../../../../components/Form/FormInputText";
+import { FormInputText } from "~/components/Form/FormInputText";
 
 export type CompanyFormProps = {
   companyName: string;
