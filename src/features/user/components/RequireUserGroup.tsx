@@ -4,10 +4,7 @@ import { lazyLoad } from "../../../libs/lazy-load";
 import { RequireAuth } from "../../authentication";
 import { useGroups } from "../../authentication/stores/authStore";
 
-const CreateUserModal = lazyLoad(
-  "./CreateUser/CreateUserModal",
-  "CreateUserModal"
-);
+const CreateUserModal = lazyLoad("./CreateUser", "CreateUserModal");
 
 export type RequireUserGroupProps = { children: JSX.Element };
 

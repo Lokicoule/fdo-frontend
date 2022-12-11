@@ -94,7 +94,14 @@ export const AppShell: React.FunctionComponent<AppShellProps> = (props) => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Box sx={{ display: "flex" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "80vh",
+            }}
+          >
             <CssBaseline />
             <Header
               title={title}

@@ -66,15 +66,15 @@ export const RegisterContent: React.FunctionComponent = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <Paper
         sx={{
-          p: 2,
-          m: 2,
+          p: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
+        elevation={5}
       >
         <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <LockOutlinedIcon />
