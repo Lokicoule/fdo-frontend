@@ -25,7 +25,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export type Route = {
-  element: React.FunctionComponent;
+  element: React.FunctionComponent | React.ComponentClass;
   path: string;
 };
 

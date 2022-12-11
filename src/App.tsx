@@ -1,20 +1,26 @@
 import HomeIcon from "@mui/icons-material/Home";
 import "./App.css";
-import { PreventAuth } from "./features/authentication";
+import { LazyLoadable } from "./components/Loadable";
 import { AUTH_ROUTES } from "./features/authentication/constants/auth-routes.constants";
 import { ThemeMenu } from "./features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "./features/profile/components/ProfileMenu";
 import { SearchMenu } from "./features/search/components/SearchMenu";
 import { RequireUserGroup } from "./features/user/components/RequireUserGroup";
 import { AppShell } from "./layouts/AppShell";
+import { lazyLoader } from "./libs/lazy-load";
 import { ConfirmRegisterPage } from "./pages/ConfirmRegisterPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
-import { lazyLoad } from "./libs/lazy-load";
-import { Suspense } from "react";
-import { Error403Page } from "./pages/Error403Page";
+
+const Error403Page = LazyLoadable(
+  lazyLoader("../pages/Error403Page", "Error403Page")
+);
+
+const Error404Page = LazyLoadable(
+  lazyLoader("../pages/Error404Page", "Error404Page")
+);
 
 function getMenus() {
   return [
@@ -73,15 +79,11 @@ function getRoutes() {
     },
     {
       path: "/403",
-      element: () => (
-        <Suspense fallback={<div>Loading...</div>}>
-          <Error403Page />
-        </Suspense>
-      ),
+      element: Error403Page,
     },
     {
       path: "*",
-      element: () => <div>Not found</div>,
+      element: Error404Page,
     },
   ];
 }

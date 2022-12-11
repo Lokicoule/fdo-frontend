@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { Loading } from "../../../layouts/AppShell/components/Loading";
-import { lazyLoad } from "../../../libs/lazy-load";
+import { lazyLoader } from "../../../libs/lazy-load";
 import { RequireAuth } from "../../authentication";
 import { useGroups } from "../../authentication/stores/authStore";
 
-const CreateUserModal = lazyLoad("./CreateUser", "CreateUserModal");
+const CreateUserModal = lazyLoader("./CreateUser", "CreateUserModal");
 
 export type RequireUserGroupProps = { children: JSX.Element };
 
