@@ -1,3 +1,5 @@
+import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import ListItem from "@mui/material/ListItem";
@@ -5,15 +7,18 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled, ThemeProvider } from "@mui/material/styles";
+
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import * as React from "react";
-import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 import { queryClient } from "../../libs/react-query-client";
+
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Header } from "./components/Header";
 import { Loading } from "./components/Loading";
 import { Navbar } from "./components/Navbar";
+
 import { useApplicationStore } from "./hooks/useApplicationStore";
+
 import { useIsDrawerOpen, useToggleDrawer } from "./stores/applicationStore";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -45,6 +50,7 @@ export type AppShellProps = {
   routes: Route[];
   navLinks: NavLink[];
   menuButtons?: MenuElement[];
+  failover?: JSX.Element;
 };
 
 function MainLink({
@@ -80,7 +86,7 @@ function MainLink({
 }
 
 export const AppShell: React.FunctionComponent<AppShellProps> = (props) => {
-  const { title, routes, navLinks, menuButtons } = props;
+  const { title, routes, navLinks, menuButtons, failover } = props;
   const { isReady, theme } = useApplicationStore();
 
   const isDrawerOpen = useIsDrawerOpen();
@@ -127,16 +133,18 @@ export const AppShell: React.FunctionComponent<AppShellProps> = (props) => {
             ></Navbar>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
               <DrawerHeader />
-              <Routes>
-                {routes.map((route) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<route.element />}
-                  />
-                ))}
-              </Routes>
-              <Outlet />
+              <ErrorBoundary failover={failover}>
+                <Routes>
+                  {routes.map((route) => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={<route.element />}
+                    />
+                  ))}
+                </Routes>
+                <Outlet />
+              </ErrorBoundary>
             </Box>
           </Box>
         </ThemeProvider>

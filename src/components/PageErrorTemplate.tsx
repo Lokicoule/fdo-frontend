@@ -1,17 +1,20 @@
 import { Link, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import { useLocation } from "react-router-dom";
 
 type PageErrorProps = {
   title: string;
   description: string;
-  redirect: {
-    to: string;
-    label: string;
-  };
 };
 
-export const PageError: React.FunctionComponent<PageErrorProps> = (props) => {
-  const { description, title, redirect } = props;
+export const PageErrorTemplate: React.FunctionComponent<PageErrorProps> = (
+  props
+) => {
+  const { description, title } = props;
+
+  const location = useLocation();
+
+  const origin = location.state?.from?.pathname ?? "/home";
 
   return (
     <Box
@@ -39,14 +42,12 @@ export const PageError: React.FunctionComponent<PageErrorProps> = (props) => {
       >
         {description}
       </Typography>
-      {redirect && (
-        <Link
-          sx={{ mt: 6, fontSize: "1.5rem", fontWeight: "bold" }}
-          href={redirect.to}
-        >
-          {redirect.label}
-        </Link>
-      )}
+      <Link
+        sx={{ mt: 6, fontSize: "1.5rem", fontWeight: "bold" }}
+        href={origin}
+      >
+        Go back
+      </Link>
     </Box>
   );
 };

@@ -1,16 +1,10 @@
-import { PageError } from "../components/PageError";
+import { PageErrorTemplate } from "../../components/PageErrorTemplate";
 
 export const Error403Page: React.FunctionComponent = () => {
-  const redirect = {
-    to: "/home",
-    label: "Go to home page",
-  };
-
   return (
-    <PageError
+    <PageErrorTemplate
       title="403"
       description="Sorry, you are not authorized to access this page."
-      redirect={redirect}
     />
   );
 };

@@ -22,6 +22,10 @@ const Error404Page = LazyLoadable(
   lazyLoader("../pages/Error404Page", "Error404Page")
 );
 
+const Error500Page = LazyLoadable(
+  lazyLoader("../pages/Error500Page", "Error500Page")
+);
+
 function getMenus() {
   return [
     {
@@ -111,6 +115,7 @@ function App() {
       menuButtons={getMenus()}
       routes={getRoutes()}
       navLinks={getNavLinks()}
+      failover={<Error500Page />}
     />
   );
 }
