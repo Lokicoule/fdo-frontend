@@ -35,7 +35,7 @@ import { useEmail } from "../../../authentication/stores/authStore";
 import {
   useCreateUserMutation,
   UserCreateInput,
-} from "../../graphql/users.client";
+} from "../../graphql/user.client";
 
 export type CreateUserFormProps = UserFormProps &
   CompanyFormProps &
