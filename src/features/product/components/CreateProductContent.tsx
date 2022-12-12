@@ -1,4 +1,11 @@
 import InventoryIcon from "@mui/icons-material/Inventory";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  useMediaQuery,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -7,7 +14,8 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -16,6 +24,8 @@ import { FormInputText } from "~/components/Form/FormInputText";
 import { useYupValidationResolver } from "~/hooks/useYupValidationResolver";
 
 import { useCreateProductMutation } from "../graphql/product.client";
+import { useTheme } from "@mui/material/styles";
+import { queryClient } from "../../../libs/react-query-client";
 
 type FormProps = {
   code?: string;
@@ -27,10 +37,25 @@ const validationSchema = yup.object().shape({
   label: yup.string().required("Le nom du produit est requis."),
 });
 
-export const CreateProductContent: React.FunctionComponent = () => {
+type CreateProductContentProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export const CreateProductContent: React.FunctionComponent<
+  CreateProductContentProps
+> = (props) => {
+  const { open, onClose } = props;
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { mutate, isLoading, isError, error } = useCreateProductMutation({
-    onSuccess: async (data) => {
-      console.log("data", data);
+    onSuccess: () => {
+      onClose();
+      queryClient.invalidateQueries({
+        queryKey: ["GetProducts"],
+      });
     },
   });
 
@@ -48,8 +73,13 @@ export const CreateProductContent: React.FunctionComponent = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Paper
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullScreen={fullScreen}>
+      <DialogActions>
+        <IconButton onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </DialogActions>
+      <DialogContent
         sx={{
           p: 2,
           m: 2,
@@ -109,7 +139,11 @@ export const CreateProductContent: React.FunctionComponent = () => {
             </Alert>
           )}
         </Box>
-      </Paper>
-    </Container>
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={onClose}>Annuler</Button>
+      </DialogActions>
+    </Dialog>
   );
 };

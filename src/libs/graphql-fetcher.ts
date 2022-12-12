@@ -11,11 +11,12 @@ export function fetchData<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     const authHeaders = {} as AuthHeaderProps;
-    const accessToken = await authService.getIdToken();
+    const accessToken = await authService.getAccessToken();
 
     if (Boolean(accessToken)) {
       authHeaders["authorization"] = `Bearer ${accessToken}`;
     }
+    console.log(authHeaders);
     //todo gateway endpoint should be in .env
     const res = await fetch(
       import.meta.env.VITE_ENDPOINT_GRAPHQL_USERS_SERVICE,

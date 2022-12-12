@@ -14,7 +14,10 @@ import { ForgotPasswordPage } from "~/pages/ForgotPasswordPage";
 import { LoginPage } from "~/pages/LoginPage";
 import { RegisterPage } from "~/pages/RegisterPage";
 import { ResetPasswordPage } from "~/pages/ResetPasswordPage";
+import { ProductsContent } from "./features/product/components/ProductsContent";
+
 import "./App.css";
+import { CreateProductContent } from "./features/product/components/CreateProductContent";
 
 const Error403Page = Loadable(
   lazy(() =>
@@ -94,6 +97,14 @@ function getRoutes() {
     {
       path: AUTH_ROUTES.FORGOT_PASSWORD,
       element: ForgotPasswordPage,
+    },
+    {
+      path: "/products",
+      element: ProductsContent,
+    },
+    {
+      path: "/products/new",
+      element: CreateProductContent,
     },
     {
       path: "/403",
