@@ -6,7 +6,6 @@ import { Loadable } from "~/components/Loadable";
 import { AUTH_ROUTES } from "~/features/authentication/constants/auth-routes.constants";
 import { ThemeMenu } from "~/features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "~/features/profile/components/ProfileMenu";
-import { SearchMenu } from "~/features/search/components/SearchMenu";
 import { RequireUserGroup } from "~/features/user/components/RequireUserGroup";
 import { AppShell } from "~/layouts/AppShell";
 import { ConfirmRegisterPage } from "~/pages/ConfirmRegisterPage";
@@ -17,7 +16,6 @@ import { ResetPasswordPage } from "~/pages/ResetPasswordPage";
 import { ProductsContent } from "./features/product/components/ProductsContent";
 
 import "./App.css";
-import { CreateProductContent } from "./features/product/components/CreateProductContent";
 
 const Error403Page = Loadable(
   lazy(() =>
