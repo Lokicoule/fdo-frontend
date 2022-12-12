@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { ColumnProps, EnhancedTable } from "~/components/Table";
 import { DataProps } from "~/components/Table/data.props";
 import { SearchMenu } from "~/features/search/components/SearchMenu";
@@ -61,6 +61,8 @@ export const ProductsContent = () => {
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [term, setTerm] = useState("");
   const [termSubmitted, setTermSubmitted] = useState("");
+  const [filteredData, setFiltererData] = useState(getData(undefined));
+
   const [open, setOpen] = useState(false);
   const { data, error, isLoading } = useGetProductsQuery({});
   const removeProductsMutation = useRemoveProductsMutation({
@@ -96,11 +98,14 @@ export const ProductsContent = () => {
     }
   };
 
-  const filteredData = getData(data).filter(
-    (item) =>
-      item.label.toLowerCase().includes(termSubmitted.toLowerCase()) ||
-      item.code.toLowerCase().includes(termSubmitted.toLowerCase())
-  );
+  useMemo(() => {
+    const filteredData = getData(data).filter(
+      (item) =>
+        item.label.toLowerCase().includes(termSubmitted.toLowerCase()) ||
+        item.code.toLowerCase().includes(termSubmitted.toLowerCase())
+    );
+    setFiltererData(filteredData);
+  }, [data, termSubmitted]);
 
   if (isLoading) return <Box>Loading...</Box>;
   return (

@@ -46,10 +46,6 @@ const Error500Page = Loadable(
 function getMenus() {
   return [
     {
-      key: "search_menu",
-      element: <SearchMenu />,
-    },
-    {
       key: "theme_menu",
       element: <ThemeMenu />,
     },
@@ -101,10 +97,6 @@ function getRoutes() {
     {
       path: "/products",
       element: ProductsContent,
-    },
-    {
-      path: "/products/new",
-      element: CreateProductContent,
     },
     {
       path: "/403",
