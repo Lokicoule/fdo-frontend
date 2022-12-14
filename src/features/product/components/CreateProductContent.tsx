@@ -52,7 +52,7 @@ export const CreateProductContent: React.FunctionComponent<
 
   const { mutate, isLoading, isError, error } = useCreateProductMutation({
     onSuccess: () => {
-      onClose();
+      handleClose();
       queryClient.invalidateQueries({
         queryKey: ["GetProducts"],
       });
@@ -65,6 +65,7 @@ export const CreateProductContent: React.FunctionComponent<
 
   const { control, handleSubmit, formState } = methods;
   const { errors } = formState;
+  const { reset } = methods;
 
   const onSubmit = async (data: FormProps) => {
     mutate({
@@ -72,10 +73,20 @@ export const CreateProductContent: React.FunctionComponent<
     });
   };
 
+  const handleClose = () => {
+    onClose();
+    reset();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullScreen={fullScreen}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullScreen={fullScreen}
+    >
       <DialogActions>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={handleClose}>
           <CloseIcon />
         </IconButton>
       </DialogActions>

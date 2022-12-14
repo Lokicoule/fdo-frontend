@@ -65,17 +65,20 @@ export const SearchMenu: React.FunctionComponent<SearchMenuProps> = (props) => {
                   <SearchIcon fontSize="small" />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Fab
+                    size="small"
+                    color="primary"
+                    onClick={onSearchSubmit}
+                    sx={{ ml: 1 }}
+                  >
+                    <SearchIcon fontSize="small" />
+                  </Fab>
+                </InputAdornment>
+              ),
             }}
           />
-          <IconButton
-            sx={{
-              backgroundColor: "primary.main",
-              ml: 1,
-            }}
-            onClick={onSearchSubmit}
-          >
-            <SearchIcon fontSize="medium" />
-          </IconButton>
         </Box>
       </Popover>
     </>

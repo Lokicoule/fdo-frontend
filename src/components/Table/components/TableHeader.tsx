@@ -1,28 +1,29 @@
 import { Typography } from "@mui/material";
-import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { ColumnProps } from "..";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { ColumnData } from "~/components/Table";
 
 enum Direction {
   ASCENDANT = "asc",
   DESCENDANT = "desc",
 }
 
-type EnhancedTableProps = {
+type TableHeaderProps = {
   numSelected: number;
   onSort: (property: string) => void;
   onSelectAll: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: boolean;
   orderBy: string;
   rowCount: number;
-  columns: ColumnProps[];
+  columns: ColumnData[];
 };
 
-export const EnhancedTableHeader = (props: EnhancedTableProps) => {
+export const TableHeader = (props: TableHeaderProps) => {
   const {
     onSelectAll,
     order,
@@ -33,6 +34,9 @@ export const EnhancedTableHeader = (props: EnhancedTableProps) => {
     columns,
   } = props;
 
+  const theme = useTheme();
+  const displayOptional = useMediaQuery(theme.breakpoints.up("sm"));
+
   const handleSort = (property: string) => () => onSort(property);
 
   const direction: Direction = order
@@ -42,10 +46,7 @@ export const EnhancedTableHeader = (props: EnhancedTableProps) => {
   return (
     <TableHead
       sx={{
-        "& .MuiTableCell-root": {
-          backgroundColor: "primary.dark",
-          color: "inherit",
-        },
+        bgcolor: (theme) => theme.palette.primary.dark,
       }}
     >
       <TableRow>
@@ -60,37 +61,38 @@ export const EnhancedTableHeader = (props: EnhancedTableProps) => {
             }}
           />
         </TableCell>
-        {columns?.map((column: ColumnProps) => (
-          <TableCell
-            sx={{
-              "& .MuiTableSortLabel-root:hover": {
-                color: "secondary.main",
-              },
-            }}
-            key={column.key}
-            align="left"
-            padding={column.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === column.key ? direction : false}
-          >
-            {column.sortable ? (
-              <TableSortLabel
-                active={orderBy === column.key}
-                direction={
-                  orderBy === column.key ? direction : Direction.ASCENDANT
-                }
-                onClick={handleSort(column.key)}
-              >
+        {columns?.map((column: ColumnData) =>
+          column.optional && !displayOptional ? null : (
+            <TableCell
+              sx={{
+                "& .MuiTableSortLabel-root:hover": {
+                  color: "primary.light",
+                },
+              }}
+              key={column.key}
+              align="left"
+              sortDirection={orderBy === column.key ? direction : false}
+            >
+              {column.sortable ? (
+                <TableSortLabel
+                  active={orderBy === column.key}
+                  direction={
+                    orderBy === column.key ? direction : Direction.ASCENDANT
+                  }
+                  onClick={handleSort(column.key)}
+                >
+                  <Typography variant="overline" fontWeight={"bold"}>
+                    {column.label}
+                  </Typography>
+                </TableSortLabel>
+              ) : (
                 <Typography variant="overline" fontWeight={"bold"}>
                   {column.label}
                 </Typography>
-              </TableSortLabel>
-            ) : (
-              <Typography variant="overline" fontWeight={"bold"}>
-                {column.label}
-              </Typography>
-            )}
-          </TableCell>
-        ))}
+              )}
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );

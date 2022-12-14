@@ -1,39 +1,49 @@
+import { useMediaQuery } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import TableBody from "@mui/material/TableBody";
+import MuiTableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import { ColumnProps } from "../column.props";
-import { DataProps } from "../data.props";
+import { useTheme } from "@mui/material/styles";
+import { ColumnData } from "~/components/Table";
 
-export type EnhancedTableBodyProps = {
-  columns: ColumnProps[];
-  data: DataProps[];
+type TableBodyProps = {
+  columns: ColumnData[];
+  data: any[];
   emptyRows: number;
-  selected: readonly string[];
+  selected: string[];
   onSelect: (name: string) => void;
 };
 
-export const EnhancedTableBody = ({
+export const TableBody = ({
   columns,
   data,
   emptyRows,
   selected,
   onSelect,
-}: EnhancedTableBodyProps) => {
+}: TableBodyProps) => {
+  const theme = useTheme();
+  const displayOptional = useMediaQuery(theme.breakpoints.up("sm"));
+
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
-  const renderCell = (item: DataProps, column: ColumnProps, idx: number) => {
-    if (column.content) return column.content(item, idx);
-    if (column.path) return item[column.path];
-    throw Error("Content or path should be defined.");
+  const renderCellContent = (item: any, column: ColumnData, idx: number) => {
+    if (column.path) {
+      return item[column.path];
+    }
+
+    if (column.cellRenderer) {
+      return column.cellRenderer(item, idx);
+    }
+
+    return item[column.key];
   };
 
-  const createKey = (item: DataProps, column: ColumnProps) => {
-    return item.id + (column.path || column.key);
+  const createCellKey = (item: any, column: ColumnData) => {
+    return `key_cell_${item.id}_${column.path ?? column.key}`;
   };
 
   return (
-    <TableBody>
+    <MuiTableBody>
       {data.map((row) => {
         const isItemSelected = isSelected(row.id);
         const labelId = `enhanced-table-checkbox-${row.id}`;
@@ -57,23 +67,25 @@ export const EnhancedTableBody = ({
                 }}
               />
             </TableCell>
-            {columns?.map((column, idx) => (
-              <TableCell align="left" key={createKey(row, column)}>
-                {renderCell(row, column, idx)}
-              </TableCell>
-            ))}
+            {columns.map((column, idx) =>
+              column.optional && !displayOptional ? null : (
+                <TableCell key={createCellKey(row, column)}>
+                  {renderCellContent(row, column, idx)}
+                </TableCell>
+              )
+            )}
           </TableRow>
         );
       })}
       {emptyRows > 0 && (
         <TableRow
           style={{
-            height: 70 * emptyRows,
+            height: 70 * (emptyRows - selected.length > 0 ? 1 : 0),
           }}
         >
           <TableCell colSpan={6} />
         </TableRow>
       )}
-    </TableBody>
+    </MuiTableBody>
   );
 };

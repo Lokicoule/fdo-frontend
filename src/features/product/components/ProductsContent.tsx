@@ -1,5 +1,4 @@
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   IconButton,
   Link,
@@ -9,25 +8,24 @@ import {
   useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Fragment, useMemo, useState } from "react";
-import { ColumnProps, EnhancedTable } from "~/components/Table";
-import { DataProps } from "~/components/Table/data.props";
-import { SearchMenu } from "~/features/search/components/SearchMenu";
+import { useState } from "react";
+import { Table } from "~/components/Table";
+import { ColumnData } from "~/components/Table";
 import { queryClient } from "~/libs/react-query-client";
 import {
   GetProductsQuery,
   useGetProductsQuery,
   useRemoveProductsMutation,
+  ProductDto,
 } from "../graphql/product.client";
 import { CreateProductContent } from "./CreateProductContent";
-import { ProductsTableToolbar } from "./ProductsTableToolbar";
 
-const columns: ColumnProps[] = [
+const columns: ColumnData[] = [
   {
     label: "Code produit",
     key: "code",
     sortable: true,
-    content: (item: DataProps) => <Link href={item.id}>{item.code}</Link>,
+    cellRenderer: (item: ProductDto) => <Link href={item.id}>{item.code}</Link>,
   },
   {
     label: "Libellé produit",
@@ -35,33 +33,29 @@ const columns: ColumnProps[] = [
     key: "label",
     sortable: true,
   },
-];
-
-const additionnalColumns: ColumnProps[] = [
   {
     label: "Date de création",
     path: "createdAt",
     key: "createdAt",
     sortable: true,
+    optional: true,
   },
   {
     label: "Date de modification",
     path: "updatedAt",
     key: "updatedAt",
     sortable: true,
+    optional: true,
   },
 ];
 
-const getData = (data: GetProductsQuery | undefined): DataProps[] => {
+const createData = (data: GetProductsQuery | undefined) => {
   return data?.getProducts ?? [];
 };
 
 export const ProductsContent = () => {
   const theme = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [term, setTerm] = useState("");
-  const [termSubmitted, setTermSubmitted] = useState("");
-  const [filteredData, setFiltererData] = useState(getData(undefined));
 
   const [open, setOpen] = useState(false);
   const { data, error, isLoading } = useGetProductsQuery({});
@@ -73,14 +67,6 @@ export const ProductsContent = () => {
     },
   });
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTerm(event.target.value);
-  };
-
-  const handleSearchSubmit = () => {
-    setTermSubmitted(term);
-  };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -89,67 +75,37 @@ export const ProductsContent = () => {
     setOpen(false);
   };
 
-  const handleRemove = async (ids: string[], onRemove: () => void) => {
-    const idsAreRemoved = await removeProductsMutation.mutateAsync({
+  const handleRemove = (ids: string[]) => {
+    removeProductsMutation.mutateAsync({
       ids,
     });
-    if (idsAreRemoved) {
-      onRemove();
-    }
   };
-
-  useMemo(() => {
-    const filteredData = getData(data).filter(
-      (item) =>
-        item.label.toLowerCase().includes(termSubmitted.toLowerCase()) ||
-        item.code.toLowerCase().includes(termSubmitted.toLowerCase())
-    );
-    setFiltererData(filteredData);
-  }, [data, termSubmitted]);
 
   if (isLoading) return <Box>Loading...</Box>;
   return (
     <>
       <Paper elevation={5} sx={{ padding: 5 }}>
-        <EnhancedTable
-          renderToolbar={(selected, onRemove) => (
-            <ProductsTableToolbar
-              title="Liste de produits"
-              renderMenus={[
-                <Fragment key="delete_products">
-                  {selected.length > 0 && (
-                    <Tooltip title="Delete">
-                      <IconButton
-                        size="medium"
-                        onClick={() => handleRemove(selected, onRemove)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Fragment>,
-                <SearchMenu
-                  onSearch={handleSearch}
-                  onSearchSubmit={handleSearchSubmit}
-                  key="search_products"
-                />,
-                <Tooltip title="Ajouter un produit" key="add_product">
-                  <IconButton
-                    sx={{
-                      backgroundColor: "primary.main",
-                      ml: 1,
-                    }}
-                    size="large"
-                    onClick={handleClickOpen}
-                  >
-                    <AddIcon fontSize="medium" />
-                  </IconButton>
-                </Tooltip>,
-              ]}
-            />
-          )}
-          columns={smallScreen ? columns : [...columns, ...additionnalColumns]}
-          data={filteredData}
+        <Table
+          onRemove={handleRemove}
+          toolbar={{
+            title: "Liste des produits",
+            customAdditionalRenderMenu: [
+              <Tooltip title="Ajouter un produit" key="add_product">
+                <IconButton
+                  sx={{
+                    backgroundColor: "primary.main",
+                    ml: 1,
+                  }}
+                  size="large"
+                  onClick={handleClickOpen}
+                >
+                  <AddIcon fontSize="medium" />
+                </IconButton>
+              </Tooltip>,
+            ],
+          }}
+          columns={columns}
+          data={createData(data)}
         />
       </Paper>
       <CreateProductContent open={open} onClose={handleClose} />
