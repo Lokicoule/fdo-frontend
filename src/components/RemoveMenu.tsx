@@ -4,17 +4,17 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 
-type RemoveMenuProps = {
+type RemoveMenuProps = Pick<IconButtonProps, "size"> & {
   onRemove: () => void;
 };
 
 export const RemoveMenu: React.FunctionComponent<RemoveMenuProps> = (props) => {
-  const { onRemove } = props;
+  const { onRemove, size } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -34,10 +34,10 @@ export const RemoveMenu: React.FunctionComponent<RemoveMenuProps> = (props) => {
             backgroundColor: "error.main",
             ml: 1,
           }}
-          size="medium"
+          size={size}
           onClick={handleClick}
         >
-          <DeleteIcon fontSize="small" />
+          <DeleteIcon fontSize={size === "large" ? "medium" : "small"} />
         </IconButton>
       </Tooltip>
       <Popover

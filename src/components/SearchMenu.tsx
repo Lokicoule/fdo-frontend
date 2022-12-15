@@ -3,19 +3,19 @@ import { MouseEvent, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Fab } from "@mui/material";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Popover from "@mui/material/Popover";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 
-type SearchMenuProps = {
+type SearchMenuProps = Pick<IconButtonProps, "size"> & {
   onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSearchSubmit: () => void;
 };
 
 export const SearchMenu: React.FunctionComponent<SearchMenuProps> = (props) => {
-  const { onSearch, onSearchSubmit } = props;
+  const { onSearch, onSearchSubmit, size } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -30,8 +30,15 @@ export const SearchMenu: React.FunctionComponent<SearchMenuProps> = (props) => {
   return (
     <>
       <Tooltip title="Search">
-        <IconButton onClick={handleClick}>
-          <SearchIcon fontSize="small" />
+        <IconButton
+          sx={{
+            ml: 1,
+            backgroundColor: "primary.main",
+          }}
+          size={size}
+          onClick={handleClick}
+        >
+          <SearchIcon fontSize={size === "large" ? "medium" : "small"} />
         </IconButton>
       </Tooltip>
       <Popover

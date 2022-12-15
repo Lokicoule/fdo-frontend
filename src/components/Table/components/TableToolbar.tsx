@@ -1,8 +1,6 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { RemoveMenu } from "~/components/RemoveMenu";
 import { SearchMenu } from "~/components/SearchMenu";
 
 export type TableToolbarProps = {
@@ -46,16 +44,13 @@ export const TableToolbar: React.FunctionComponent<InnerTableToolbarProps> = (
       >
         {title}
       </Typography>
-
-      {selected.length > 0 && (
-        <Tooltip title="Delete">
-          <IconButton size="medium" onClick={onRemove}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      {selected.length > 0 && <RemoveMenu size="large" onRemove={onRemove} />}
       {onChangeSearch && onSubmitSearch && (
-        <SearchMenu onSearch={onChangeSearch} onSearchSubmit={onSubmitSearch} />
+        <SearchMenu
+          size="large"
+          onSearch={onChangeSearch}
+          onSearchSubmit={onSubmitSearch}
+        />
       )}
       {customAdditionalRenderMenu}
     </Toolbar>

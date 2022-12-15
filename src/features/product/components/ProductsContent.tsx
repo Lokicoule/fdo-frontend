@@ -26,6 +26,9 @@ import { UpdateProductContent } from "./UpdateProductContent";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Button from "@mui/material/Button";
+import { ReviewProductContent } from "./ReviewProductContent";
+
+type ProductPath = "create" | "update" | "view" | undefined;
 
 const createData = (data: GetProductsQuery | undefined) => {
   return data?.getProducts ?? [];
@@ -37,6 +40,7 @@ export const ProductsContent = () => {
 
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState<ProductDto | null>(null);
+  const [path, setPath] = useState<ProductPath>(undefined);
 
   const { data, error, isLoading } = useGetProductsQuery({});
   const removeProductsMutation = useRemoveProductsMutation({
@@ -55,25 +59,102 @@ export const ProductsContent = () => {
   });
 
   const handleCloseDialog = () => {
-    setOpen(false);
     setProduct(null);
+    setPath(undefined);
+    setOpen(false);
   };
 
-  const handleOpenDialog = (product?: ProductDto) => {
+  const handleOpenDialog = (path: ProductPath, product?: ProductDto) => {
     if (product) setProduct(product);
+    setPath(path);
     setOpen(true);
   };
 
   const handleRemoveMany = (ids: string[]) => {
-    removeProductsMutation.mutate({
-      ids,
-    });
+    removeProductsMutation
+      .mutateAsync({
+        ids,
+      })
+      .then(() => {
+        handleCloseDialog();
+      });
   };
 
   const handleRemoveOne = (id: string) => {
-    removeProductMutation.mutate({
-      removeProductId: id,
-    });
+    removeProductMutation
+      .mutateAsync({
+        removeProductId: id,
+      })
+      .then(() => {
+        handleCloseDialog();
+      });
+  };
+
+  const getDialogContent = () => {
+    if (product) {
+      switch (path) {
+        case "update":
+          return (
+            <UpdateProductContent
+              product={product}
+              onClose={handleCloseDialog}
+            />
+          );
+        case "view":
+          return <ReviewProductContent product={product} />;
+      }
+    }
+
+    if (path === "create") {
+      return <CreateProductContent onClose={handleCloseDialog} />;
+    }
+    return null;
+  };
+
+  const getDialogActions = () => {
+    if (path === "view" && product) {
+      return (
+        <>
+          <Box sx={{ flexGrow: 1 }}>
+            <Button onClick={handleCloseDialog} color="primary">
+              Annuler
+            </Button>
+          </Box>
+          <Tooltip title="Modifier">
+            <IconButton
+              sx={{
+                backgroundColor: "primary.main",
+                ml: 1,
+              }}
+              size="medium"
+              onClick={() => handleOpenDialog("update")}
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <RemoveMenu onRemove={() => handleRemoveOne(product.id)} />
+        </>
+      );
+    }
+
+    if (path === "update" && product) {
+      return (
+        <>
+          <Box sx={{ flexGrow: 1 }}>
+            <Button onClick={handleCloseDialog} color="primary">
+              Annuler
+            </Button>
+          </Box>
+          <RemoveMenu onRemove={() => handleRemoveOne(product.id)} />
+        </>
+      );
+    }
+
+    return (
+      <Button onClick={handleCloseDialog} color="primary">
+        Annuler
+      </Button>
+    );
   };
 
   const columns: ColumnData[] = [
@@ -87,7 +168,7 @@ export const ProductsContent = () => {
             cursor: "pointer",
             textDecoration: "none",
           }}
-          onClick={() => handleOpenDialog(item)}
+          onClick={() => handleOpenDialog("view", item)}
         >
           {item.code}
         </Box>
@@ -118,16 +199,18 @@ export const ProductsContent = () => {
       key: "actions",
       cellRenderer: (item: ProductDto) => (
         <>
-          <IconButton
-            sx={{
-              backgroundColor: "primary.main",
-              ml: 1,
-            }}
-            size="medium"
-            onClick={() => handleOpenDialog(item)}
-          >
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <Tooltip title="Modifier">
+            <IconButton
+              sx={{
+                backgroundColor: "primary.main",
+                ml: 1,
+              }}
+              size="medium"
+              onClick={() => handleOpenDialog("update", item)}
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
           <RemoveMenu onRemove={() => handleRemoveOne(item.id)} />
         </>
       ),
@@ -152,7 +235,7 @@ export const ProductsContent = () => {
                     ml: 1,
                   }}
                   size="large"
-                  onClick={() => handleOpenDialog()}
+                  onClick={() => handleOpenDialog("create")}
                 >
                   <AddIcon fontSize="medium" />
                 </IconButton>
@@ -183,18 +266,15 @@ export const ProductsContent = () => {
             alignItems: "center",
           }}
         >
-          {product ? (
-            <UpdateProductContent
-              product={product}
-              onClose={handleCloseDialog}
-            />
-          ) : (
-            <CreateProductContent onClose={handleCloseDialog} />
-          )}
+          {getDialogContent()}
         </DialogContent>
-
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Annuler</Button>
+        <DialogActions
+          sx={{
+            p: 2,
+            m: 2,
+          }}
+        >
+          {getDialogActions()}
         </DialogActions>
       </Dialog>
     </>
