@@ -1,4 +1,12 @@
+import CloseIcon from "@mui/icons-material/Close";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  useMediaQuery,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -12,8 +20,12 @@ import { FormInputText } from "~/components/Form/FormInputText";
 
 import { useYupValidationResolver } from "~/hooks/useYupValidationResolver";
 
+import { useTheme } from "@mui/material/styles";
+import {
+  ProductDto,
+  useUpdateProductMutation,
+} from "~/features/product/graphql/product.client";
 import { queryClient } from "../../../libs/react-query-client";
-import { useCreateProductMutation } from "../graphql/product.client";
 
 type FormProps = {
   code?: string;
@@ -21,20 +33,22 @@ type FormProps = {
 };
 
 const validationSchema = yup.object().shape({
-  code: yup.string(),
+  code: yup.string().required("Le code du produit est requis."),
   label: yup.string().required("Le nom du produit est requis."),
 });
 
-type CreateProductContentProps = {
+type UpdateProductContentProps = {
+  //open: boolean;
   onClose: () => void;
+  product: ProductDto;
 };
 
-export const CreateProductContent: React.FunctionComponent<
-  CreateProductContentProps
+export const UpdateProductContent: React.FunctionComponent<
+  UpdateProductContentProps
 > = (props) => {
-  const { onClose } = props;
+  const { product, onClose } = props;
 
-  const { mutateAsync, isLoading, isError, error } = useCreateProductMutation({
+  const { mutateAsync, isLoading, isError, error } = useUpdateProductMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["GetProducts"],
@@ -45,6 +59,10 @@ export const CreateProductContent: React.FunctionComponent<
 
   const methods = useForm<FormProps>({
     resolver: useYupValidationResolver(validationSchema),
+    defaultValues: {
+      code: product.code,
+      label: product.label,
+    },
   });
 
   const { control, handleSubmit, formState } = methods;
@@ -52,8 +70,11 @@ export const CreateProductContent: React.FunctionComponent<
   const { reset } = methods;
 
   const onSubmit = async (data: FormProps) => {
-    const result = mutateAsync({
-      createProductInput: data,
+    const result = await mutateAsync({
+      updateProductInput: {
+        id: product.id,
+        ...data,
+      },
     });
     if (!isError && Boolean(result)) {
       reset();
@@ -66,7 +87,7 @@ export const CreateProductContent: React.FunctionComponent<
         <InventoryIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Creer un produit
+        Mise à jour produit
       </Typography>
       <Box
         component="form"

@@ -1,53 +1,31 @@
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
   IconButton,
-  Link,
   Paper,
   Tooltip,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useState } from "react";
-import { Table } from "~/components/Table";
-import { ColumnData } from "~/components/Table";
+import { RemoveMenu } from "~/components/RemoveMenu";
+import { ColumnData, Table } from "~/components/Table";
 import { queryClient } from "~/libs/react-query-client";
 import {
   GetProductsQuery,
-  useGetProductsQuery,
-  useRemoveProductsMutation,
   ProductDto,
+  useGetProductsQuery,
+  useRemoveProductMutation,
+  useRemoveProductsMutation,
 } from "../graphql/product.client";
 import { CreateProductContent } from "./CreateProductContent";
-
-const columns: ColumnData[] = [
-  {
-    label: "Code produit",
-    key: "code",
-    sortable: true,
-    cellRenderer: (item: ProductDto) => <Link href={item.id}>{item.code}</Link>,
-  },
-  {
-    label: "Libellé produit",
-    path: "label",
-    key: "label",
-    sortable: true,
-  },
-  {
-    label: "Date de création",
-    path: "createdAt",
-    key: "createdAt",
-    sortable: true,
-    optional: true,
-  },
-  {
-    label: "Date de modification",
-    path: "updatedAt",
-    key: "updatedAt",
-    sortable: true,
-    optional: true,
-  },
-];
+import { UpdateProductContent } from "./UpdateProductContent";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Button from "@mui/material/Button";
 
 const createData = (data: GetProductsQuery | undefined) => {
   return data?.getProducts ?? [];
@@ -55,9 +33,11 @@ const createData = (data: GetProductsQuery | undefined) => {
 
 export const ProductsContent = () => {
   const theme = useTheme();
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [open, setOpen] = useState(false);
+  const [product, setProduct] = useState<ProductDto | null>(null);
+
   const { data, error, isLoading } = useGetProductsQuery({});
   const removeProductsMutation = useRemoveProductsMutation({
     onSuccess: () => {
@@ -66,27 +46,102 @@ export const ProductsContent = () => {
       });
     },
   });
+  const removeProductMutation = useRemoveProductMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GetProducts"],
+      });
+    },
+  });
 
-  const handleClickOpen = () => {
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setProduct(null);
+  };
+
+  const handleOpenDialog = (product?: ProductDto) => {
+    if (product) setProduct(product);
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleRemove = (ids: string[]) => {
-    removeProductsMutation.mutateAsync({
+  const handleRemoveMany = (ids: string[]) => {
+    removeProductsMutation.mutate({
       ids,
     });
   };
+
+  const handleRemoveOne = (id: string) => {
+    removeProductMutation.mutate({
+      removeProductId: id,
+    });
+  };
+
+  const columns: ColumnData[] = [
+    {
+      label: "Code produit",
+      key: "code",
+      sortable: true,
+      cellRenderer: (item: ProductDto) => (
+        <Box
+          sx={{
+            cursor: "pointer",
+            textDecoration: "none",
+          }}
+          onClick={() => handleOpenDialog(item)}
+        >
+          {item.code}
+        </Box>
+      ),
+    },
+    {
+      label: "Libellé produit",
+      path: "label",
+      key: "label",
+      sortable: true,
+    },
+    {
+      label: "Date de création",
+      path: "createdAt",
+      key: "createdAt",
+      sortable: true,
+      optional: true,
+    },
+    {
+      label: "Date de modification",
+      path: "updatedAt",
+      key: "updatedAt",
+      sortable: true,
+      optional: true,
+    },
+    {
+      label: "Actions",
+      key: "actions",
+      cellRenderer: (item: ProductDto) => (
+        <>
+          <IconButton
+            sx={{
+              backgroundColor: "primary.main",
+              ml: 1,
+            }}
+            size="medium"
+            onClick={() => handleOpenDialog(item)}
+          >
+            <EditIcon fontSize="small" />
+          </IconButton>
+          <RemoveMenu onRemove={() => handleRemoveOne(item.id)} />
+        </>
+      ),
+      sortable: true,
+      optional: true,
+    },
+  ];
 
   if (isLoading) return <Box>Loading...</Box>;
   return (
     <>
       <Paper elevation={5} sx={{ padding: 5 }}>
         <Table
-          onRemove={handleRemove}
+          onRemove={handleRemoveMany}
           toolbar={{
             title: "Liste des produits",
             customAdditionalRenderMenu: [
@@ -97,7 +152,7 @@ export const ProductsContent = () => {
                     ml: 1,
                   }}
                   size="large"
-                  onClick={handleClickOpen}
+                  onClick={() => handleOpenDialog()}
                 >
                   <AddIcon fontSize="medium" />
                 </IconButton>
@@ -108,7 +163,40 @@ export const ProductsContent = () => {
           data={createData(data)}
         />
       </Paper>
-      <CreateProductContent open={open} onClose={handleClose} />
+      <Dialog
+        open={open}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullScreen={fullScreen}
+      >
+        <DialogActions>
+          <IconButton onClick={handleCloseDialog}>
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+        <DialogContent
+          sx={{
+            p: 2,
+            m: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {product ? (
+            <UpdateProductContent
+              product={product}
+              onClose={handleCloseDialog}
+            />
+          ) : (
+            <CreateProductContent onClose={handleCloseDialog} />
+          )}
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Annuler</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
