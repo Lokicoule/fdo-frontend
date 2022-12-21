@@ -9,6 +9,8 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
+import { useTranslation } from "react-i18next";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -54,6 +56,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const ResetPasswordContent: React.FunctionComponent = () => {
+  const { t } = useTranslation(["auth"]);
   const { onSubmitPasswordReset, error } = useAuthService();
 
   const methods = useForm<FormProps>({
@@ -82,7 +85,7 @@ export const ResetPasswordContent: React.FunctionComponent = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          New password
+          {t("reset_password.title")}
         </Typography>
         <Box
           component="form"
@@ -95,7 +98,8 @@ export const ResetPasswordContent: React.FunctionComponent = () => {
               <FormInputText
                 name="email"
                 control={control}
-                label="Email"
+                label={t("reset_password.fields.email.label")}
+                placeholder={t("reset_password.fields.email.placeholder") ?? ""}
                 required
                 fullWidth
                 autoComplete="email"
@@ -108,7 +112,8 @@ export const ResetPasswordContent: React.FunctionComponent = () => {
               <FormInputText
                 name="code"
                 control={control}
-                label="Code de confirmation"
+                label={t("reset_password.fields.code.label")}
+                placeholder={t("reset_password.fields.code.placeholder") ?? ""}
                 required
                 fullWidth
                 error={!!errors.code}
@@ -119,7 +124,10 @@ export const ResetPasswordContent: React.FunctionComponent = () => {
               <FormInputSecret
                 name="password"
                 control={control}
-                label="Mot de passe"
+                label={t("reset_password.fields.password.label")}
+                placeholder={
+                  t("reset_password.fields.password.placeholder") ?? ""
+                }
                 required
                 fullWidth
                 autoComplete="current-password"
@@ -131,7 +139,12 @@ export const ResetPasswordContent: React.FunctionComponent = () => {
               <FormInputSecret
                 name="confirmPassword"
                 control={control}
-                label="Confirmation de mot de passe"
+                label={t("reset_password.fields.password_confirmation.label")}
+                placeholder={
+                  t(
+                    "reset_password.fields.password_confirmation.placeholder"
+                  ) ?? ""
+                }
                 required
                 fullWidth
                 error={!!errors.confirmPassword}
@@ -146,17 +159,22 @@ export const ResetPasswordContent: React.FunctionComponent = () => {
             color="primary"
             sx={{ mt: 3, mb: 2 }}
           >
-            New password
+            {t("reset_password.actions.submit")}
           </Button>
           {error && (
             <Alert severity="error" sx={{ mt: 1 }}>
               {error.message}
             </Alert>
           )}
-          <Grid container justifyContent="flex-end">
+          <Grid container flexDirection={"column"}>
             <Grid item>
               <Link href={AUTH_ROUTES.LOGIN} variant="body2">
-                Already have an account? Sign in
+                {t("reset_password.actions.back_to_login")}
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href={AUTH_ROUTES.REGISTER} variant="body2">
+                {t("reset_password.actions.no_account")}
               </Link>
             </Grid>
           </Grid>

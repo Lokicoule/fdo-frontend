@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
+import { useTranslation } from "react-i18next";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -51,6 +53,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const LoginContent: React.FunctionComponent = () => {
+  const { t } = useTranslation(["auth"]);
   const { onLogin, error } = useAuthService();
 
   const methods = useForm<FormProps>({
@@ -79,7 +82,7 @@ export const LoginContent: React.FunctionComponent = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Connexion
+          {t("login.title")}
         </Typography>
         <Box
           component="form"
@@ -92,7 +95,8 @@ export const LoginContent: React.FunctionComponent = () => {
               <FormInputText
                 name="email"
                 control={control}
-                label="Email"
+                label={t("login.fields.email.label")}
+                placeholder={t("login.fields.email.placeholder") ?? ""}
                 required
                 fullWidth
                 autoComplete="email"
@@ -105,7 +109,8 @@ export const LoginContent: React.FunctionComponent = () => {
               <FormInputSecret
                 name="password"
                 control={control}
-                label="Mot de passe"
+                label={t("login.fields.password.label")}
+                placeholder={t("login.fields.password.placeholder") ?? ""}
                 required
                 fullWidth
                 autoComplete="current-password"
@@ -121,17 +126,56 @@ export const LoginContent: React.FunctionComponent = () => {
             color="primary"
             sx={{ mt: 3, mb: 2 }}
           >
-            Login
+            {t("login.actions.submit")}
           </Button>
           {error && (
             <Alert severity="error" sx={{ mt: 1 }}>
               {error.message}
             </Alert>
           )}
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href={AUTH_ROUTES.REGISTER} variant="body2">
-                Vous n&#39;avez pas de compte ? Inscrivez-vous
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                mt: 1,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Link
+                sx={{
+                  textDecoration: "none",
+                  ":hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+                href={AUTH_ROUTES.REGISTER}
+                variant="body2"
+              >
+                {t("login.actions.no_account")}
+              </Link>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                mt: 1,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Link
+                sx={{
+                  textDecoration: "none",
+                  ":hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+                href={AUTH_ROUTES.FORGOT_PASSWORD}
+                variant="body2"
+              >
+                {t("login.actions.forgot_password")}
               </Link>
             </Grid>
           </Grid>

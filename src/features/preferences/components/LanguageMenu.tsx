@@ -4,38 +4,44 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { useTranslation, Trans } from "react-i18next";
+import TranslateIcon from "@mui/icons-material/Translate";
 
 import { MenuButton } from "~/components/MenuButton";
 
+const languages = [
+  {
+    code: "en",
+    name: "English",
+  },
+  {
+    code: "fr",
+    name: "Français",
+  },
+];
+
 export const LanguageMenu: React.FunctionComponent = () => {
-  const languages = [
-    { code: "en", name: "English" },
-    { code: "fr", name: "Français" },
-  ];
+  const { t, i18n } = useTranslation();
+
+  const handleChangeLanguage = (code: string) => {
+    i18n.changeLanguage(code);
+  };
 
   return (
     <MenuButton
       renderButton={({ onClick }) => (
         <Tooltip title="Language">
           <IconButton onClick={onClick}>
-            <Box
-              component="img"
-              src={`https://www.countryflags.io/us/flat/24.png`}
-              sx={{ width: 24, height: 24 }}
-            />
+            <TranslateIcon />
           </IconButton>
         </Tooltip>
       )}
       renderMenu={({ onClose }) =>
         languages.map((language) => (
-          <MenuItem key={language.code} onClick={onClose}>
-            <ListItemIcon>
-              <Box
-                component="img"
-                src={`https://www.countryflags.io/${language.code}/flat/24.png`}
-                sx={{ width: 24, height: 24 }}
-              />
-            </ListItemIcon>
+          <MenuItem
+            key={language.code}
+            onClick={() => handleChangeLanguage(language.code)}
+          >
             <Typography variant="inherit">{language.name}</Typography>
           </MenuItem>
         ))

@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
+import { useTranslation } from "react-i18next";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -33,6 +35,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const ConfirmRegisterContent: React.FunctionComponent = () => {
+  const { t } = useTranslation(["auth"]);
   const { onSignUpConfirmation, error } = useAuthService();
 
   const methods = useForm<FormProps>({
@@ -61,7 +64,7 @@ export const ConfirmRegisterContent: React.FunctionComponent = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Confirmation
+          {t("register-confirmation.title")}
         </Typography>
         <Box
           component="form"
@@ -74,7 +77,10 @@ export const ConfirmRegisterContent: React.FunctionComponent = () => {
               <FormInputText
                 name="email"
                 control={control}
-                label="Email"
+                label={t("register-confirmation.fields.email.label")}
+                placeholder={
+                  t("register-confirmation.fields.email.placeholder") ?? ""
+                }
                 required
                 fullWidth
                 autoComplete="email"
@@ -86,7 +92,10 @@ export const ConfirmRegisterContent: React.FunctionComponent = () => {
               <FormInputText
                 name="code"
                 control={control}
-                label="Code de confirmation"
+                label={t("register-confirmation.fields.code.label")}
+                placeholder={
+                  t("register-confirmation.fields.code.placeholder") ?? ""
+                }
                 required
                 fullWidth
                 error={!!errors.code}
@@ -101,7 +110,7 @@ export const ConfirmRegisterContent: React.FunctionComponent = () => {
             color="primary"
             sx={{ mt: 3, mb: 2 }}
           >
-            Confirmer
+            {t("register-confirmation.actions.submit")}
           </Button>
           {error && (
             <Alert severity="error" sx={{ mt: 1 }}>
@@ -111,7 +120,7 @@ export const ConfirmRegisterContent: React.FunctionComponent = () => {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href={AUTH_ROUTES.LOGIN} variant="body2">
-                Already have an account? Sign in
+                {t("register-confirmation.actions.already_have_account")}
               </Link>
             </Grid>
           </Grid>

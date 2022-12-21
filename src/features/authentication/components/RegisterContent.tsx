@@ -9,6 +9,8 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
+import { useTranslation } from "react-i18next";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -52,6 +54,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const RegisterContent: React.FunctionComponent = () => {
+  const { t } = useTranslation(["auth"]);
   const { onRegister, error } = useAuthService();
 
   const methods = useForm<FormProps>({
@@ -80,7 +83,7 @@ export const RegisterContent: React.FunctionComponent = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Enregistrement
+          {t("register.title")}
         </Typography>
         <Box
           component="form"
@@ -93,7 +96,8 @@ export const RegisterContent: React.FunctionComponent = () => {
               <FormInputText
                 name="email"
                 control={control}
-                label="Email"
+                label={t("register.fields.email.label")}
+                placeholder={t("register.fields.email.placeholder") ?? ""}
                 required
                 fullWidth
                 autoComplete="email"
@@ -106,7 +110,8 @@ export const RegisterContent: React.FunctionComponent = () => {
               <FormInputSecret
                 name="password"
                 control={control}
-                label="Mot de passe"
+                label={t("register.fields.password.label")}
+                placeholder={t("register.fields.password.placeholder") ?? ""}
                 required
                 fullWidth
                 autoComplete="current-password"
@@ -118,7 +123,10 @@ export const RegisterContent: React.FunctionComponent = () => {
               <FormInputSecret
                 name="confirmPassword"
                 control={control}
-                label="Confirmation de mot de passe"
+                label={t("register.fields.password_confirmation.label")}
+                placeholder={
+                  t("register.fields.password_confirmation.placeholder") ?? ""
+                }
                 required
                 fullWidth
                 error={!!errors.confirmPassword}
@@ -133,7 +141,7 @@ export const RegisterContent: React.FunctionComponent = () => {
             color="primary"
             sx={{ mt: 3, mb: 2 }}
           >
-            Create account
+            {t("register.actions.submit")}
           </Button>
           {error && (
             <Alert severity="error" sx={{ mt: 1 }}>
@@ -142,8 +150,17 @@ export const RegisterContent: React.FunctionComponent = () => {
           )}
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href={AUTH_ROUTES.LOGIN} variant="body2">
-                Already have an account? Sign in
+              <Link
+                sx={{
+                  textDecoration: "none",
+                  ":hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+                href={AUTH_ROUTES.LOGIN}
+                variant="body2"
+              >
+                {`${t("register.actions.already_have_account")}`}
               </Link>
             </Grid>
           </Grid>

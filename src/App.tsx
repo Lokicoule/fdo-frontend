@@ -1,3 +1,5 @@
+import "./libs/i18n/config"; //TODO check bootstraped after imports
+
 import { lazy } from "react";
 
 import HomeIcon from "@mui/icons-material/Home";
@@ -16,6 +18,7 @@ import { ResetPasswordPage } from "~/pages/ResetPasswordPage";
 import { ProductsContent } from "./features/product/components/ProductsContent";
 
 import "./App.css";
+import { LanguageMenu } from "./features/preferences/components/LanguageMenu";
 
 const Error403Page = Loadable(
   lazy(() =>
@@ -43,6 +46,10 @@ const Error500Page = Loadable(
 
 function getMenus() {
   return [
+    {
+      key: "language_menu",
+      element: <LanguageMenu />,
+    },
     {
       key: "theme_menu",
       element: <ThemeMenu />,
