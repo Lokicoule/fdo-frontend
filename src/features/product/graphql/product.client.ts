@@ -23,14 +23,13 @@ export type Mutation = {
   createProduct?: Maybe<ProductDto>;
   removeProduct: ProductDto;
   removeProducts: Scalars['Boolean'];
-  updateCodeGeneratorSetting: SettingDto;
   updateProduct: ProductDto;
   updateSetting: SettingDto;
 };
 
 
 export type MutationCreateProductArgs = {
-  createProductInput: ProductCreateInput;
+  payload: ProductCreateInput;
 };
 
 
@@ -44,13 +43,8 @@ export type MutationRemoveProductsArgs = {
 };
 
 
-export type MutationUpdateCodeGeneratorSettingArgs = {
-  updateSettingCodeGeneratorInput: SettingCodeGeneratorInput;
-};
-
-
 export type MutationUpdateProductArgs = {
-  updateProductInput: ProductUpdateInput;
+  payload: ProductUpdateInput;
 };
 
 
@@ -71,11 +65,13 @@ export type ProductCriteriaInput = {
 
 export type ProductDto = {
   __typename?: 'ProductDto';
+  authorId: Scalars['String'];
   code: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
   label: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
+  user: UserDto;
 };
 
 export type ProductUpdateInput = {
@@ -107,11 +103,17 @@ export enum PropertyKeyEnum {
 
 export type Query = {
   __typename?: 'Query';
+  _entities: Array<Maybe<_Entity>>;
   _service: _Service;
   getProduct?: Maybe<ProductDto>;
   getProducts?: Maybe<Array<ProductDto>>;
   getSetting?: Maybe<SettingDto>;
   getSettings?: Maybe<Array<SettingDto>>;
+};
+
+
+export type Query_EntitiesArgs = {
+  representations: Array<Scalars['_Any']>;
 };
 
 
@@ -131,18 +133,12 @@ export type QueryGetSettingArgs = {
 
 
 export type QueryGetSettingsArgs = {
-  criterions?: InputMaybe<SettingCriteriaInput>;
+  criterias?: InputMaybe<SettingCriteriaInput>;
 };
 
 export enum SettingCodeEnum {
   CodeGenerator = 'CODE_GENERATOR'
 }
-
-export type SettingCodeGeneratorInput = {
-  code: SettingCodeEnum;
-  id: Scalars['String'];
-  properties: Array<PropertyInput>;
-};
 
 export type SettingCriteriaInput = {
   code?: InputMaybe<SettingCodeEnum>;
@@ -151,11 +147,13 @@ export type SettingCriteriaInput = {
 
 export type SettingDto = {
   __typename?: 'SettingDto';
+  authorId: Scalars['String'];
   code: SettingCodeEnum;
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
   properties?: Maybe<Array<PropertyDto>>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  user: UserDto;
 };
 
 export type SettingUpdateInput = {
@@ -164,13 +162,22 @@ export type SettingUpdateInput = {
   properties: Array<PropertyInput>;
 };
 
+export type UserDto = {
+  __typename?: 'UserDto';
+  id: Scalars['ID'];
+  products: Array<ProductDto>;
+  settings: Array<SettingDto>;
+};
+
+export type _Entity = ProductDto | SettingDto | UserDto;
+
 export type _Service = {
   __typename?: '_Service';
   sdl?: Maybe<Scalars['String']>;
 };
 
 export type CreateProductMutationVariables = Exact<{
-  createProductInput: ProductCreateInput;
+  payload: ProductCreateInput;
 }>;
 
 
@@ -205,7 +212,7 @@ export type RemoveProductsMutationVariables = Exact<{
 export type RemoveProductsMutation = { __typename?: 'Mutation', removeProducts: boolean };
 
 export type UpdateProductMutationVariables = Exact<{
-  updateProductInput: ProductUpdateInput;
+  payload: ProductUpdateInput;
 }>;
 
 
@@ -213,8 +220,8 @@ export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct: { 
 
 
 export const CreateProductDocument = `
-    mutation CreateProduct($createProductInput: ProductCreateInput!) {
-  createProduct(createProductInput: $createProductInput) {
+    mutation CreateProduct($payload: ProductCreateInput!) {
+  createProduct(payload: $payload) {
     code
     label
     id
@@ -307,8 +314,8 @@ export const useRemoveProductsMutation = <
       options
     );
 export const UpdateProductDocument = `
-    mutation UpdateProduct($updateProductInput: ProductUpdateInput!) {
-  updateProduct(updateProductInput: $updateProductInput) {
+    mutation UpdateProduct($payload: ProductUpdateInput!) {
+  updateProduct(payload: $payload) {
     code
     id
     label

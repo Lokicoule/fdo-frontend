@@ -71,7 +71,7 @@ export const UpdateProductContent: React.FunctionComponent<
 
   const onSubmit = async (data: FormProps) => {
     const result = await mutateAsync({
-      updateProductInput: {
+      payload: {
         id: product.id,
         ...data,
       },

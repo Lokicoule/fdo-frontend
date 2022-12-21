@@ -53,7 +53,7 @@ export const CreateProductContent: React.FunctionComponent<
 
   const onSubmit = async (data: FormProps) => {
     const result = mutateAsync({
-      createProductInput: data,
+      payload: data,
     });
     if (!isError && Boolean(result)) {
       reset();

@@ -1,5 +1,5 @@
-mutation CreateProduct($createProductInput: ProductCreateInput!) {
-  createProduct(createProductInput: $createProductInput) {
+mutation CreateProduct($payload: ProductCreateInput!) {
+  createProduct(payload: $payload) {
     code
     label
     id

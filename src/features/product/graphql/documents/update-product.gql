@@ -1,5 +1,5 @@
-mutation UpdateProduct($updateProductInput: ProductUpdateInput!) {
-  updateProduct(updateProductInput: $updateProductInput) {
+mutation UpdateProduct($payload: ProductUpdateInput!) {
+  updateProduct(payload: $payload) {
     code
     id
     label
