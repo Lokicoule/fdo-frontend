@@ -9,8 +9,8 @@ export type CompanyFormProps = {
   companyName: string;
   vatNumber: string;
   rcsNumber: string;
-  siren: string;
-  siret: string;
+  sirenNumber: string;
+  siretNumber: string;
 };
 
 export const CompanyFormValidationSchema = yup.object().shape({
@@ -28,13 +28,13 @@ export const CompanyFormValidationSchema = yup.object().shape({
       /^RCS\s[A-Z]+\s([A-Z]\s?)?\d{3}\s?\d{3}\s?\d{3}$/,
       "Le numéro de registre du commerce et des sociétés est invalide. Ex: RCS PARIS XXX XXX XXX ou RCS PARIS XXXXXXXXX ou RCS PARIS AB XXX XXX XXX ou RCS PARIS AB XXXXXXXXX"
     ),
-  siren: yup
+  sirenNumber: yup
     .string()
     .matches(
       /^\d{3}\s?\d{3}\s?\d{3}$/,
       "Le numéro SIREN est invalide. Ex: XXX XXX XXX ou XXXXXXXXX"
     ),
-  siret: yup
+  siretNumber: yup
     .string()
     .matches(
       /^\d{3}\s?\d{3}\s?\d{3}\s\d{5}$/,
@@ -89,24 +89,24 @@ export const CompanyFormContent: React.FunctionComponent = () => {
       </Grid>
       <Grid item xs={6}>
         <FormInputText
-          name="siren"
+          name="sirenNumber"
           control={control}
           label="SIREN"
           fullWidth
-          error={!!errors.siren}
-          fieldError={errors.siren?.message}
+          error={!!errors.sirenNumber}
+          fieldError={errors.sirenNumber?.message}
           placeholder="123 456 789 ou 123456789"
           tooltip="Le numéro SIREN est composé de 9 chiffres."
         />
       </Grid>
       <Grid item xs={12}>
         <FormInputText
-          name="siret"
+          name="siretNumber"
           control={control}
           label="SIRET"
           fullWidth
-          error={!!errors.siret}
-          fieldError={errors.siret?.message}
+          error={!!errors.siretNumber}
+          fieldError={errors.siretNumber?.message}
           placeholder="123 456 789 12345 ou 123456789 12345 (SIREN, 5 chiffres du NIC)"
           tooltip="Le numéro de SIRET est composé des 9 chiffres du SIREN associés aux 5 chiffres du NIC."
         />

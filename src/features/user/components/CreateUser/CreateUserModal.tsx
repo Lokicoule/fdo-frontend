@@ -95,10 +95,10 @@ function mapCompanyDetails(
   return {
     company: {
       name: companyDetails.companyName,
-      siret: companyDetails.siret,
+      siretNumber: companyDetails.siretNumber,
       vatNumber: companyDetails.vatNumber,
       rcsNumber: companyDetails.rcsNumber,
-      siren: companyDetails.siren,
+      sirenNumber: companyDetails.sirenNumber,
     },
   };
 }

@@ -25,8 +25,8 @@ function getCompanyDetails(companyDetails: CompanyFormProps) {
     { label: "Nom d'entreprise", value: companyDetails.companyName },
     { label: "Numéro TVA", value: companyDetails.vatNumber },
     { label: "Numéro RCS", value: companyDetails.rcsNumber },
-    { label: "SIREN", value: companyDetails.siren },
-    { label: "SIRET", value: companyDetails.siret },
+    { label: "Numéro SIREN", value: companyDetails.sirenNumber },
+    { label: "Numéro SIRET", value: companyDetails.siretNumber },
   ];
 }
 

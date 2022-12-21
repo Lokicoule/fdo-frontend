@@ -45,8 +45,8 @@ export type CompanyDto = {
   id: Scalars['ID'];
   name: Scalars['String'];
   rcsNumber: Scalars['String'];
-  siren: Scalars['String'];
-  siret: Scalars['String'];
+  sirenNumber: Scalars['String'];
+  siretNumber: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
   vatNumber: Scalars['String'];
 };
@@ -55,8 +55,8 @@ export type CompanyInput = {
   id?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   rcsNumber: Scalars['String'];
-  siren: Scalars['String'];
-  siret: Scalars['String'];
+  sirenNumber: Scalars['String'];
+  siretNumber: Scalars['String'];
   vatNumber: Scalars['String'];
 };
 
@@ -78,25 +78,14 @@ export type MutationUpdateUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  _entities: Array<Maybe<_Entity>>;
   _service: _Service;
-  getUser?: Maybe<UserDto>;
-  getUserById?: Maybe<UserDto>;
-  getUsers?: Maybe<Array<UserDto>>;
+  getAuthenticatedUser?: Maybe<UserDto>;
 };
 
 
-export type QueryGetUserArgs = {
-  criterions?: InputMaybe<UserCriteriaInput>;
-};
-
-
-export type QueryGetUserByIdArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryGetUsersArgs = {
-  criterions?: InputMaybe<UserCriteriaInput>;
+export type Query_EntitiesArgs = {
+  representations: Array<Scalars['_Any']>;
 };
 
 export type UserCreateInput = {
@@ -106,11 +95,6 @@ export type UserCreateInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   phone: Scalars['String'];
-};
-
-export type UserCriteriaInput = {
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
 };
 
 export type UserDto = {
@@ -135,6 +119,8 @@ export type UserUpdateInput = {
   lastName: Scalars['String'];
   phone: Scalars['String'];
 };
+
+export type _Entity = UserDto;
 
 export type _Service = {
   __typename?: '_Service';
