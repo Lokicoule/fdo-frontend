@@ -1,15 +1,17 @@
 import { Component } from "react";
 
+export interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  failover: React.ReactNode;
+}
+
 export class ErrorBoundary extends Component<
-  {
-    children: React.ReactNode;
-    failover: React.ReactNode;
-  },
+  ErrorBoundaryProps,
   {
     hasError: boolean;
   }
 > {
-  constructor(props: { children: React.ReactNode; failover: React.ReactNode }) {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }

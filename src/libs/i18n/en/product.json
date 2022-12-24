@@ -1,0 +1,49 @@
+{
+  "products-page": {
+    "title": "List of products",
+    "columns": {
+      "code": "Product Code",
+      "label": "Product label",
+      "created-at": "Created at",
+      "updated-at": "Updated at",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Create a new product",
+      "edit": "Edit product",
+      "delete": "Delete product"
+    }
+  },
+  "create-product-page": {
+    "title": "Create a new product",
+    "form": {
+      "code": {
+        "label": "Product code",
+        "placeholder": "Product code",
+        "validation": {
+          "max": "Product code must contain at most 12 characters"
+        }
+      },
+      "label": {
+        "label": "Product label",
+        "placeholder": "Product label",
+        "validation": {
+          "min": "Product label must contain at least 3 characters",
+          "max": "Product label must contain at most 100 characters",
+          "required": "Product label is required"
+        }
+      },
+      "submit": "Create product",
+      "success": "Product created successfully"
+    }
+  },
+  "errors": {
+    "SERVICE_UNAVAILABLE": "Service unavailable",
+    "AUTHOR_ID_IS_NULL": "Author id cannot be null",
+    "PRODUCT_IS_NULL": "Product cannot be null",
+    "PRODUCT_CODE_IS_NULL": "Product code cannot be null",
+    "PRODUCT_LABEL_IS_NULL": "Product label cannot be null",
+    "PRODUCT_CODE_ALREADY_EXISTS": "Product code already exists",
+    "PRODUCT_NOT_CREATED": "Product not created"
+  }
+}

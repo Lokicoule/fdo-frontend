@@ -5,6 +5,8 @@ import common_en from "./en/common.json";
 import common_fr from "./fr/common.json";
 import auth_en from "./en/auth.json";
 import auth_fr from "./fr/auth.json";
+import product_en from "./en/product.json";
+import product_fr from "./fr/product.json";
 
 import LanguageDetector from "i18next-browser-languagedetector";
 
@@ -14,10 +16,12 @@ export const resources = {
   en: {
     auth: auth_en,
     common: common_en,
+    product: product_en,
   },
   fr: {
     auth: auth_fr,
     common: common_fr,
+    product: product_fr,
   },
 };
 

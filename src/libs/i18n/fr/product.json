@@ -1,0 +1,49 @@
+{
+  "products-page": {
+    "title": "Liste des produits",
+    "columns": {
+      "code": "Code produit",
+      "label": "Libellé produit",
+      "created-at": "Créé le",
+      "updated-at": "Mis à jour le",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Créer un produit",
+      "edit": "Modifier le produit",
+      "delete": "Supprimer le produit"
+    }
+  },
+  "create-product-page": {
+    "title": "Créer un produit",
+    "form": {
+      "code": {
+        "label": "Code produit",
+        "placeholder": "Code produit",
+        "validation": {
+          "max": "Le code produit doit contenir au plus 12 caractères"
+        }
+      },
+      "label": {
+        "label": "Libellé produit",
+        "placeholder": "Libellé produit",
+        "validation": {
+          "required": "Le libellé produit est obligatoire",
+          "min": "Le libellé produit doit contenir au moins 3 caractères",
+          "max": "Le libellé produit doit contenir au plus 100 caractères"
+        }
+      },
+      "submit": "Créer le produit",
+      "success": " a été créé avec succès"
+    }
+  },
+  "errors": {
+    "SERVICE_UNAVAILABLE": "Service indisponible",
+    "AUTHOR_ID_IS_NULL": "Author id cannot be null",
+    "PRODUCT_IS_NULL": "Product cannot be null",
+    "PRODUCT_CODE_IS_NULL": "Product code cannot be null",
+    "PRODUCT_LABEL_IS_NULL": "Product label cannot be null",
+    "PRODUCT_CODE_ALREADY_EXISTS": "Product code already exists",
+    "PRODUCT_NOT_CREATED": "Product not created"
+  }
+}

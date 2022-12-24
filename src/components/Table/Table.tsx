@@ -3,6 +3,7 @@ import MuiTable from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import { TableBody } from "./components/TableBody";
+import { TableBodySkeleton } from "./components/TableBodySkeleton";
 import { TableHeader } from "./components/TableHeader";
 import { TableToolbar, TableToolbarProps } from "./components/TableToolbar";
 import { useTablePagination } from "./hooks/useTablePagination";
@@ -24,12 +25,13 @@ type TableProps = {
   data: any[];
   toolbar: TableToolbarProps;
   onRemove: (ids: string[]) => void;
+  loading: boolean;
 };
 
 const ROWS_PER_PAGE = [10, 25, 50, 100];
 
 export const Table: React.FunctionComponent<TableProps> = (props) => {
-  const { columns, data, toolbar, onRemove } = props;
+  const { columns, data, toolbar, onRemove, loading } = props;
 
   const [sort, { onSort }] = useTableSort();
   const [selected, { onSelect, onDeselectAll, onSelectAll }] = useTableSelect();
@@ -77,16 +79,20 @@ export const Table: React.FunctionComponent<TableProps> = (props) => {
             columns={columns}
             rowCount={data.length}
           />
-          <TableBody
-            data={filteredList.slice(
-              page * rowsPerPage,
-              page * rowsPerPage + rowsPerPage
-            )}
-            columns={columns}
-            emptyRows={emptyRows}
-            onSelect={onSelect}
-            selected={selected}
-          ></TableBody>
+          {loading ? (
+            <TableBodySkeleton columns={columns} />
+          ) : (
+            <TableBody
+              data={filteredList.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )}
+              columns={columns}
+              emptyRows={emptyRows}
+              onSelect={onSelect}
+              selected={selected}
+            ></TableBody>
+          )}
         </MuiTable>
       </TableContainer>
       {selected.length > 0 && (
@@ -111,7 +117,7 @@ export const Table: React.FunctionComponent<TableProps> = (props) => {
         }}
         rowsPerPageOptions={ROWS_PER_PAGE}
         component="div"
-        count={data.length}
+        count={data?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={onChangePage}

@@ -1,3 +1,24 @@
 {
-  "title": "FDO"
+  "title": "FDO",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "add": "Add",
+  "edit": "Edit",
+  "close": "Close",
+  "ok": "OK",
+  "yes": "Yes",
+  "no": "No",
+  "back": "Back",
+  "next": "Next",
+  "finish": "Finish",
+  "search": "Search",
+  "clear": "Clear",
+  "reset": "Reset",
+  "next-step": "Next Step",
+  "previous-step": "Previous Step",
+  "errors": {
+    "network-error": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",
+    "unknown-error": "Une erreur inconnue est survenue. Veuillez réessayer plus tard s'il vous plaît."
+  }
 }

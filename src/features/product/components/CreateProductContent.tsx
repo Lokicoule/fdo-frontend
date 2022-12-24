@@ -5,6 +5,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+
+import { useTranslation } from "react-i18next";
+import { buildKeyFromErrorMessage } from "~/libs/i18n/i18n.utils";
+
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -14,16 +18,13 @@ import { useYupValidationResolver } from "~/hooks/useYupValidationResolver";
 
 import { queryClient } from "../../../libs/react-query-client";
 import { useCreateProductMutation } from "../graphql/product.client";
+import { useMemo } from "react";
+import { notify } from "~/libs/notifications";
 
 type FormProps = {
   code?: string;
   label: string;
 };
-
-const validationSchema = yup.object().shape({
-  code: yup.string(),
-  label: yup.string().required("Le nom du produit est requis."),
-});
 
 type CreateProductContentProps = {
   onClose: () => void;
@@ -34,14 +35,47 @@ export const CreateProductContent: React.FunctionComponent<
 > = (props) => {
   const { onClose } = props;
 
+  const { t } = useTranslation(["product"]);
+
   const { mutateAsync, isLoading, isError, error } = useCreateProductMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["GetProducts"],
       });
       onClose();
+      notify.success("Product created successfully.");
     },
   });
+
+  const validationSchema = useMemo(
+    () =>
+      yup.object().shape({
+        code: yup
+          .string()
+          .max(
+            12,
+            t("product:create-product-page.form.code.validation.max") ??
+              "The code must be at most 12 characters long."
+          ),
+        label: yup
+          .string()
+          .min(
+            3,
+            t("product:create-product-page.form.label.validation.min") ??
+              "The label must be at least 3 characters long."
+          )
+          .max(
+            100,
+            t("product:create-product-page.form.label.validation.max") ??
+              "The label must be at most 100 characters long."
+          )
+          .required(
+            t("product:create-product-page.form.label.validation.required") ??
+              "The label is required."
+          ),
+      }),
+    []
+  );
 
   const methods = useForm<FormProps>({
     resolver: useYupValidationResolver(validationSchema),
@@ -66,7 +100,7 @@ export const CreateProductContent: React.FunctionComponent<
         <InventoryIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Creer un produit
+        {t("product:create-product-page.title")}
       </Typography>
       <Box
         component="form"
@@ -79,7 +113,10 @@ export const CreateProductContent: React.FunctionComponent<
             <FormInputText
               name="code"
               control={control}
-              label="Code"
+              label={t("product:create-product-page.form.code.label")}
+              placeholder={
+                t("product:create-product-page.form.code.placeholder") ?? ""
+              }
               fullWidth
               error={!!errors.code}
               fieldError={errors.code?.message}
@@ -89,7 +126,10 @@ export const CreateProductContent: React.FunctionComponent<
             <FormInputText
               name="label"
               control={control}
-              label="Libellé produit"
+              label={t("product:create-product-page.form.label.label")}
+              placeholder={
+                t("product:create-product-page.form.label.placeholder") ?? ""
+              }
               required
               fullWidth
               error={!!errors.label}
@@ -105,11 +145,17 @@ export const CreateProductContent: React.FunctionComponent<
           sx={{ mt: 3, mb: 2 }}
           disabled={isLoading}
         >
-          Sauvegarder
+          {t("product:create-product-page.form.submit")}
         </Button>
         {isError && (
           <Alert severity="error" sx={{ mt: 1 }}>
-            {JSON.stringify(error)}
+            {t(
+              buildKeyFromErrorMessage({
+                ns: ["product"],
+                baseKey: "errors",
+                error: error,
+              })
+            )}
           </Alert>
         )}
       </Box>

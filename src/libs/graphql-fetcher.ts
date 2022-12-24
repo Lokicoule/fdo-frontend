@@ -4,6 +4,19 @@ type AuthHeaderProps = {
   authorization: string;
 };
 
+export class FetchError extends Error {
+  private _status: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this._status = status ?? 500;
+  }
+
+  get status() {
+    return this._status;
+  }
+}
+
 export function fetchData<TData, TVariables>(
   query: string,
   variables?: TVariables,
@@ -16,29 +29,31 @@ export function fetchData<TData, TVariables>(
     if (Boolean(accessToken)) {
       authHeaders["authorization"] = `Bearer ${accessToken}`;
     }
-    console.log(authHeaders);
-    //todo gateway endpoint should be in .env
-    const res = await fetch(
-      import.meta.env.VITE_ENDPOINT_GRAPHQL_USERS_SERVICE,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...authHeaders,
-          ...(options ?? {}),
-        },
-        body: JSON.stringify({ query, variables }),
+
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_ENDPOINT_GRAPHQL_USERS_SERVICE,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeaders,
+            ...(options ?? {}),
+          },
+          body: JSON.stringify({ query, variables }),
+        }
+      );
+
+      const json = await res.json();
+
+      if (json.errors) {
+        const { message } = json.errors[0];
+        throw new FetchError(message, res.status);
       }
-    );
 
-    const json = await res.json();
-
-    if (json.errors) {
-      const { message } = json.errors[0];
-
-      throw new Error(message);
+      return json.data;
+    } catch (error: unknown) {
+      throw new FetchError("SERVICE_UNAVAILABLE", 503);
     }
-
-    return json.data;
   };
 }

@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
 import { ColumnData } from "~/components/Table";
 
-type TableBodyProps = {
+export type TableBodyProps = {
   columns: ColumnData[];
   data: any[];
   emptyRows: number;

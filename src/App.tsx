@@ -1,6 +1,6 @@
 import "./libs/i18n/config"; //TODO check bootstraped after imports
 
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 
 import HomeIcon from "@mui/icons-material/Home";
 
@@ -9,7 +9,6 @@ import { AUTH_ROUTES } from "~/features/authentication/constants/auth-routes.con
 import { ThemeMenu } from "~/features/preferences/components/ThemeMenu";
 import { ProfileMenu } from "~/features/profile/components/ProfileMenu";
 import { RequireUserGroup } from "~/features/user/components/RequireUserGroup";
-import { AppShell } from "~/layouts/AppShell";
 import { ConfirmRegisterPage } from "~/pages/ConfirmRegisterPage";
 import { ForgotPasswordPage } from "~/pages/ForgotPasswordPage";
 import { LoginPage } from "~/pages/LoginPage";
@@ -19,6 +18,11 @@ import { ProductsContent } from "./features/product/components/ProductsContent";
 
 import "./App.css";
 import { LanguageMenu } from "./features/preferences/components/LanguageMenu";
+import { Loading } from "./layouts/AppShell/components/Loading";
+
+const AppShell = lazy(() =>
+  import("./layouts/AppShell").then((module) => ({ default: module.AppShell }))
+);
 
 const Error403Page = Loadable(
   lazy(() =>
@@ -132,13 +136,15 @@ function getNavLinks() {
 
 function App() {
   return (
-    <AppShell
-      title="Fruits d'orient"
-      menuButtons={getMenus()}
-      routes={getRoutes()}
-      navLinks={getNavLinks()}
-      failover={<Error500Page />}
-    />
+    <Suspense fallback={<Loading />}>
+      <AppShell
+        title="Fruits d'orient"
+        menuButtons={getMenus()}
+        routes={getRoutes()}
+        navLinks={getNavLinks()}
+        failover={<Error500Page />}
+      />
+    </Suspense>
   );
 }
 
