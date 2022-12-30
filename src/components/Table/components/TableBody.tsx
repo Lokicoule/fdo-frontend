@@ -5,6 +5,8 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useTheme } from "@mui/material/styles";
 import { ColumnData } from "~/components/Table";
+import { useMemo } from "react";
+import { Rowing } from "@mui/icons-material";
 
 export type TableBodyProps = {
   columns: ColumnData[];
@@ -14,6 +16,66 @@ export type TableBodyProps = {
   onSelect: (name: string) => void;
 };
 
+type CellProps = {
+  row: any;
+  column: ColumnData;
+  idx: number;
+  displayOptional: boolean;
+};
+
+type CellsListProps = {
+  row: any;
+  columns: ColumnData[];
+  displayOptional: boolean;
+};
+
+const Cell: React.FunctionComponent<CellProps> = ({
+  row,
+  column,
+  idx,
+  displayOptional,
+}) => {
+  if (column.optional && !displayOptional) {
+    return null;
+  }
+
+  const renderCellContent = (item: any, column: ColumnData, idx: number) => {
+    if (column.path) {
+      return item[column.path];
+    }
+    if (column.cellRenderer) {
+      return column.cellRenderer(item, idx);
+    }
+    return item[column.key];
+  };
+
+  return <TableCell>{renderCellContent(row, column, idx)}</TableCell>;
+};
+
+const CellsList: React.FunctionComponent<CellsListProps> = ({
+  row,
+  columns,
+  displayOptional,
+}) => {
+  const createCellKey = (item: any, column: ColumnData) => {
+    return `key_cell_${item.id}_${column.path ?? column.key}`;
+  };
+
+  return (
+    <>
+      {columns.map((column, idx) => (
+        <Cell
+          key={createCellKey(row, column)}
+          row={row}
+          column={column}
+          idx={idx}
+          displayOptional={displayOptional}
+        />
+      ))}
+    </>
+  );
+};
+
 export const TableBody = ({
   columns,
   data,
@@ -21,26 +83,11 @@ export const TableBody = ({
   selected,
   onSelect,
 }: TableBodyProps) => {
+  console.info("TableBody render");
   const theme = useTheme();
   const displayOptional = useMediaQuery(theme.breakpoints.up("sm"));
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
-  const renderCellContent = (item: any, column: ColumnData, idx: number) => {
-    if (column.path) {
-      return item[column.path];
-    }
-
-    if (column.cellRenderer) {
-      return column.cellRenderer(item, idx);
-    }
-
-    return item[column.key];
-  };
-
-  const createCellKey = (item: any, column: ColumnData) => {
-    return `key_cell_${item.id}_${column.path ?? column.key}`;
-  };
 
   return (
     <MuiTableBody>
@@ -51,7 +98,7 @@ export const TableBody = ({
         return (
           <TableRow
             hover
-            onClick={() => onSelect(row.id)}
+            //onClick={() => onSelect(row.id)}
             role="checkbox"
             aria-checked={isItemSelected}
             tabIndex={-1}
@@ -65,15 +112,14 @@ export const TableBody = ({
                 inputProps={{
                   "aria-labelledby": labelId,
                 }}
+                onClick={() => onSelect(row.id)}
               />
             </TableCell>
-            {columns.map((column, idx) =>
-              column.optional && !displayOptional ? null : (
-                <TableCell key={createCellKey(row, column)}>
-                  {renderCellContent(row, column, idx)}
-                </TableCell>
-              )
-            )}
+            <CellsList
+              row={row}
+              columns={columns}
+              displayOptional={displayOptional}
+            />
           </TableRow>
         );
       })}

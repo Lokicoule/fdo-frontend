@@ -1,13 +1,11 @@
-import Box from "@mui/material/Box";
+import TranslateIcon from "@mui/icons-material/Translate";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useTranslation, Trans } from "react-i18next";
-import TranslateIcon from "@mui/icons-material/Translate";
+import { useTranslation } from "react-i18next";
 
-import { MenuButton } from "~/components/MenuButton";
+import Menu from "~/components/Menu";
 
 const languages = [
   {
@@ -28,24 +26,34 @@ export const LanguageMenu: React.FunctionComponent = () => {
   };
 
   return (
-    <MenuButton
-      renderButton={({ onClick }) => (
-        <Tooltip title="Language">
-          <IconButton onClick={onClick}>
+    <Menu
+      renderToggle={({ onClick }) => (
+        <Tooltip title={t("Language")}>
+          <IconButton
+            sx={{
+              color: "inherit",
+            }}
+            onClick={onClick}
+          >
             <TranslateIcon />
           </IconButton>
         </Tooltip>
       )}
-      renderMenu={({ onClose }) =>
-        languages.map((language) => (
-          <MenuItem
+    >
+      <Menu.List>
+        {languages.map((language) => (
+          <Menu.Item
+            sx={{}}
             key={language.code}
             onClick={() => handleChangeLanguage(language.code)}
           >
-            <Typography variant="inherit">{language.name}</Typography>
-          </MenuItem>
-        ))
-      }
-    />
+            <ListItemIcon>
+              {language.code === i18n.language ? "✓" : ""}
+            </ListItemIcon>
+            <Typography>{language.name}</Typography>
+          </Menu.Item>
+        ))}
+      </Menu.List>
+    </Menu>
   );
 };

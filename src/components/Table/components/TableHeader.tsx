@@ -34,6 +34,7 @@ export const TableHeader = (props: TableHeaderProps) => {
     columns,
   } = props;
 
+  console.info("TableHeader render");
   const theme = useTheme();
   const displayOptional = useMediaQuery(theme.breakpoints.up("sm"));
 

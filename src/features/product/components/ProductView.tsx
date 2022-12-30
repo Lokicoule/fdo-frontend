@@ -3,9 +3,12 @@ import { Fragment } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { ProductDto } from "../graphql/product.client";
+import { ProductDto } from "../api/product.client";
 
-function getProductDetails(productDetails: ProductDto) {
+function getProductDetails(productDetails: ProductDto): {
+  label: string;
+  value: string;
+}[] {
   return [
     { label: "Code produit", value: productDetails.code },
     { label: "Libellé produit", value: productDetails.label },
@@ -14,29 +17,27 @@ function getProductDetails(productDetails: ProductDto) {
   ];
 }
 
-type ReviewProps = {
-  title: string;
-  values: { label: string; value: string }[];
+type ProductViewProps = {
+  product: ProductDto;
 };
 
-const Review: React.FunctionComponent<ReviewProps> = (props) => {
-  const { title, values } = props;
+const ProductView: React.FunctionComponent<ProductViewProps> = (props) => {
+  const { product } = props;
+
+  const productDetails = getProductDetails(product);
 
   return (
-    <>
-      <Typography
-        variant="overline"
-        gutterBottom
-        fontWeight={700}
-        fontSize={30}
-        sx={{
-          mb: 2,
-        }}
-      >
-        {title}
-      </Typography>
+    <Paper
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        p: 2,
+      }}
+    >
       <Grid container>
-        {values.map(({ label, value }) => (
+        {productDetails.map(({ label, value }) => (
           <Fragment key={label}>
             <Grid
               item
@@ -64,33 +65,9 @@ const Review: React.FunctionComponent<ReviewProps> = (props) => {
           </Fragment>
         ))}
       </Grid>
-    </>
-  );
-};
-
-type ReviewProductContentProps = {
-  product: ProductDto;
-};
-
-export const ReviewProductContent: React.FunctionComponent<
-  ReviewProductContentProps
-> = (props) => {
-  const { product } = props;
-
-  const productDetails = getProductDetails(product);
-
-  return (
-    <Paper
-      elevation={6}
-      sx={{
-        p: 2,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Review title="Fiche Produit" values={productDetails} />
     </Paper>
   );
 };
+
+export type { ProductViewProps };
+export default ProductView;

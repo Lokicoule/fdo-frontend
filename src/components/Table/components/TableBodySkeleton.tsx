@@ -17,6 +17,8 @@ export const TableBodySkeleton: React.FunctionComponent<
 > = (props) => {
   const { columns } = props;
 
+  console.info("TableBodySkeleton render");
+
   const theme = useTheme();
   const displayOptional = useMediaQuery(theme.breakpoints.up("sm"));
 

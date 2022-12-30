@@ -1,4 +1,4 @@
 // FIX global is undefined in amazon-cognito-identity-js
-(window as any).global = window;
+(window satisfies Window).global = window;
 
 export {};

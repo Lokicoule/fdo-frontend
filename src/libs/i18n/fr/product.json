@@ -37,6 +37,18 @@
       "success": " a été créé avec succès"
     }
   },
+  "notifications": {
+    "product-created": "Le produit a été créé avec succès",
+    "product-updated": "Le produit a été mis à jour avec succès",
+    "product-deleted": "Le produit a été supprimé avec succès",
+    "products-deleted": "Les produits ont été supprimés avec succès",
+    "products-not-deleted": "Les produits n'ont pas pu être supprimés",
+    "product-not-deleted": "Le produit n'a pas pu être supprimé",
+    "product-not-found": "Le produit n'a pas été trouvé",
+    "product-not-updated": "Le produit n'a pas pu être mis à jour",
+    "product-not-created": "Le produit n'a pas pu être créé",
+    "get-products-error": "Une erreur est survenue lors de la récupération des produits"
+  },
   "errors": {
     "SERVICE_UNAVAILABLE": "Service indisponible",
     "AUTHOR_ID_IS_NULL": "Author id cannot be null",

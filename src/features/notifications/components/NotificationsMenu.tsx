@@ -1,4 +1,4 @@
-import Notifications from "@mui/icons-material/Notifications";
+/* import Notifications from "@mui/icons-material/Notifications";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
@@ -52,3 +52,4 @@ export const NotificationsMenu: React.FunctionComponent = () => {
     />
   );
 };
+ */

@@ -27,6 +27,8 @@ export const TableToolbar: React.FunctionComponent<InnerTableToolbarProps> = (
     customAdditionalRenderMenu,
   } = props;
 
+  console.info("TableToolbar render");
+
   return (
     <Toolbar
       sx={{

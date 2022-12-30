@@ -45,5 +45,17 @@
     "PRODUCT_LABEL_IS_NULL": "Product label cannot be null",
     "PRODUCT_CODE_ALREADY_EXISTS": "Product code already exists",
     "PRODUCT_NOT_CREATED": "Product not created"
+  },
+  "notifications": {
+    "product-created": "Product created successfully",
+    "product-updated": "Product updated successfully",
+    "product-deleted": "Product deleted successfully",
+    "products-deleted": "Products deleted successfully",
+    "products-not-deleted": "Products not deleted",
+    "product-not-deleted": "Product not deleted",
+    "product-not-found": "Product not found",
+    "product-not-updated": "Product not updated",
+    "product-not-created": "Product not created",
+    "get-products-error": "Error while getting products"
   }
 }

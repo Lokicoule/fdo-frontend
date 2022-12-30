@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import MuiTable from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
+import { useCallback, useMemo } from "react";
 import { TableBody } from "./components/TableBody";
 import { TableBodySkeleton } from "./components/TableBodySkeleton";
 import { TableHeader } from "./components/TableHeader";
@@ -30,8 +31,33 @@ type TableProps = {
 
 const ROWS_PER_PAGE = [10, 25, 50, 100];
 
+const SelectedItems = ({ selected }: { selected: string[] }) => {
+  return (
+    <>
+      {selected.length > 0 && (
+        <Typography
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            padding: "0 16px",
+            height: 56,
+            color: "text.secondary",
+          }}
+          variant="subtitle1"
+          component="div"
+        >
+          {selected.length} élément(s) sélectionné(s)
+        </Typography>
+      )}
+    </>
+  );
+};
+
 export const Table: React.FunctionComponent<TableProps> = (props) => {
   const { columns, data, toolbar, onRemove, loading } = props;
+
+  console.info("Table render");
 
   const [sort, { onSort }] = useTableSort();
   const [selected, { onSelect, onDeselectAll, onSelectAll }] = useTableSelect();
@@ -41,23 +67,31 @@ export const Table: React.FunctionComponent<TableProps> = (props) => {
   ] = useTablePagination(data.length);
   const [searchTerm, searchHandlers] = useTableSearch();
 
-  const handleRemove = () => {
+  const handleRemove = useCallback(() => {
     onRemove(selected);
     onDeselectAll();
-  };
+  }, [onRemove, onDeselectAll, selected]);
 
-  const sortedList = sort.isReverse
-    ? data.sort((a, b) => (a[sort.property] > b[sort.property] ? -1 : 1))
-    : data.sort((a, b) => (a[sort.property] > b[sort.property] ? 1 : -1));
+  const sortedList = useMemo(
+    () =>
+      sort.isReverse
+        ? data.sort((a, b) => (a[sort.property] > b[sort.property] ? -1 : 1))
+        : data.sort((a, b) => (a[sort.property] > b[sort.property] ? 1 : -1)),
+    [data, sort.isReverse, sort.property]
+  );
 
-  const filteredList = sortedList.filter((item) => {
-    return Object.keys(item).some((key) => {
-      return item[key]
-        .toString()
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-    });
-  });
+  const filteredList = useMemo(
+    () =>
+      sortedList.filter((item) => {
+        return Object.keys(item).some((key) => {
+          return item[key]
+            .toString()
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+        });
+      }),
+    [sortedList, searchTerm]
+  );
 
   return (
     <>
@@ -95,22 +129,7 @@ export const Table: React.FunctionComponent<TableProps> = (props) => {
           )}
         </MuiTable>
       </TableContainer>
-      {selected.length > 0 && (
-        <Typography
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            padding: "0 16px",
-            height: 56,
-            color: "text.secondary",
-          }}
-          variant="subtitle1"
-          component="div"
-        >
-          {selected.length} élément(s) sélectionné(s)
-        </Typography>
-      )}
+      <SelectedItems selected={selected} />
       <TablePagination
         sx={{
           color: "text.secondary",

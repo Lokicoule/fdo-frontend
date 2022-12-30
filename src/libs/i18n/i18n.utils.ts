@@ -1,15 +1,9 @@
 import i18next from "i18next";
 
-function getErrorMessage(error: unknown): string | undefined {
-  if (error instanceof Error) {
-    return error.message;
-  }
-}
-
 interface BuildKeyFromErrorMessageOptions {
   ns: string[];
   baseKey?: string;
-  error: unknown;
+  error: Error;
   defaultKey?: string;
 }
 
@@ -23,14 +17,17 @@ export function buildKeyFromErrorMessage(
   options: BuildKeyFromErrorMessageOptions
 ): string {
   const { ns, baseKey, error, defaultKey } = options;
-  const errorMessage = getErrorMessage(error);
-  if (errorMessage) {
-    for (const namespace of ns) {
-      const key = `${namespace}:${baseKey ?? ""}.${errorMessage}`;
-      console.log("key", key);
-      if (i18next.exists(key)) {
-        return key;
-      }
+
+  for (const namespace of ns) {
+    const key = `${namespace}:${baseKey ?? ""}.${error.message}`;
+    console.groupCollapsed("buildKeyFromErrorMessage");
+    console.log("namespace", namespace);
+    console.log("baseKey", baseKey);
+    console.log("error.message", error.message);
+    console.log("key", key);
+    console.groupEnd();
+    if (i18next.exists(key)) {
+      return key;
     }
   }
 

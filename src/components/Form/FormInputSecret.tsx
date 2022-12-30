@@ -25,7 +25,7 @@ export const FormInputSecret: React.FunctionComponent<FormInputSecretProps> = (
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={toggleShowPassword} edge="end">
+              <IconButton onClick={toggleShowPassword.toggle} edge="end">
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>

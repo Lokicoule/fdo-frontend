@@ -14,8 +14,7 @@ import { ForgotPasswordPage } from "~/pages/ForgotPasswordPage";
 import { LoginPage } from "~/pages/LoginPage";
 import { RegisterPage } from "~/pages/RegisterPage";
 import { ResetPasswordPage } from "~/pages/ResetPasswordPage";
-import { ProductsContent } from "./features/product/components/ProductsContent";
-
+import { ProductsContent } from "~/features/product/components";
 import "./App.css";
 import { LanguageMenu } from "./features/preferences/components/LanguageMenu";
 import { Loading } from "./layouts/AppShell/components/Loading";
