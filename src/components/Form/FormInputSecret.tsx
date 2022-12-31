@@ -15,7 +15,7 @@ export const FormInputSecret: React.FunctionComponent<FormInputSecretProps> = (
   const [showPassword, toggleShowPassword] = useToggle(false);
 
   return (
-    <>
+    <div>
       <FormInputText
         {...inputProps}
         name={name}
@@ -37,6 +37,6 @@ export const FormInputSecret: React.FunctionComponent<FormInputSecretProps> = (
           {fieldError}
         </Alert>
       )}
-    </>
+    </div>
   );
 };

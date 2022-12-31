@@ -20,7 +20,7 @@ export const FormInputText: React.FunctionComponent<FormInputTextProps> = (
   };
 
   return (
-    <>
+    <div>
       <Controller
         render={({ field }) =>
           Boolean(tooltip)
@@ -36,6 +36,6 @@ export const FormInputText: React.FunctionComponent<FormInputTextProps> = (
           {fieldError}
         </Alert>
       )}
-    </>
+    </div>
   );
 };

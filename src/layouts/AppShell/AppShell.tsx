@@ -10,7 +10,7 @@ import { styled, ThemeProvider } from "@mui/material/styles";
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Header } from "./components/Header";
-import { Loading } from "./components/Loading";
+import { Loading } from "../../components/Elements/Loader";
 import { Navbar } from "./components/Navbar";
 
 import { useApplicationStore } from "./hooks/useApplicationStore";
@@ -128,20 +128,7 @@ export const AppShell: React.FunctionComponent<AppShellProps> = (props) => {
         />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
-          <ErrorBoundary failover={failover}>
-            <Routes>
-              {routes?.map((route) => {
-                return (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<route.element />}
-                  />
-                );
-              })}
-            </Routes>
-            <Outlet />
-          </ErrorBoundary>
+          <Outlet />
         </Box>
       </Box>
     </ThemeProvider>

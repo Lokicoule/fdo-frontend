@@ -11,7 +11,7 @@ import { buildKeyFromErrorMessage } from "~/libs/i18n/i18n.utils";
 
 import { FetchError } from "~/libs/graphql-fetcher";
 import { notify } from "~/libs/notifications";
-import { queryClient } from "~/libs/react-query-client";
+import { queryClient } from "~/libs/react-query";
 
 import { Table } from "~/components/Table";
 import { RemoveMenu } from "~/components/RemoveMenu";

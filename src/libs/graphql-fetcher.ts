@@ -1,4 +1,7 @@
+import { API_URL } from "~/config";
 import { authService } from "~/features/authentication/services/authService";
+
+//TODO : Use Axios instead of fetch
 
 type AuthHeaderProps = {
   authorization: string;
@@ -31,18 +34,15 @@ export function fetchData<TData, TVariables>(
     }
 
     try {
-      const res = await fetch(
-        import.meta.env.VITE_ENDPOINT_GRAPHQL_USERS_SERVICE,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...authHeaders,
-            ...(options ?? {}),
-          },
-          body: JSON.stringify({ query, variables }),
-        }
-      );
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeaders,
+          ...(options ?? {}),
+        },
+        body: JSON.stringify({ query, variables }),
+      });
 
       const json = await res.json();
 

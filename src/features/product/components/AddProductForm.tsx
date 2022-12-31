@@ -16,7 +16,7 @@ import { useYupValidationResolver } from "~/hooks/useYupValidationResolver";
 import { useMemo } from "react";
 import { FetchError } from "~/libs/graphql-fetcher";
 import { notify } from "~/libs/notifications";
-import { queryClient } from "../../../libs/react-query-client";
+import { queryClient } from "../../../libs/react-query";
 import { useCreateProductMutation } from "../api/product.client";
 
 type FormProps = {

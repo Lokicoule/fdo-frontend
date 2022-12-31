@@ -1,28 +1,25 @@
-import {
-  Alert,
-  FormControl,
-  InputLabel,
-  Select,
-  SelectProps,
-} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectProps } from "@mui/material/Select";
 
-import { Controller } from "react-hook-form";
+import { Controller, ControllerProps, FieldError } from "react-hook-form";
 
-import { FormInputProps } from "./FormInputProps";
+export type SelectFieldProps = SelectProps &
+  Pick<ControllerProps, "name" | "control"> & {
+    error?: FieldError | undefined;
+  };
 
-export type FormInputSelectProps = SelectProps &
-  Omit<FormInputProps, "tooltip">;
-
-export const FormInputSelect: React.FunctionComponent<FormInputSelectProps> = (
+export const SelectField: React.FunctionComponent<SelectFieldProps> = (
   props
 ) => {
-  const { name, label, control, fieldError, children, ...selectProps } = props;
+  const { name, label, control, error, children, ...selectProps } = props;
 
   const labelId = `${name}-label`;
   const ariaId = `${name}-error`;
   return (
     <div>
-      <FormControl error={selectProps.error} fullWidth={selectProps.fullWidth}>
+      <FormControl error={error} fullWidth={selectProps.fullWidth}>
         <InputLabel id={labelId}>{label}</InputLabel>
         <Controller
           render={({ field }) => (
@@ -41,9 +38,9 @@ export const FormInputSelect: React.FunctionComponent<FormInputSelectProps> = (
           defaultValue={selectProps.defaultValue ?? ""}
         />
       </FormControl>
-      {fieldError && (
+      {error?.message && (
         <Alert severity="error" sx={{ mt: 1 }}>
-          {fieldError}
+          {error.message}
         </Alert>
       )}
     </div>

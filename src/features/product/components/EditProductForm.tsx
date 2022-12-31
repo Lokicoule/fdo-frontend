@@ -25,7 +25,7 @@ import {
   ProductDto,
   useUpdateProductMutation,
 } from "~/features/product/api/product.client";
-import { queryClient } from "../../../libs/react-query-client";
+import { queryClient } from "../../../libs/react-query";
 import { FetchError } from "~/libs/graphql-fetcher";
 import { notify } from "~/libs/notifications";
 import { useTranslation } from "react-i18next";

@@ -1,0 +1,5 @@
+export const API_URL = import.meta.env.VITE_ENDPOINT_GRAPHQL_USERS_SERVICE;
+export const COGNITO = {
+  USER_POOL_ID: import.meta.env.VITE_REACT_APP_COGNITO_USER_POOL_ID,
+  CLIENT_ID: import.meta.env.VITE_REACT_APP_COGNITO_USER_POOL_CLIENT_ID,
+};
