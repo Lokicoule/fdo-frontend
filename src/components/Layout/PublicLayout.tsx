@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -36,7 +37,6 @@ function PublicNavigation() {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    event.preventDefault();
   };
 
   return (
@@ -55,8 +55,12 @@ function PublicNavigation() {
   );
 }
 
-export const PublicLayout = (props: Props) => {
+export const PublicLayout: React.FunctionComponent<React.PropsWithChildren> = (
+  props
+) => {
   console.info("PublicLayout", props);
+
+  const { children } = props;
 
   return (
     <>
@@ -68,8 +72,26 @@ export const PublicLayout = (props: Props) => {
         </AppBar>
       </ElevationScroll>
       <Toolbar />
-      <Container>
-        <Box sx={{ my: 2 }}>{props.children}</Box>
+      <Container
+        maxWidth="sm"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <Paper
+          sx={{
+            p: 5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          elevation={5}
+        >
+          {children}
+        </Paper>
       </Container>
     </>
   );
