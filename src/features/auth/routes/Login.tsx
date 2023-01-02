@@ -1,6 +1,6 @@
-import { Grid, Link } from "@mui/material";
+import { Button, Grid, Link, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { FORGOT_PASSWORD_PATH } from "./ForgotPassword";
 import { REGISTER_PATH } from "./Register";
@@ -11,62 +11,42 @@ import { LoginForm } from "../components/LoginForm";
 export const LOGIN_PATH = "/login";
 
 export const Login: React.FunctionComponent = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["auth"]);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const origin = location.state?.from?.pathname ?? "/app";
 
   const handleSuccess = () => {
-    navigate("/app");
+    navigate(origin);
   };
 
   return (
-    <Layout title={t("auth:login.title")}>
+    <Layout title={t("login.title")} description={t("login.description")}>
       <LoginForm onSuccess={handleSuccess} />
-      <Grid container>
-        <Grid
-          item
-          xs={12}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ mt: 1, width: "100%" }}
+      >
+        <Button
           sx={{
-            mt: 1,
-            display: "flex",
-            justifyContent: "flex-end",
+            textTransform: "none",
           }}
+          href={FORGOT_PASSWORD_PATH}
+          color="secondary"
         >
-          <Link
-            sx={{
-              textDecoration: "none",
-              ":hover": {
-                textDecoration: "underline",
-              },
-            }}
-            href={REGISTER_PATH}
-            variant="body2"
-          >
-            {t("auth:login.actions.no_account")}
-          </Link>
-        </Grid>
-        <Grid
-          item
-          xs={12}
+          {t("forgot_password.display_name")}
+        </Button>
+        <Button
           sx={{
-            mt: 1,
-            display: "flex",
-            justifyContent: "flex-end",
+            textTransform: "none",
           }}
+          href={REGISTER_PATH}
         >
-          <Link
-            sx={{
-              textDecoration: "none",
-              ":hover": {
-                textDecoration: "underline",
-              },
-            }}
-            href={FORGOT_PASSWORD_PATH}
-            variant="body2"
-          >
-            {t("auth:login.actions.forgot_password")}
-          </Link>
-        </Grid>
-      </Grid>
+          {t("register.display_name")}
+        </Button>
+      </Stack>
     </Layout>
   );
 };

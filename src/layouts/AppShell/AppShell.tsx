@@ -1,4 +1,4 @@
-import { Link, Outlet, Route, Routes } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,9 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled, ThemeProvider } from "@mui/material/styles";
 
-import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Header } from "./components/Header";
-import { Loading } from "../../components/Elements/Loader";
 import { Navbar } from "./components/Navbar";
 
 import { useApplicationStore } from "./hooks/useApplicationStore";

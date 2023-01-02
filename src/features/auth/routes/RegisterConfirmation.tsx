@@ -1,4 +1,4 @@
-import { Grid, Link } from "@mui/material";
+import { Button, Grid, Link } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Layout } from "../components/Layout";
@@ -8,7 +8,7 @@ import { LOGIN_PATH } from "./Login";
 export const REGISTER_CONFIRMATION_PATH = "/register-confirmation";
 
 export const RegisterConfirmation: React.FunctionComponent = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["auth"]);
   const navigate = useNavigate();
 
   const handleSuccess = () => {
@@ -16,15 +16,21 @@ export const RegisterConfirmation: React.FunctionComponent = () => {
   };
 
   return (
-    <Layout title={t("register-confirmation.title")}>
+    <Layout
+      title={t("register-confirmation.title")}
+      description={t("register-confirmation.description")}
+    >
       <RegisterConfirmationForm onSuccess={handleSuccess} />
-      <Grid container justifyContent="flex-end">
-        <Grid item>
-          <Link href={LOGIN_PATH} variant="body2">
-            {t("register-confirmation.actions.already_have_account")}
-          </Link>
-        </Grid>
-      </Grid>
+      <Button
+        sx={{
+          textTransform: "none",
+          mt: 2,
+          alignSelf: "flex-end",
+        }}
+        href={LOGIN_PATH}
+      >
+        {t("login.display_name")}
+      </Button>
     </Layout>
   );
 };

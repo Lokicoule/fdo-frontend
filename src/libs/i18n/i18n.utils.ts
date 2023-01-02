@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import i18next, { StringMap, t, TOptions } from "i18next";
 
 interface BuildKeyFromErrorMessageOptions {
   ns: string[];
@@ -35,5 +35,5 @@ export function buildKeyFromErrorMessage(
     return defaultKey;
   }
 
-  return defaultKey ?? "common:errors.unknown-error";
+  return "common:errors.unknown-error";
 }

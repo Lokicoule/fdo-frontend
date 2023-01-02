@@ -1,29 +1,28 @@
 import { Button, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { ForgotPasswordForm } from "../components/ForgotPasswordForm";
+import { ForgotPasswordConfirmationForm } from "../components/ForgotPasswordConfirmationForm";
 import { Layout } from "../components/Layout";
-import { FORGOT_PASSWORD_CONFIRMATION_PATH } from "./ForgotPasswordConfirmation";
-
 import { LOGIN_PATH } from "./Login";
 import { REGISTER_PATH } from "./Register";
 
-export const FORGOT_PASSWORD_PATH = "/forgot-password";
+export const FORGOT_PASSWORD_CONFIRMATION_PATH =
+  "/forgot-password-confirmation";
 
-export const ForgotPassword: React.FunctionComponent = () => {
+export const ForgotPasswordConfirmation: React.FunctionComponent = () => {
   const { t } = useTranslation(["auth"]);
   const navigate = useNavigate();
 
   const handleSuccess = () => {
-    navigate(FORGOT_PASSWORD_CONFIRMATION_PATH);
+    navigate(LOGIN_PATH);
   };
 
   return (
     <Layout
-      title={t("forgot_password.title")}
-      description={t("forgot_password.description")}
+      title={t("forgot_password_confirmation.title")}
+      description={t("forgot_password_confirmation.description")}
     >
-      <ForgotPasswordForm onSuccess={handleSuccess} />
+      <ForgotPasswordConfirmationForm onSuccess={handleSuccess} />
       <Stack
         direction="row"
         justifyContent="space-between"

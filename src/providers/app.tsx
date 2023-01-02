@@ -1,7 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { PropsWithChildren, Suspense } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { Loader } from "~/components/Elements/Loader";
@@ -11,9 +11,9 @@ import { ThemeProvider } from "./theme";
 
 //TODO : check when api is down
 const ErrorFallback = () => {
-  const location = useLocation();
-
-  const origin = location.state?.from?.pathname ?? "/home";
+  const handleClick = () => {
+    window.location.reload();
+  };
 
   return (
     <Box
@@ -21,13 +21,15 @@ const ErrorFallback = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
+        minHeight: "80vh",
       }}
     >
       <Typography
         sx={{
           fontSize: "10rem",
           fontWeight: "bold",
-          color: "primary.main",
+          color: "primary.dark",
         }}
       >
         500
@@ -36,17 +38,19 @@ const ErrorFallback = () => {
         sx={{
           fontSize: "1.5rem",
           fontWeight: "bold",
-          color: "primary.main",
+          color: "primary.light",
         }}
       >
         Oops something went wrong
       </Typography>
-      <Link
-        sx={{ mt: 6, fontSize: "1.5rem", fontWeight: "bold" }}
-        href={origin}
+      <Button
+        sx={{ mt: 10 }}
+        variant="contained"
+        color="secondary"
+        onClick={handleClick}
       >
         Go back
-      </Link>
+      </Button>
     </Box>
   );
 };

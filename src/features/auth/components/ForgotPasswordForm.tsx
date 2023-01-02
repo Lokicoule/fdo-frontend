@@ -9,12 +9,11 @@ import { object as YupObject, string as YupString } from "yup";
 import { Form } from "~/components/Form/Form";
 import { useAuth } from "~/libs/auth";
 
-type RegisterConfirmationValues = {
+type ForgotPasswordValues = {
   email: string;
-  code: string;
 };
 
-type LoginFormProps = {
+type ForgotPasswordFormProps = {
   onSuccess: () => void;
 };
 
@@ -22,29 +21,29 @@ const schema = YupObject().shape({
   email: YupString()
     .email("L'adresse email est invalide")
     .required("L'adresse email est requise."),
-  code: YupString().required("Le code de vérification est requis."),
 });
 
 const defaultValues = {
   email: "",
-  code: "",
-} satisfies RegisterConfirmationValues;
+} satisfies ForgotPasswordValues;
 
-export const RegisterConfirmationForm: React.FunctionComponent<
-  LoginFormProps
+export const ForgotPasswordForm: React.FunctionComponent<
+  ForgotPasswordFormProps
 > = (props) => {
   const { onSuccess } = props;
 
   const { t } = useTranslation(["auth"]);
-  const { onRegisterConfirmation, error, isLoading } = useAuth();
+  const { onForgotPassword, error, isLoading } = useAuth();
 
-  const handleSubmit = async (data: RegisterConfirmationValues) => {
-    onRegisterConfirmation(data.email, data.code).then(onSuccess);
+  const handleSubmit = (data: ForgotPasswordValues) => {
+    onForgotPassword(data.email).then(() => {
+      onSuccess();
+    });
   };
 
   return (
     <div>
-      <Form<RegisterConfirmationValues, typeof schema>
+      <Form<ForgotPasswordValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
         options={{ defaultValues }}
@@ -56,23 +55,14 @@ export const RegisterConfirmationForm: React.FunctionComponent<
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={t("common.fields.email.label")}
-                  placeholder={t("common.fields.email.placeholder") ?? ""}
+                  label={t("auth:common.fields.email.label")}
+                  /* placeholder={t("auth:common.fields.email.placeholder", {
+                    defaultValue: "",
+                  })} */
                   required
                   fullWidth
                   autoComplete="email"
                   error={formState.errors["email"]}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Form.InputField
-                  name="code"
-                  control={control}
-                  label={t("common.fields.code.label")}
-                  placeholder={t("common.fields.code.placeholder") ?? ""}
-                  required
-                  fullWidth
-                  error={formState.errors["code"]}
                 />
               </Grid>
             </Grid>
@@ -84,7 +74,7 @@ export const RegisterConfirmationForm: React.FunctionComponent<
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("register-confirmation.submit")}
+              {t("auth:reset_password.submit")}
             </Button>
           </>
         )}

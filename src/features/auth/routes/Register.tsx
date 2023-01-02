@@ -1,4 +1,4 @@
-import { Grid, Link } from "@mui/material";
+import { Button, Grid, Link } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,7 @@ import { Layout } from "../components/Layout";
 export const REGISTER_PATH = "/register";
 
 export const Register: React.FunctionComponent = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["auth"]);
   const navigate = useNavigate();
 
   const handleSuccess = () => {
@@ -19,24 +19,18 @@ export const Register: React.FunctionComponent = () => {
   };
 
   return (
-    <Layout title={t("register.title")}>
+    <Layout title={t("register.title")} description={t("register.description")}>
       <RegisterForm onSuccess={handleSuccess} />
-      <Grid container justifyContent="flex-end">
-        <Grid item>
-          <Link
-            sx={{
-              textDecoration: "none",
-              ":hover": {
-                textDecoration: "underline",
-              },
-            }}
-            href={LOGIN_PATH}
-            variant="body2"
-          >
-            {`${t("register.actions.already_have_account")}`}
-          </Link>
-        </Grid>
-      </Grid>
+      <Button
+        sx={{
+          textTransform: "none",
+          mt: 2,
+          alignSelf: "flex-end",
+        }}
+        href={LOGIN_PATH}
+      >
+        {t("login.display_name")}
+      </Button>
     </Layout>
   );
 };

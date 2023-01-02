@@ -1,12 +1,12 @@
-import { Paper } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import * as React from "react";
+import { LOGIN_PATH } from "~/features/auth/routes/Login";
+import { REGISTER_PATH } from "~/features/auth/routes/Register";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   children: React.ReactElement;
@@ -26,21 +26,27 @@ function ElevationScroll(props: Props) {
   });
 }
 
-interface LinkTabProps {
-  label?: string;
-  href?: string;
-}
+const currentTab = (pathname: string) => {
+  switch (pathname) {
+    case "/":
+      return 0;
+    case LOGIN_PATH:
+      return 1;
+    case REGISTER_PATH:
+      return 2;
+    default:
+      return 0;
+  }
+};
 
 function PublicNavigation() {
   console.info("PublicNavigation");
-  const [value, setValue] = React.useState(0);
+  const { pathname } = useLocation();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const value = currentTab(pathname?.toLowerCase());
 
   return (
-    <Tabs value={value} onChange={handleChange}>
+    <Tabs value={value}>
       <Tab
         sx={{
           fontWeight: "bold",
@@ -49,8 +55,8 @@ function PublicNavigation() {
         label="FDO App"
         href="/"
       />
-      <Tab label="Login" href="/auth/login" />
-      <Tab label="Register" href="/auth/register" />
+      <Tab label="Login" href={LOGIN_PATH} />
+      <Tab label="Register" href={REGISTER_PATH} />
     </Tabs>
   );
 }
@@ -72,27 +78,8 @@ export const PublicLayout: React.FunctionComponent<React.PropsWithChildren> = (
         </AppBar>
       </ElevationScroll>
       <Toolbar />
-      <Container
-        maxWidth="sm"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "80vh",
-        }}
-      >
-        <Paper
-          sx={{
-            p: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          elevation={5}
-        >
-          {children}
-        </Paper>
-      </Container>
+
+      {children}
     </>
   );
 };

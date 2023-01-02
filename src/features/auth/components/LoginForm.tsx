@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 
 import { useTranslation } from "react-i18next";
 
-import * as yup from "yup";
+import { object as YupObject, string as YupString, ref as YupRef } from "yup";
 
 import { Form } from "~/components/Form/Form";
 import { useAuth } from "~/libs/auth";
@@ -19,13 +19,11 @@ type LoginFormProps = {
   onSuccess: () => void;
 };
 
-const schema = yup.object().shape({
-  email: yup
-    .string()
+const schema = YupObject().shape({
+  email: YupString()
     .email("L'adresse email est invalide")
     .required("L'adresse email est requise."),
-  password: yup
-    .string()
+  password: YupString()
     .min(
       PASSWORD.MIN_LENGTH,
       `Le mot de passe doit comporter au moins ${PASSWORD.MIN_LENGTH} charactères.`
@@ -35,13 +33,16 @@ const schema = yup.object().shape({
       `Le mot de passe doit contenir ${PASSWORD.MAX_LENGTH} charactères maximum.`
     )
     .required("Le mot de passe est requis."),
-  confirmPassword: yup
-    .string()
-    .oneOf(
-      [yup.ref("password"), null],
-      "Les mots de passes ne correspondent pas."
-    ),
+  confirmPassword: YupString().oneOf(
+    [YupRef("password"), null],
+    "Les mots de passes ne correspondent pas."
+  ),
 });
+
+const defaultValues = {
+  email: "",
+  password: "",
+} satisfies LoginValues;
 
 export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
   const { onSuccess } = props;
@@ -57,7 +58,11 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
 
   return (
     <div>
-      <Form<LoginValues, typeof schema> onSubmit={handleSubmit} schema={schema}>
+      <Form<LoginValues, typeof schema>
+        onSubmit={handleSubmit}
+        schema={schema}
+        options={{ defaultValues }}
+      >
         {({ control, formState }) => (
           <>
             <Grid container spacing={2}>
@@ -65,8 +70,8 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={t("login.fields.email.label")}
-                  placeholder={t("login.fields.email.placeholder") ?? ""}
+                  label={t("common.fields.email.label")}
+                  placeholder={t("common.fields.email.placeholder") ?? ""}
                   required
                   fullWidth
                   autoComplete="email"
@@ -78,8 +83,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
                 <Form.SecretField
                   name="password"
                   control={control}
-                  label={t("login.fields.password.label")}
-                  placeholder={t("login.fields.password.placeholder") ?? ""}
+                  label={t("common.fields.password.label")}
                   required
                   fullWidth
                   autoComplete="current-password"
@@ -95,7 +99,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("login.actions.submit")}
+              {t("login.submit")}
             </Button>
           </>
         )}

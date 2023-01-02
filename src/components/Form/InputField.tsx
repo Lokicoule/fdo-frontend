@@ -1,13 +1,13 @@
-import { Alert, TextField, TextFieldProps, Tooltip } from "@mui/material";
+import { TextField, TextFieldProps, Tooltip } from "@mui/material";
 
 import {
   Controller,
-  FieldError,
   FieldValues,
   Path,
   PathValue,
   UseControllerProps,
 } from "react-hook-form";
+import { FieldWrapper, FieldWrapperProps } from "./FieldWrapper";
 
 export type InputFieldProps<T extends FieldValues> = Omit<
   TextFieldProps,
@@ -16,17 +16,18 @@ export type InputFieldProps<T extends FieldValues> = Omit<
   tooltip?: {
     title: string;
   };
-  error?: FieldError;
   name: Path<T>;
   control: UseControllerProps<T>["control"];
   defaultValue?: PathValue<T, Path<T>>;
-};
+} & FieldWrapperProps;
 
 export const InputField = <T extends FieldValues>(
   props: InputFieldProps<T>
 ): JSX.Element => {
   const { name, control, tooltip, error, defaultValue, ...textFieldProps } =
     props;
+
+  console.log("InputField", props);
 
   const renderTextField = (props: TextFieldProps) => {
     return <TextField {...props} />;
@@ -37,7 +38,7 @@ export const InputField = <T extends FieldValues>(
   };
 
   return (
-    <div>
+    <FieldWrapper error={error}>
       <Controller
         render={({ field }) =>
           Boolean(tooltip?.title)
@@ -48,11 +49,6 @@ export const InputField = <T extends FieldValues>(
         control={control}
         defaultValue={defaultValue}
       />
-      {error?.message && (
-        <Alert severity="error" sx={{ mt: 1 }}>
-          {error.message}
-        </Alert>
-      )}
-    </div>
+    </FieldWrapper>
   );
 };

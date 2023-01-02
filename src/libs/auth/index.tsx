@@ -10,8 +10,8 @@ type AuthContextType = {
   onLogout: () => Promise<void>;
   onRegister: (email: string, password: string) => Promise<void>;
   onRegisterConfirmation: (email: string, code: string) => Promise<void>;
-  onPasswordReset: (email: string) => Promise<void>;
-  onPasswordResetConfirmation: (
+  onForgotPassword: (email: string) => Promise<void>;
+  onForgotPasswordConfirmation: (
     email: string,
     code: string,
     password: string
@@ -23,8 +23,8 @@ const AuthContext = React.createContext<AuthContextType>({
   onLogout: async () => {},
   onRegister: async (email, password) => {},
   onRegisterConfirmation: async (email, code) => {},
-  onPasswordReset: async (email) => {},
-  onPasswordResetConfirmation: async (email, code, password) => {},
+  onForgotPassword: async (email) => {},
+  onForgotPasswordConfirmation: async (email, code, password) => {},
 } satisfies AuthContextType);
 
 export const useAuth = () => {
@@ -88,7 +88,7 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = (
     }
   };
 
-  const handlePasswordReset = async (email: string) => {
+  const handleForgotPassword = async (email: string) => {
     setIsLoading(true);
     try {
       await authService.doPasswordReset(email);
@@ -99,7 +99,7 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = (
     }
   };
 
-  const handlePasswordResetConfirmation = async (
+  const handleForgotPasswordConfirmation = async (
     email: string,
     code: string,
     password: string
@@ -122,8 +122,8 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = (
     onLogout: handleLogout,
     onRegister: handleRegister,
     onRegisterConfirmation: handleRegisterConfirmation,
-    onPasswordReset: handlePasswordReset,
-    onPasswordResetConfirmation: handlePasswordResetConfirmation,
+    onForgotPassword: handleForgotPassword,
+    onForgotPasswordConfirmation: handleForgotPasswordConfirmation,
   };
 
   return (

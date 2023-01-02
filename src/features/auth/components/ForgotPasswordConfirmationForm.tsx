@@ -1,67 +1,74 @@
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import { FieldError } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
+
 import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
 import { useAuth } from "~/libs/auth";
-import { PASSWORD } from "../constants";
+import {
+  CODE_FIELD,
+  EMAIL_FIELD,
+  ERROR_TYPES,
+  PASSWORD,
+  PASSWORD_CONFIRM_FIELD,
+  PASSWORD_FIELD,
+} from "../constants";
 
-type RegisterValues = {
+type ForgotPasswordConfirmationValues = {
   email: string;
+  code: string;
   password: string;
   confirmPassword: string;
 };
 
-type RegisterFormProps = {
+type ForgotPasswordConfirmationFormProps = {
   onSuccess: () => void;
 };
 
 const schema = YupObject().shape({
-  email: YupString()
-    .email("L'adresse email est invalide")
-    .required("L'adresse email est requise."),
+  email: YupString().email().required(),
+  code: YupString().required(),
   password: YupString()
-    .min(
-      PASSWORD.MIN_LENGTH,
-      `Le mot de passe doit comporter au moins ${PASSWORD.MIN_LENGTH} charactères.`
-    )
-    .max(
-      PASSWORD.MAX_LENGTH,
-      `Le mot de passe doit contenir ${PASSWORD.MAX_LENGTH} charactères maximum.`
-    )
-    .required("Le mot de passe est requis."),
-  confirmPassword: YupString().oneOf(
-    [YupRef("password"), null],
-    "Les mots de passes ne correspondent pas."
-  ),
+    .min(PASSWORD.MIN_LENGTH)
+    .max(PASSWORD.MAX_LENGTH)
+    .required(),
+  confirmPassword: YupString()
+    .required()
+    .oneOf([YupRef("password"), null]),
 });
 
 const defaultValues = {
   email: "",
+  code: "",
   password: "",
   confirmPassword: "",
-} as RegisterValues;
+} satisfies ForgotPasswordConfirmationValues;
 
-export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
-  props
-) => {
+export const ForgotPasswordConfirmationForm: React.FunctionComponent<
+  ForgotPasswordConfirmationFormProps
+> = (props) => {
   const { onSuccess } = props;
 
-  const { t } = useTranslation(["auth"]);
-  const { onRegister, error, isLoading } = useAuth();
+  console.info("ForgotPasswordConfirmationForm", { props });
 
-  const handleSubmit = async (data: RegisterValues) => {
-    onRegister(data.email, data.password).then(() => {
-      onSuccess();
-    });
+  const { t } = useTranslation(["auth"]);
+  const { onForgotPasswordConfirmation, error, isLoading } = useAuth();
+
+  const handleSubmit = (data: ForgotPasswordConfirmationValues) => {
+    onForgotPasswordConfirmation(data.email, data.code, data.password).then(
+      () => {
+        onSuccess();
+      }
+    );
   };
 
   return (
     <div>
-      <Form<RegisterValues, typeof schema>
+      <Form<ForgotPasswordConfirmationValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
         options={{ defaultValues }}
@@ -73,13 +80,26 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={t("common.fields.email.label")}
-                  placeholder={t("common.fields.email.placeholder") ?? ""}
+                  label={"email"}
+                  /* placeholder={t(EMAIL_FIELD.placeholder, {
+                    defaultValue: undefined,
+                  })} */
                   required
                   fullWidth
                   autoComplete="email"
                   autoFocus
                   error={formState.errors["email"]}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Form.InputField
+                  name="code"
+                  control={control}
+                  label={t("common.fields.code.label")}
+                  placeholder={t("common.fields.code.placeholder") ?? ""}
+                  required
+                  fullWidth
+                  error={formState.errors["code"]}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -105,14 +125,13 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
               </Grid>
             </Grid>
             <Button
-              disabled={isLoading}
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("register.submit")}
+              {t("forgot_password_confirmation.submit")}
             </Button>
           </>
         )}

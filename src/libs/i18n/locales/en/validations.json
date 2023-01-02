@@ -1,0 +1,7 @@
+{
+  "invalid": "Champ invalid",
+  "required": "Champ requis",
+  "email": "Adresse email invalide",
+  "stringMin": "{{min}}",
+  "stringMax": "{{max}}"
+}
