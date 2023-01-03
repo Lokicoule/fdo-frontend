@@ -71,7 +71,7 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = (
   const handleLogin = async (email: string, password: string) => {
     const user = await login(email, password);
     const groups = user.getAccessToken().decodePayload()["cognito:groups"];
-    const username = user.getAccessToken().decodePayload()["cognito:username"];
+    const username = user.getAccessToken().decodePayload()["sub"];
     setUser({ username, email, groups });
   };
 
