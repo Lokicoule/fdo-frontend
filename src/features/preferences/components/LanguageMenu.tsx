@@ -5,7 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 
-import Menu from "~/components/Menu";
+import Menu from "~/components/Elements/Menu";
 
 const languages = [
   {
@@ -21,14 +21,16 @@ const languages = [
 export const LanguageMenu: React.FunctionComponent = () => {
   const { t, i18n } = useTranslation();
 
+  console.info("LanguageMenu render");
+
   const handleChangeLanguage = (code: string) => {
     i18n.changeLanguage(code);
   };
 
   return (
     <Menu
-      renderToggle={({ onClick }) => (
-        <Tooltip title={t("Language")}>
+      render={({ onClick }) => (
+        <Tooltip title={"Language"}>
           <IconButton
             sx={{
               color: "inherit",

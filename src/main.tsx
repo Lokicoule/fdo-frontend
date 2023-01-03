@@ -10,3 +10,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <App />
   </React.StrictMode>
 );
+
+/* ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <App />
+); */

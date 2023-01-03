@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import Menu from "~/components/Menu";
+import Menu from "~/components/Elements/Menu";
 
 import {
   AUTH_ROUTES,

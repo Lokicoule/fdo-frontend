@@ -38,6 +38,8 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
 ) => {
   const { onSuccess } = props;
 
+  console.info("RegisterForm", { props });
+
   const { t } = useTranslation();
   const { useRegister } = useAuth();
   const [{ error, isLoading }, onRegister] = useRegister();

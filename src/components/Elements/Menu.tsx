@@ -21,7 +21,7 @@ type LinkItemProps = PropsWithChildren & {
 };
 
 type MenuProps = {
-  renderToggle: (props: ToggleProps) => JSX.Element;
+  render: (props: ToggleProps) => JSX.Element;
 };
 
 type MenuContextProps = {
@@ -45,8 +45,10 @@ const useMenu = () => {
 };
 
 function Menu(props: PropsWithChildren<MenuProps>): JSX.Element {
-  const { children, renderToggle } = props;
+  const { children, render } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  console.info("Menu render");
 
   const open = Boolean(anchorEl);
 
@@ -65,25 +67,27 @@ function Menu(props: PropsWithChildren<MenuProps>): JSX.Element {
   };
 
   return (
-    <MenuContext.Provider value={value}>
-      {renderToggle({ onClick: handleClick })}
-      <MuiMenu
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        onClick={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        {children}
-      </MuiMenu>
-    </MenuContext.Provider>
+    <>
+      {render({ onClick: handleClick })}
+      <MenuContext.Provider value={value}>
+        <MuiMenu
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          onClick={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          {children}
+        </MuiMenu>
+      </MenuContext.Provider>
+    </>
   );
 }
 

@@ -15,6 +15,8 @@ export const Login: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.info("login render");
+
   const origin = location.state?.from?.pathname ?? "/app";
 
   const handleSuccess = () => {

@@ -35,6 +35,8 @@ const defaultValues = {
 export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
   const { onSuccess } = props;
 
+  console.info("LoginForm", { props });
+
   const { t } = useTranslation();
   const { useLogin } = useAuth();
   const [{ error, isLoading }, onLogin] = useLogin();
