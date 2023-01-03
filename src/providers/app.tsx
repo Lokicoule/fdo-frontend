@@ -1,15 +1,14 @@
+import { Box, Button, Typography } from "@mui/material";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { PropsWithChildren, Suspense } from "react";
-import { BrowserRouter as Router, useLocation } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import { Loader } from "~/components/Elements/Loader";
-import { AuthProvider } from "~/libs/auth";
 import { queryClient } from "~/libs/react-query";
+import { AuthProvider } from "./auth";
 import { ThemeProvider } from "./theme";
 
-//TODO : check when api is down
 const ErrorFallback = () => {
   const handleClick = () => {
     window.location.reload();

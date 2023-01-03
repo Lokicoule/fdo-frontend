@@ -7,16 +7,16 @@ import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { useAuth } from "~/libs/auth";
+import { useAuth } from "~/providers/auth";
 
-type ForgotPasswordConfirmationValues = {
+type ForgotPasswordSubmitValues = {
   email: string;
   code: string;
   password: string;
   confirmPassword: string;
 };
 
-type ForgotPasswordConfirmationFormProps = {
+type ForgotPasswordSubmitFormProps = {
   onSuccess: () => void;
 };
 
@@ -34,29 +34,29 @@ const defaultValues = {
   code: "",
   password: "",
   confirmPassword: "",
-} satisfies ForgotPasswordConfirmationValues;
+} satisfies ForgotPasswordSubmitValues;
 
-export const ForgotPasswordConfirmationForm: React.FunctionComponent<
-  ForgotPasswordConfirmationFormProps
+export const ForgotPasswordSubmitForm: React.FunctionComponent<
+  ForgotPasswordSubmitFormProps
 > = (props) => {
   const { onSuccess } = props;
 
-  console.info("ForgotPasswordConfirmationForm", { props });
+  console.info("ForgotPasswordSubmitForm", { props });
 
   const { t } = useTranslation();
-  const { onForgotPasswordConfirmation, error, isLoading } = useAuth();
+  const { useForgotPasswordSubmit } = useAuth();
+  const [{ error, isLoading }, onForgotPasswordSubmit] =
+    useForgotPasswordSubmit();
 
-  const handleSubmit = (data: ForgotPasswordConfirmationValues) => {
-    onForgotPasswordConfirmation(data.email, data.code, data.password).then(
-      () => {
-        onSuccess();
-      }
-    );
+  const handleSubmit = (data: ForgotPasswordSubmitValues) => {
+    onForgotPasswordSubmit(data.email, data.code, data.password).then(() => {
+      onSuccess();
+    });
   };
 
   return (
     <FormWrapper error={error}>
-      <Form<ForgotPasswordConfirmationValues, typeof schema>
+      <Form<ForgotPasswordSubmitValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
         options={{ defaultValues }}

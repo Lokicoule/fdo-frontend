@@ -29,6 +29,7 @@ export const Layout: React.FunctionComponent<LayoutProps> = (props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          textAlign: "center",
         }}
         elevation={1}
       >

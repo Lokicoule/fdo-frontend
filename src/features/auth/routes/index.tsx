@@ -8,9 +8,9 @@ import {
 } from "./RegisterConfirmation";
 import { ForgotPassword, FORGOT_PASSWORD_PATH } from "./ForgotPassword";
 import {
-  ForgotPasswordConfirmation,
-  FORGOT_PASSWORD_CONFIRMATION_PATH,
-} from "./ForgotPasswordConfirmation";
+  ForgotPasswordSubmit,
+  FORGOT_PASSWORD_SUBMIT_PATH,
+} from "./ForgotPasswordSubmit";
 
 export const AuthRoutes = () => {
   return (
@@ -23,8 +23,8 @@ export const AuthRoutes = () => {
       />
       <Route path={FORGOT_PASSWORD_PATH} element={<ForgotPassword />} />
       <Route
-        path={FORGOT_PASSWORD_CONFIRMATION_PATH}
-        element={<ForgotPasswordConfirmation />}
+        path={FORGOT_PASSWORD_SUBMIT_PATH}
+        element={<ForgotPasswordSubmit />}
       />
     </Routes>
   );

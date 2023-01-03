@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ForgotPasswordForm } from "../components/ForgotPasswordForm";
 import { Layout } from "../components/Layout";
-import { FORGOT_PASSWORD_CONFIRMATION_PATH } from "./ForgotPasswordConfirmation";
+import { FORGOT_PASSWORD_SUBMIT_PATH } from "./ForgotPasswordSubmit";
 
 import { LOGIN_PATH } from "./Login";
 import { REGISTER_PATH } from "./Register";
@@ -15,7 +15,7 @@ export const ForgotPassword: React.FunctionComponent = () => {
   const navigate = useNavigate();
 
   const handleSuccess = () => {
-    navigate(FORGOT_PASSWORD_CONFIRMATION_PATH);
+    navigate(FORGOT_PASSWORD_SUBMIT_PATH);
   };
 
   return (

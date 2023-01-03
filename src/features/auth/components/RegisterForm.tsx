@@ -6,7 +6,7 @@ import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { useAuth } from "~/libs/auth";
+import { useAuth } from "~/providers/auth";
 
 type RegisterValues = {
   email: string;
@@ -39,7 +39,8 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
   const { onSuccess } = props;
 
   const { t } = useTranslation();
-  const { onRegister, error, isLoading } = useAuth();
+  const { useRegister } = useAuth();
+  const [{ error, isLoading }, onRegister] = useRegister();
 
   const handleSubmit = async (data: RegisterValues) => {
     onRegister(data.email, data.password).then(() => {

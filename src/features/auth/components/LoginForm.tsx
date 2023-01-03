@@ -7,7 +7,7 @@ import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { useAuth } from "~/libs/auth";
+import { useAuth } from "~/providers/auth";
 
 type LoginValues = {
   email: string;
@@ -36,7 +36,8 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
   const { onSuccess } = props;
 
   const { t } = useTranslation();
-  const { onLogin, error, isLoading } = useAuth();
+  const { useLogin } = useAuth();
+  const [{ error, isLoading }, onLogin] = useLogin();
 
   const handleSubmit = (data: LoginValues) => {
     onLogin(data.email, data.password).then(() => {

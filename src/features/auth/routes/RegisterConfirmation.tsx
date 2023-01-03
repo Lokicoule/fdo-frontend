@@ -17,8 +17,8 @@ export const RegisterConfirmation: React.FunctionComponent = () => {
 
   return (
     <Layout
-      title={t("auth:@forgotPasswordConfirmation.title")}
-      description={t("auth:@forgotPasswordConfirmation.description")}
+      title={t("auth:@registerConfirmation.title")}
+      description={t("auth:@registerConfirmation.description")}
     >
       <RegisterConfirmationForm onSuccess={handleSuccess} />
       <Button

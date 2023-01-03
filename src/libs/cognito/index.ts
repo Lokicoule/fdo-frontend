@@ -8,6 +8,8 @@ import {
   ICognitoUserPoolData,
   UserData,
 } from "amazon-cognito-identity-js";
+import { COGNITO } from "~/config";
+import { CognitoUserPoolDataBuilder } from "./builders/CognitoUserPoolDataBuilder";
 import { CognitoError } from "./errors/CognitoError";
 import { NoUserPoolError } from "./errors/NoUserPoolError";
 import { CognitoErrorTypes } from "./types";
@@ -282,3 +284,13 @@ export class CognitoClient implements ICognitoClient {
     return Promise.reject(new CognitoError(type));
   }
 }
+
+const cognitoClient = new CognitoClient(
+  new CognitoUserPoolDataBuilder()
+    .withClientId(COGNITO.CLIENT_ID)
+    .withUserPoolId(COGNITO.USER_POOL_ID)
+    //.withCookieStorage("localhost", false) // Use cookie storage for local development
+    .build()
+);
+
+export default cognitoClient;

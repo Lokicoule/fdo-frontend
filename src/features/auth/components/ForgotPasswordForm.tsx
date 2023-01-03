@@ -7,7 +7,7 @@ import { object as YupObject, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { useAuth } from "~/libs/auth";
+import { useAuth } from "~/providers/auth";
 
 type ForgotPasswordValues = {
   email: string;
@@ -31,7 +31,8 @@ export const ForgotPasswordForm: React.FunctionComponent<
   const { onSuccess } = props;
 
   const { t } = useTranslation();
-  const { onForgotPassword, error, isLoading } = useAuth();
+  const { useForgotPassword } = useAuth();
+  const [{ error, isLoading }, onForgotPassword] = useForgotPassword();
 
   const handleSubmit = (data: ForgotPasswordValues) => {
     onForgotPassword(data.email).then(() => {
