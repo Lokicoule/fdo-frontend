@@ -1,5 +1,5 @@
 import { API_URL } from "~/config";
-import { authService } from "~/features/authentication/services/authService";
+import { getAccessToken } from "~/libs/auth";
 
 //TODO : Use Axios instead of fetch
 
@@ -27,7 +27,7 @@ export function fetchData<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     const authHeaders = {} as AuthHeaderProps;
-    const accessToken = await authService.getAccessToken();
+    const accessToken = await getAccessToken();
 
     if (Boolean(accessToken)) {
       authHeaders["authorization"] = `Bearer ${accessToken}`;
