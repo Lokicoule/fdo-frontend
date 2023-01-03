@@ -1,7 +1,24 @@
 {
-  "invalid": "Champ invalid",
-  "required": "Champ requis",
-  "email": "Adresse email invalide",
-  "stringMin": "dede {{min}} de ",
-  "stringMax": "{{max}}"
+  "invalid": "Ce champ est invalide.",
+  "required": "Ce champ est requis.",
+  "oneOf": "Ce champ doit correpondre à l'une des valeurs suivantes: {{values}}.",
+  "notOneOf": "Ce champ ne doit pas être l'une des valeurs suivantes: {{values}}.",
+  "notType": {
+    "string": "Ce champ doit être une chaîne de caractères.",
+    "number": "Ce champ doit être un nombre.",
+    "boolean": "Ce champ doit être un booléen.",
+    "object": "Ce champ doit être un objet.",
+    "array": "Ce champ doit être un tableau."
+  },
+  "string": {
+    "min": "Doit contenir au moins {{limit}} caractères.",
+    "max": "Doit contenir au plus {{limit}} caractères."
+  },
+  "email": {
+    "invalid": "Veuillez entrer une adresse e-mail valide."
+  },
+  "password": {
+    "invalid": "Veuillez entrer un mot de passe valide.",
+    "notMatch": "Les mots de passe ne correspondent pas."
+  }
 }

@@ -1,4 +1,3 @@
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
@@ -7,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { object as YupObject, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
+import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useAuth } from "~/libs/auth";
 
 type RegisterConfirmationValues = {
@@ -19,10 +19,8 @@ type LoginFormProps = {
 };
 
 const schema = YupObject().shape({
-  email: YupString()
-    .email("L'adresse email est invalide")
-    .required("L'adresse email est requise."),
-  code: YupString().required("Le code de vérification est requis."),
+  email: YupString().email().required(),
+  code: YupString().required(),
 });
 
 const defaultValues = {
@@ -35,7 +33,7 @@ export const RegisterConfirmationForm: React.FunctionComponent<
 > = (props) => {
   const { onSuccess } = props;
 
-  const { t } = useTranslation(["auth"]);
+  const { t } = useTranslation();
   const { onRegisterConfirmation, error, isLoading } = useAuth();
 
   const handleSubmit = async (data: RegisterConfirmationValues) => {
@@ -43,7 +41,7 @@ export const RegisterConfirmationForm: React.FunctionComponent<
   };
 
   return (
-    <div>
+    <FormWrapper error={error}>
       <Form<RegisterConfirmationValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
@@ -56,8 +54,7 @@ export const RegisterConfirmationForm: React.FunctionComponent<
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={t("common.fields.email.label")}
-                  placeholder={t("common.fields.email.placeholder") ?? ""}
+                  label={t("dictionary.email")}
                   required
                   fullWidth
                   autoComplete="email"
@@ -68,8 +65,7 @@ export const RegisterConfirmationForm: React.FunctionComponent<
                 <Form.InputField
                   name="code"
                   control={control}
-                  label={t("common.fields.code.label")}
-                  placeholder={t("common.fields.code.placeholder") ?? ""}
+                  label={t("dictionary.code")}
                   required
                   fullWidth
                   error={formState.errors["code"]}
@@ -84,16 +80,11 @@ export const RegisterConfirmationForm: React.FunctionComponent<
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("register-confirmation.submit")}
+              {t("dictionary.confirm")}
             </Button>
           </>
         )}
       </Form>
-      {error?.message && (
-        <Alert severity="error" sx={{ mt: 1 }}>
-          {error.message}
-        </Alert>
-      )}
-    </div>
+    </FormWrapper>
   );
 };

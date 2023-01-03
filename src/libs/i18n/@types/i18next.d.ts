@@ -1,4 +1,4 @@
-/* import { resources, defaultNS } from "~/libs/i18n/config";
+import { resources, defaultNS } from "~/libs/i18n/config";
 
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -6,4 +6,3 @@ declare module "i18next" {
     resources: typeof resources["fr"];
   }
 }
- */

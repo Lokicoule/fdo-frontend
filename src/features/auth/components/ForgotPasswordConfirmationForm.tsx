@@ -1,22 +1,13 @@
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { FieldError } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
 
 import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
+import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useAuth } from "~/libs/auth";
-import {
-  CODE_FIELD,
-  EMAIL_FIELD,
-  ERROR_TYPES,
-  PASSWORD,
-  PASSWORD_CONFIRM_FIELD,
-  PASSWORD_FIELD,
-} from "../constants";
 
 type ForgotPasswordConfirmationValues = {
   email: string;
@@ -32,13 +23,10 @@ type ForgotPasswordConfirmationFormProps = {
 const schema = YupObject().shape({
   email: YupString().email().required(),
   code: YupString().required(),
-  password: YupString()
-    .min(PASSWORD.MIN_LENGTH)
-    .max(PASSWORD.MAX_LENGTH)
-    .required(),
+  password: YupString().min(8).max(128).required(),
   confirmPassword: YupString()
     .required()
-    .oneOf([YupRef("password"), null]),
+    .oneOf([YupRef("password"), null], "validations:password.notMatch"),
 });
 
 const defaultValues = {
@@ -55,7 +43,7 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
 
   console.info("ForgotPasswordConfirmationForm", { props });
 
-  const { t } = useTranslation(["auth"]);
+  const { t } = useTranslation();
   const { onForgotPasswordConfirmation, error, isLoading } = useAuth();
 
   const handleSubmit = (data: ForgotPasswordConfirmationValues) => {
@@ -67,7 +55,7 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
   };
 
   return (
-    <div>
+    <FormWrapper error={error}>
       <Form<ForgotPasswordConfirmationValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
@@ -80,10 +68,7 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={"email"}
-                  /* placeholder={t(EMAIL_FIELD.placeholder, {
-                    defaultValue: undefined,
-                  })} */
+                  label={t("dictionary.email")}
                   required
                   fullWidth
                   autoComplete="email"
@@ -95,8 +80,7 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
                 <Form.InputField
                   name="code"
                   control={control}
-                  label={t("common.fields.code.label")}
-                  placeholder={t("common.fields.code.placeholder") ?? ""}
+                  label={t("dictionary.code")}
                   required
                   fullWidth
                   error={formState.errors["code"]}
@@ -106,7 +90,7 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
                 <Form.SecretField
                   name="password"
                   control={control}
-                  label={t("common.fields.password.label")}
+                  label={t("dictionary.password")}
                   required
                   fullWidth
                   autoComplete="current-password"
@@ -117,7 +101,7 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
                 <Form.SecretField
                   name="confirmPassword"
                   control={control}
-                  label={t("common.fields.password_confirmation.label")}
+                  label={t("dictionary.confirmPassword")}
                   required
                   fullWidth
                   error={formState.errors["confirmPassword"]}
@@ -125,22 +109,18 @@ export const ForgotPasswordConfirmationForm: React.FunctionComponent<
               </Grid>
             </Grid>
             <Button
+              disabled={isLoading}
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("forgot_password_confirmation.submit")}
+              {t("dictionary.confirm")}
             </Button>
           </>
         )}
       </Form>
-      {error?.message && (
-        <Alert severity="error" sx={{ mt: 1 }}>
-          {error.message}
-        </Alert>
-      )}
-    </div>
+    </FormWrapper>
   );
 };

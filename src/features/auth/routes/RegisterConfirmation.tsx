@@ -1,4 +1,4 @@
-import { Button, Grid, Link } from "@mui/material";
+import { Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Layout } from "../components/Layout";
@@ -17,8 +17,8 @@ export const RegisterConfirmation: React.FunctionComponent = () => {
 
   return (
     <Layout
-      title={t("register-confirmation.title")}
-      description={t("register-confirmation.description")}
+      title={t("auth:@forgotPasswordConfirmation.title")}
+      description={t("auth:@forgotPasswordConfirmation.description")}
     >
       <RegisterConfirmationForm onSuccess={handleSuccess} />
       <Button
@@ -29,7 +29,7 @@ export const RegisterConfirmation: React.FunctionComponent = () => {
         }}
         href={LOGIN_PATH}
       >
-        {t("login.display_name")}
+        {t("auth:@login.displayName")}
       </Button>
     </Layout>
   );

@@ -20,8 +20,8 @@ export const ForgotPassword: React.FunctionComponent = () => {
 
   return (
     <Layout
-      title={t("forgot_password.title")}
-      description={t("forgot_password.description")}
+      title={t("auth:@forgotPassword.title")}
+      description={t("auth:@forgotPassword.description")}
     >
       <ForgotPasswordForm onSuccess={handleSuccess} />
       <Stack
@@ -36,7 +36,7 @@ export const ForgotPassword: React.FunctionComponent = () => {
           href={REGISTER_PATH}
           color="secondary"
         >
-          {t("register.display_name")}
+          {t("auth:@register.displayName")}
         </Button>
         <Button
           sx={{
@@ -44,7 +44,7 @@ export const ForgotPassword: React.FunctionComponent = () => {
           }}
           href={LOGIN_PATH}
         >
-          {t("login.display_name")}
+          {t("auth:@login.displayName")}
         </Button>
       </Stack>
     </Layout>

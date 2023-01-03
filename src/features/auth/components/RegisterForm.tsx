@@ -1,4 +1,3 @@
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
@@ -6,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
+import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useAuth } from "~/libs/auth";
-import { PASSWORD } from "../constants";
 
 type RegisterValues = {
   email: string;
@@ -20,22 +19,11 @@ type RegisterFormProps = {
 };
 
 const schema = YupObject().shape({
-  email: YupString()
-    .email("L'adresse email est invalide")
-    .required("L'adresse email est requise."),
-  password: YupString()
-    .min(
-      PASSWORD.MIN_LENGTH,
-      `Le mot de passe doit comporter au moins ${PASSWORD.MIN_LENGTH} charactères.`
-    )
-    .max(
-      PASSWORD.MAX_LENGTH,
-      `Le mot de passe doit contenir ${PASSWORD.MAX_LENGTH} charactères maximum.`
-    )
-    .required("Le mot de passe est requis."),
+  email: YupString().email().required(),
+  password: YupString().min(8).max(128).required(),
   confirmPassword: YupString().oneOf(
     [YupRef("password"), null],
-    "Les mots de passes ne correspondent pas."
+    "validations:password.notMatch"
   ),
 });
 
@@ -50,7 +38,7 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
 ) => {
   const { onSuccess } = props;
 
-  const { t } = useTranslation(["auth"]);
+  const { t } = useTranslation();
   const { onRegister, error, isLoading } = useAuth();
 
   const handleSubmit = async (data: RegisterValues) => {
@@ -60,7 +48,7 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
   };
 
   return (
-    <div>
+    <FormWrapper error={error}>
       <Form<RegisterValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
@@ -73,8 +61,7 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={t("common.fields.email.label")}
-                  placeholder={t("common.fields.email.placeholder") ?? ""}
+                  label={t("dictionary.email")}
                   required
                   fullWidth
                   autoComplete="email"
@@ -86,7 +73,7 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
                 <Form.SecretField
                   name="password"
                   control={control}
-                  label={t("common.fields.password.label")}
+                  label={t("dictionary.password")}
                   required
                   fullWidth
                   autoComplete="current-password"
@@ -97,7 +84,7 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
                 <Form.SecretField
                   name="confirmPassword"
                   control={control}
-                  label={t("common.fields.password_confirmation.label")}
+                  label={t("dictionary.confirmPassword")}
                   required
                   fullWidth
                   error={formState.errors["confirmPassword"]}
@@ -112,16 +99,11 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = (
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("register.submit")}
+              {t("dictionary.register")}
             </Button>
           </>
         )}
       </Form>
-      {error?.message && (
-        <Alert severity="error" sx={{ mt: 1 }}>
-          {error.message}
-        </Alert>
-      )}
-    </div>
+    </FormWrapper>
   );
 };

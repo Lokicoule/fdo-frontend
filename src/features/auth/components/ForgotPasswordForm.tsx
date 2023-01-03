@@ -1,4 +1,3 @@
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
@@ -7,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { object as YupObject, string as YupString } from "yup";
 
 import { Form } from "~/components/Form/Form";
+import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useAuth } from "~/libs/auth";
 
 type ForgotPasswordValues = {
@@ -18,9 +18,7 @@ type ForgotPasswordFormProps = {
 };
 
 const schema = YupObject().shape({
-  email: YupString()
-    .email("L'adresse email est invalide")
-    .required("L'adresse email est requise."),
+  email: YupString().email().required(),
 });
 
 const defaultValues = {
@@ -32,7 +30,7 @@ export const ForgotPasswordForm: React.FunctionComponent<
 > = (props) => {
   const { onSuccess } = props;
 
-  const { t } = useTranslation(["auth"]);
+  const { t } = useTranslation();
   const { onForgotPassword, error, isLoading } = useAuth();
 
   const handleSubmit = (data: ForgotPasswordValues) => {
@@ -42,7 +40,7 @@ export const ForgotPasswordForm: React.FunctionComponent<
   };
 
   return (
-    <div>
+    <FormWrapper error={error}>
       <Form<ForgotPasswordValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
@@ -55,10 +53,7 @@ export const ForgotPasswordForm: React.FunctionComponent<
                 <Form.InputField
                   name="email"
                   control={control}
-                  label={t("auth:common.fields.email.label")}
-                  /* placeholder={t("auth:common.fields.email.placeholder", {
-                    defaultValue: "",
-                  })} */
+                  label={t("dictionary.email")}
                   required
                   fullWidth
                   autoComplete="email"
@@ -74,16 +69,11 @@ export const ForgotPasswordForm: React.FunctionComponent<
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              {t("auth:reset_password.submit")}
+              {t("dictionary.sendCode")}
             </Button>
           </>
         )}
       </Form>
-      {error?.message && (
-        <Alert severity="error" sx={{ mt: 1 }}>
-          {error.message}
-        </Alert>
-      )}
-    </div>
+    </FormWrapper>
   );
 };

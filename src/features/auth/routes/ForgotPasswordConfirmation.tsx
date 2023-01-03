@@ -19,8 +19,8 @@ export const ForgotPasswordConfirmation: React.FunctionComponent = () => {
 
   return (
     <Layout
-      title={t("forgot_password_confirmation.title")}
-      description={t("forgot_password_confirmation.description")}
+      title={t("auth:@forgotPasswordConfirmation.title")}
+      description={t("auth:@forgotPasswordConfirmation.description")}
     >
       <ForgotPasswordConfirmationForm onSuccess={handleSuccess} />
       <Stack
@@ -35,7 +35,7 @@ export const ForgotPasswordConfirmation: React.FunctionComponent = () => {
           href={REGISTER_PATH}
           color="secondary"
         >
-          {t("register.display_name")}
+          {t("auth:@register.displayName")}
         </Button>
         <Button
           sx={{
@@ -43,7 +43,7 @@ export const ForgotPasswordConfirmation: React.FunctionComponent = () => {
           }}
           href={LOGIN_PATH}
         >
-          {t("login.display_name")}
+          {t("auth:@login.displayName")}
         </Button>
       </Stack>
     </Layout>

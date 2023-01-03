@@ -31,15 +31,9 @@ export const resources = {
   },
 };
 
-i18next
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: "fr",
-    debug: true,
-    defaultNS,
-    interpolation: {
-      escapeValue: false,
-    },
-  });
+i18next.use(LanguageDetector).use(initReactI18next).init({
+  resources,
+  fallbackLng: "fr",
+  debug: true,
+  defaultNS,
+});

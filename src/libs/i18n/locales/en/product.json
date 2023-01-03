@@ -1,61 +1,61 @@
 {
   "products-page": {
-    "title": "List of products",
+    "title": "Liste des produits",
     "columns": {
-      "code": "Product Code",
-      "label": "Product label",
-      "created-at": "Created at",
-      "updated-at": "Updated at",
+      "code": "Code produit",
+      "label": "Libellé produit",
+      "created-at": "Créé le",
+      "updated-at": "Mis à jour le",
       "actions": "Actions"
     },
     "actions": {
-      "create": "Create a new product",
-      "edit": "Edit product",
-      "delete": "Delete product"
+      "create": "Créer un produit",
+      "edit": "Modifier le produit",
+      "delete": "Supprimer le produit"
     }
   },
   "create-product-page": {
-    "title": "Create a new product",
+    "title": "Créer un produit",
     "form": {
       "code": {
-        "label": "Product code",
-        "placeholder": "Product code",
+        "label": "Code produit",
+        "placeholder": "Code produit",
         "validation": {
-          "max": "Product code must contain at most 12 characters"
+          "max": "Le code produit doit contenir au plus 12 caractères"
         }
       },
       "label": {
-        "label": "Product label",
-        "placeholder": "Product label",
+        "label": "Libellé produit",
+        "placeholder": "Libellé produit",
         "validation": {
-          "min": "Product label must contain at least 3 characters",
-          "max": "Product label must contain at most 100 characters",
-          "required": "Product label is required"
+          "required": "Le libellé produit est obligatoire",
+          "min": "Le libellé produit doit contenir au moins 3 caractères",
+          "max": "Le libellé produit doit contenir au plus 100 caractères"
         }
       },
-      "submit": "Create product",
-      "success": "Product created successfully"
+      "submit": "Créer le produit",
+      "success": " a été créé avec succès"
     }
   },
+  "notifications": {
+    "product-created": "Le produit a été créé avec succès",
+    "product-updated": "Le produit a été mis à jour avec succès",
+    "product-deleted": "Le produit a été supprimé avec succès",
+    "products-deleted": "Les produits ont été supprimés avec succès",
+    "products-not-deleted": "Les produits n'ont pas pu être supprimés",
+    "product-not-deleted": "Le produit n'a pas pu être supprimé",
+    "product-not-found": "Le produit n'a pas été trouvé",
+    "product-not-updated": "Le produit n'a pas pu être mis à jour",
+    "product-not-created": "Le produit n'a pas pu être créé",
+    "get-products-error": "Une erreur est survenue lors de la récupération des produits"
+  },
   "errors": {
-    "SERVICE_UNAVAILABLE": "Service unavailable",
+    "SERVICE_UNAVAILABLE": "Service indisponible",
     "AUTHOR_ID_IS_NULL": "Author id cannot be null",
     "PRODUCT_IS_NULL": "Product cannot be null",
     "PRODUCT_CODE_IS_NULL": "Product code cannot be null",
     "PRODUCT_LABEL_IS_NULL": "Product label cannot be null",
     "PRODUCT_CODE_ALREADY_EXISTS": "Product code already exists",
     "PRODUCT_NOT_CREATED": "Product not created"
-  },
-  "notifications": {
-    "product-created": "Product created successfully",
-    "product-updated": "Product updated successfully",
-    "product-deleted": "Product deleted successfully",
-    "products-deleted": "Products deleted successfully",
-    "products-not-deleted": "Products not deleted",
-    "product-not-deleted": "Product not deleted",
-    "product-not-found": "Product not found",
-    "product-not-updated": "Product not updated",
-    "product-not-created": "Product not created",
-    "get-products-error": "Error while getting products"
   }
 }

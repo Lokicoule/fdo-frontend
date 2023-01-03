@@ -1,4 +1,4 @@
-import { Button, Grid, Link, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -22,7 +22,10 @@ export const Login: React.FunctionComponent = () => {
   };
 
   return (
-    <Layout title={t("login.title")} description={t("login.description")}>
+    <Layout
+      title={t("auth:@login.title")}
+      description={t("auth:@login.description")}
+    >
       <LoginForm onSuccess={handleSuccess} />
       <Stack
         direction="row"
@@ -36,7 +39,7 @@ export const Login: React.FunctionComponent = () => {
           href={FORGOT_PASSWORD_PATH}
           color="secondary"
         >
-          {t("forgot_password.display_name")}
+          {t("auth:@forgotPassword.displayName")}
         </Button>
         <Button
           sx={{
@@ -44,7 +47,7 @@ export const Login: React.FunctionComponent = () => {
           }}
           href={REGISTER_PATH}
         >
-          {t("register.display_name")}
+          {t("auth:@register.displayName")}
         </Button>
       </Stack>
     </Layout>

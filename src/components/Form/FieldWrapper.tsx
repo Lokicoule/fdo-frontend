@@ -21,20 +21,19 @@ const ErrorMessage: React.FunctionComponent<ErrorMessageProps> = (props) => {
   if (!error?.message) {
     return null;
   } else if (typeof error?.message === "string") {
-    console.log("error.message", error.message);
     return (
       <Alert severity="error" sx={{ mt: 1 }}>
-        {error.message}
+        <>{t(error.message, { defaultValue: error.message })}</>
       </Alert>
     );
   } else {
     const { key, values } = error.message;
-    console.log(JSON.stringify(error.message));
     return (
       <Alert severity="error" sx={{ mt: 1 }}>
         <>
           {t(key, {
-            replace: values,
+            ...values,
+            defaultValue: key,
           })}
         </>
       </Alert>
