@@ -8,11 +8,11 @@ import { useTranslation } from "react-i18next";
 
 const languages = [
   {
-    code: "en",
+    code: "en-EN",
     name: "English",
   },
   {
-    code: "fr",
+    code: "fr-FR",
     name: "Français",
   },
 ];
@@ -27,7 +27,7 @@ export const LanguageSelector: React.FunctionComponent<
 > = (props) => {
   const { i18n } = useTranslation();
 
-  console.info("LanguageChooser render");
+  console.info("LanguageChooser render", i18n.language);
 
   const handleChangeLanguage = (code: string) => {
     i18n.changeLanguage(code);
