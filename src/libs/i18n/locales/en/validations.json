@@ -1,24 +1,24 @@
 {
-  "invalid": "Ce champ est invalide.",
-  "required": "Ce champ est requis.",
-  "oneOf": "Ce champ doit correpondre à l'une des valeurs suivantes: {{values}}.",
-  "notOneOf": "Ce champ ne doit pas être l'une des valeurs suivantes: {{values}}.",
+  "invalid": "This field is invalid.",
+  "required": "This field is required.",
+  "oneOf": "This field must be one of the following values: {{values}}.",
+  "notOneOf": "This field must not be one of the following values: {{values}}.",
   "notType": {
-    "string": "Ce champ doit être une chaîne de caractères.",
-    "number": "Ce champ doit être un nombre.",
-    "boolean": "Ce champ doit être un booléen.",
-    "object": "Ce champ doit être un objet.",
-    "array": "Ce champ doit être un tableau."
+    "string": "This field must be a string.",
+    "number": "This field must be a number.",
+    "boolean": "This field must be a boolean.",
+    "object": "This field must be an object.",
+    "array": "This field must be an array."
   },
   "string": {
-    "min": "Doit contenir au moins {{limit}} caractères.",
-    "max": "Doit contenir au plus {{limit}} caractères."
+    "min": "Must be at least {{limit}} characters.",
+    "max": "Must be at most {{limit}} characters."
   },
   "email": {
-    "invalid": "Veuillez entrer une adresse e-mail valide."
+    "invalid": "Please enter a valid email address."
   },
   "password": {
-    "invalid": "Veuillez entrer un mot de passe valide.",
-    "notMatch": "Les mots de passe ne correspondent pas."
+    "invalid": "Please enter a valid password.",
+    "notMatch": "Passwords do not match."
   }
 }
