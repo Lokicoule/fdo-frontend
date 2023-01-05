@@ -1,7 +1,35 @@
 import styled from "@emotion/styled";
-import { TextRipple } from "./TextRipple";
+import { keyframes } from "@mui/material/styles";
 
-const Content = styled.div({
+const RippleFrames = keyframes({
+  "0%, 100%": {
+    transform: "translate(0, 0)",
+  },
+  "30%, 40%, 50%, 60%": {
+    transform: "translate(0, -24px)",
+  },
+  "100%": {
+    transform: "translate(0, 0)",
+  },
+});
+
+const RippleComponent = styled.div<{
+  delay: number;
+}>(({ delay }) => ({
+  animationName: `${RippleFrames}`,
+  animationDelay: `calc(.3s * ${delay})`,
+  animationDuration: "3s",
+  animationTimingFunction: "ease-in-out",
+  animationIterationCount: "infinite",
+  textTransform: "uppercase",
+  fontFamily: "monospace",
+  color: "#fff",
+  letterSpacing: "0.3em",
+  margin: 0,
+  fontSize: "calc(2rem)",
+}));
+
+const Layout = styled.div({
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
@@ -13,10 +41,31 @@ const Content = styled.div({
   backgroundColor: "black",
 });
 
+const LoaderMessage: React.FunctionComponent<{
+  message: string;
+}> = (props) => {
+  const { message } = props;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
+      {message.split("").map((letter, i) => (
+        <RippleComponent key={`${message}_${i}`} delay={i}>
+          <span>{letter}</span>
+        </RippleComponent>
+      ))}
+    </div>
+  );
+};
+
 export const Loader = () => {
   return (
-    <Content>
-      <TextRipple word="loading" />
-    </Content>
+    <Layout>
+      <LoaderMessage message="loading" />
+    </Layout>
   );
 };
