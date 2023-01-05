@@ -1,9 +1,9 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Stack } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { useNotify } from "~/stores/notifications";
 import { LanguageSelector } from "../../../components/Elements/LanguageSelector";
 
 type LayoutProps = React.PropsWithChildren<{
@@ -13,6 +13,7 @@ type LayoutProps = React.PropsWithChildren<{
 
 export const Layout: React.FunctionComponent<LayoutProps> = (props) => {
   const { children, description, title } = props;
+  const notifys = useNotify();
 
   return (
     <Container
@@ -46,17 +47,19 @@ export const Layout: React.FunctionComponent<LayoutProps> = (props) => {
         </Typography>
         {children}
       </Paper>
-      <LanguageSelector
-        sx={{
-          alignSelf: "flex-start",
-          bottom: 0,
-          right: 0,
-          ml: 2,
-          mt: 10,
-          boxShadow: "none",
-          ".MuiOutlinedInput-notchedOutline": { border: 0 },
-        }}
-      />
+      <div>
+        <LanguageSelector
+          sx={{
+            alignSelf: "flex-start",
+            bottom: 0,
+            right: 0,
+            ml: 2,
+            mt: 10,
+            boxShadow: "none",
+            ".MuiOutlinedInput-notchedOutline": { border: 0 },
+          }}
+        />
+      </div>
     </Container>
   );
 };

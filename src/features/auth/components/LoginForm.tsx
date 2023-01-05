@@ -8,6 +8,7 @@ import { object as YupObject, ref as YupRef, string as YupString } from "yup";
 import { Form } from "~/components/Form/Form";
 import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useAuth } from "~/providers/auth";
+import { useNotify } from "~/stores/notifications";
 
 type LoginValues = {
   email: string;
@@ -40,10 +41,15 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
   const { t } = useTranslation();
   const { useLogin } = useAuth();
   const [{ error, isLoading }, onLogin] = useLogin();
+  const notify = useNotify();
 
   const handleSubmit = (data: LoginValues) => {
     onLogin(data.email, data.password).then(() => {
       onSuccess();
+      notify.info({
+        title: "Login successful",
+        message: `Welcome back ${data.email}`,
+      });
     });
   };
 
