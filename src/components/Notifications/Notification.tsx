@@ -1,22 +1,8 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, AlertColor, AlertTitle, Snackbar, styled } from "@mui/material";
+import { Alert, AlertColor, AlertTitle, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Slide, { SlideProps } from "@mui/material/Slide";
-
-type TransitionProps = Omit<SlideProps, "direction">;
-
-const Transition: React.FunctionComponent<TransitionProps> = (
-  props: TransitionProps
-) => {
-  return <Slide {...props} direction="left" />;
-};
-
-const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
-  ".MuiSnackbarContent-root": {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-  },
-}));
+import { ProgressBar } from "../Elements/ProgressBar";
 
 type NotificationProps = {
   notification: {
@@ -27,15 +13,24 @@ type NotificationProps = {
   onDismiss: () => void;
 };
 
+const Transition: React.FunctionComponent<Omit<SlideProps, "direction">> = (
+  props
+) => {
+  return <Slide {...props} direction="left" />;
+};
+
+const autoHideDuration = 6000;
+const duration = autoHideDuration - 100;
+
 export const Notification: React.FunctionComponent<NotificationProps> = (
   props
 ) => {
   const { notification, onDismiss } = props;
 
   return (
-    <StyledSnackbar
+    <Snackbar
       open={true}
-      autoHideDuration={6000}
+      autoHideDuration={autoHideDuration}
       onClose={onDismiss}
       TransitionComponent={Transition}
       anchorOrigin={{
@@ -44,7 +39,7 @@ export const Notification: React.FunctionComponent<NotificationProps> = (
       }}
     >
       <Alert
-        elevation={6}
+        elevation={3}
         variant="filled"
         severity={notification.type}
         sx={{ width: "100%" }}
@@ -68,7 +63,8 @@ export const Notification: React.FunctionComponent<NotificationProps> = (
           <strong>{notification.title}</strong>
         </AlertTitle>
         {notification?.message}
+        <ProgressBar color={notification.type} duration={duration} />
       </Alert>
-    </StyledSnackbar>
+    </Snackbar>
   );
 };
