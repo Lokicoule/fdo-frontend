@@ -8,11 +8,12 @@ import {
   logout,
   register,
   registerConfirmation,
+  getAuthenticatedUser,
 } from "~/libs/auth";
 
 type AuthContextType = {
   user?: AuthUser;
-
+  isLoggedIn: boolean;
   useLogin: () => [
     AsyncState,
     (email: string, password: string) => Promise<void>
@@ -34,6 +35,7 @@ type AuthContextType = {
 };
 
 const AuthContext = React.createContext<AuthContextType>({
+  isLoggedIn: false,
   useLogin: () => [
     { isLoading: false, error: undefined },
     () => Promise.resolve(),
@@ -83,6 +85,7 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = (
   };
 
   const value = {
+    isLoggedIn: Boolean(getAuthenticatedUser()),
     user,
     useLogin: () => useAsyncCallback(handleLogin),
     useLogout: handleLogout,

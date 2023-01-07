@@ -1,13 +1,11 @@
 import { Alert } from "@mui/material";
-import { useTranslation } from "react-i18next";
 
 type FormWrapperProps = {
-  error?: Error;
+  error?: Error | null;
 };
 
 const ErrorMessage: React.FunctionComponent<FormWrapperProps> = (props) => {
   const { error } = props;
-  const { t } = useTranslation();
 
   if (!error) {
     return null;

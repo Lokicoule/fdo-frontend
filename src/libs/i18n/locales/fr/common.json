@@ -1,6 +1,7 @@
 {
   "title": "FDO",
   "dictionary": {
+    "add": "Ajouter",
     "email": "Adresse e-mail",
     "password": "Mot de passe",
     "confirmPassword": "Confirmer le mot de passe",

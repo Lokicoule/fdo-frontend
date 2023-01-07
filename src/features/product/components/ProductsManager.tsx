@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { buildKeyFromErrorMessage } from "~/libs/i18n/i18n.utils";
 
 import { FetchError } from "~/libs/graphql-fetcher";
-import { notify } from "~/libs/notifications";
 import { queryClient } from "~/libs/react-query";
 
 import { Table } from "~/components/Table";
@@ -36,7 +35,7 @@ const ProductsTable: React.FunctionComponent<ProductsModalContextType> = (
 
   console.info("ProductsTable render");
 
-  const { t } = useTranslation(["common", "product"]);
+  const { t } = useTranslation();
 
   const { data, error, isError, isLoading } = useGetProductsQuery<
     GetProductsQuery,
@@ -45,7 +44,7 @@ const ProductsTable: React.FunctionComponent<ProductsModalContextType> = (
     {},
     {
       onError: (error) => {
-        notify.error(t("product:notifications.get-products-error"));
+        //notify.error(t("product:notifications.get-products-error"));
       },
       useErrorBoundary: (error) => error.status >= 500,
     }
@@ -56,10 +55,10 @@ const ProductsTable: React.FunctionComponent<ProductsModalContextType> = (
       queryClient.invalidateQueries({
         queryKey: ["GetProducts"],
       });
-      notify.success(t("product:notifications.products-deleted"));
+      //notify.success(t("product:notifications.products-deleted"));
     },
     onError: (error) => {
-      notify.error(t("product:notifications.products-not-deleted"));
+      //notify.error(t("product:notifications.products-not-deleted"));
     },
   });
 
@@ -68,10 +67,10 @@ const ProductsTable: React.FunctionComponent<ProductsModalContextType> = (
       queryClient.invalidateQueries({
         queryKey: ["GetProducts"],
       });
-      notify.success(t("product:notifications.product-deleted"));
+      //notify.success(t("product:notifications.product-deleted"));
     },
     onError: (error) => {
-      notify.error(t("product:notifications.product-not-deleted"));
+      //notify.error(t("product:notifications.product-not-deleted"));
     },
   });
 
@@ -211,11 +210,7 @@ const ProductsTable: React.FunctionComponent<ProductsModalContextType> = (
   );
 
   return (
-    <Paper
-      sx={{
-        p: 2,
-      }}
-    >
+    <>
       {TableMemoized}
       {isError && (
         <Alert severity="error" sx={{ mt: 1 }}>
@@ -228,7 +223,7 @@ const ProductsTable: React.FunctionComponent<ProductsModalContextType> = (
           )}
         </Alert>
       )}
-    </Paper>
+    </>
   );
 };
 

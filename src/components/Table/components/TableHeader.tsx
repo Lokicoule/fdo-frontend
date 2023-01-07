@@ -69,6 +69,7 @@ export const TableHeader = (props: TableHeaderProps) => {
                 "& .MuiTableSortLabel-root:hover": {
                   color: "primary.light",
                 },
+                color: "primary.light",
               }}
               key={column.key}
               align="left"

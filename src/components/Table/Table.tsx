@@ -95,13 +95,13 @@ export const Table: React.FunctionComponent<TableProps> = (props) => {
 
   return (
     <>
-      <TableToolbar
+      {/* <TableToolbar
         selected={selected}
         onRemove={handleRemove}
         onChangeSearch={searchHandlers.onChange}
         onSubmitSearch={searchHandlers.onSubmit}
         {...toolbar}
-      />
+      /> */}
       <TableContainer>
         <MuiTable size={"medium"}>
           <TableHeader

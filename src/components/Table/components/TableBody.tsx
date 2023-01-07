@@ -89,6 +89,22 @@ export const TableBody = ({
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
+  const memoizedCheckbox = useMemo(
+    () =>
+      ({ row, isItemSelected, labelId }) =>
+        (
+          <Checkbox
+            color="primary"
+            checked={isItemSelected}
+            inputProps={{
+              "aria-labelledby": labelId,
+            }}
+            onClick={() => onSelect(row.id)}
+          />
+        ),
+    []
+  );
+
   return (
     <MuiTableBody>
       {data.map((row) => {

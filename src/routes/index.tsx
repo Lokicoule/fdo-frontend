@@ -2,19 +2,16 @@ import { useRoutes } from "react-router-dom";
 import { Landing } from "~/features/misc/routes/Landing";
 
 import { publicRoutes } from "./public";
+import { useAuth } from "~/providers/auth";
+import { protectedRoutes } from "./protected";
 
 export const AppRoutes = () => {
+  const auth = useAuth();
   const commonRoutes = [{ path: "/", element: <Landing /> }];
 
-  const routes = publicRoutes;
+  const routes = auth.isLoggedIn ? protectedRoutes : publicRoutes;
 
-  // TODO: need to think about this when we will have private routes
-  // Should we use the public or private Layout for the common routes?
-  routes.forEach((route) => {
-    route.children = [...commonRoutes, ...route.children];
-  });
-
-  const element = useRoutes([...routes]);
+  const element = useRoutes([...commonRoutes, ...routes]);
 
   return <>{element}</>;
 };

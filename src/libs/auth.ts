@@ -67,6 +67,10 @@ export const getUserGroups = async () => {
   return groups;
 };
 
+export const getAuthenticatedUser = () => {
+  return cognitoClient.getCurrentUser();
+};
+
 const getDataFromIdToken = async (key: string) => {
   const session = await cognitoClient.getCurrentUserSession();
   if (!session) return null;
