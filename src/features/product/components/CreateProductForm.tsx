@@ -7,6 +7,8 @@ import { object as YupObject, string as YupString } from "yup";
 import { Form } from "~/components/Form/Form";
 import { FormDialog } from "~/components/Form/FormDialog";
 import { FormWrapper } from "~/components/Form/FormWrapper";
+import { FetchError } from "~/libs/graphql-fetcher";
+import { queryClient } from "~/libs/react-query";
 import { useCreateProductMutation } from "../api/product.client";
 
 type CreateProductValues = {
@@ -25,11 +27,19 @@ const defaultValues = {
 } satisfies CreateProductValues;
 
 export const CreateProductForm: React.FunctionComponent = (props) => {
-  const updateProductMutation = useCreateProductMutation<Error>();
+  const createProductMutation = useCreateProductMutation<FetchError>({
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["GetProducts"],
+      });
+    },
+  });
   const { t } = useTranslation();
 
+  console.info("CreateProductForm render", props);
+
   const handleSubmit = async (data: CreateProductValues) => {
-    await updateProductMutation.mutateAsync({
+    await createProductMutation.mutateAsync({
       payload: {
         label: data.label,
         code: data?.code,
@@ -47,7 +57,7 @@ export const CreateProductForm: React.FunctionComponent = (props) => {
           Create product
         </>
       }
-      onClose={updateProductMutation.reset}
+      onClose={createProductMutation.reset}
       triggerButton={
         <Tooltip title={t("dictionary.add")}>
           <IconButton
@@ -66,23 +76,23 @@ export const CreateProductForm: React.FunctionComponent = (props) => {
           type="submit"
           variant="contained"
           color="primary"
-          disabled={updateProductMutation.isLoading}
+          disabled={createProductMutation.isLoading}
           form="create-product-form"
         >
           Sauvegarder
         </Button>
       }
-      isDone={updateProductMutation.isSuccess}
+      isDone={createProductMutation.isSuccess}
     >
-      <FormWrapper error={updateProductMutation.error}>
-        <Form<CreateProductValues, typeof schema>
-          onSubmit={handleSubmit}
-          schema={schema}
-          options={{ defaultValues }}
-          id="create-product-form"
-        >
-          {({ control, formState }) => (
-            <>
+      {() => (
+        <FormWrapper error={createProductMutation.error}>
+          <Form<CreateProductValues, typeof schema>
+            onSubmit={handleSubmit}
+            schema={schema}
+            options={{ defaultValues }}
+            id="create-product-form"
+          >
+            {({ control, formState }) => (
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Form.InputField
@@ -106,10 +116,10 @@ export const CreateProductForm: React.FunctionComponent = (props) => {
                   />
                 </Grid>
               </Grid>
-            </>
-          )}
-        </Form>
-      </FormWrapper>
+            )}
+          </Form>
+        </FormWrapper>
+      )}
     </FormDialog>
   );
 };

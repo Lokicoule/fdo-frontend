@@ -1,4 +1,5 @@
 import { DefaultOptions, QueryClient } from "@tanstack/react-query";
+import { FetchError } from "~/libs/graphql-fetcher";
 
 const queryConfig: DefaultOptions = {
   queries: {
