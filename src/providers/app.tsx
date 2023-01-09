@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import { Loader } from "~/components/Elements/Loader";
 import { Notifications } from "~/components/Notifications/Notifications";
-import { queryClient } from "~/libs/react-query";
+import queryClient from "~/libs/react-query";
 import { AuthProvider } from "./auth";
 import { ThemeProvider } from "./theme";
 

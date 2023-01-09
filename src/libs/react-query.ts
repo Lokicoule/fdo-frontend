@@ -1,4 +1,10 @@
-import { DefaultOptions, QueryClient } from "@tanstack/react-query";
+import {
+  DefaultOptions,
+  QueryClient,
+  UseMutationOptions,
+  UseQueryOptions,
+} from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 const queryConfig: DefaultOptions = {
   queries: {
@@ -10,4 +16,6 @@ const queryConfig: DefaultOptions = {
   },
 };
 
-export const queryClient = new QueryClient({ defaultOptions: queryConfig });
+const queryClient = new QueryClient({ defaultOptions: queryConfig });
+
+export default queryClient;

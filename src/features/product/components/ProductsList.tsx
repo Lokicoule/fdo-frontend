@@ -1,15 +1,26 @@
-import { Table } from "@mui/material";
-import { GetProductsQuery, useGetProductsQuery } from "../api/product.client";
-import TableContainer from "@mui/material/TableContainer";
-import { TableHead } from "@mui/material";
-import TableRow from "@mui/material/TableRow";
+import {
+  Button,
+  IconButton,
+  Table,
+  TableBody,
+  TableHead,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import TableCell from "@mui/material/TableCell";
-import { TableBody } from "@mui/material";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+import { useMemo } from "react";
+import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
+import { useGetProducts } from "../api/getProducts";
 import { Product } from "../types";
-import { FetchError } from "~/libs/graphql-fetcher";
-import { UpdateProductForm } from "./UpdateProductForm";
-import { memo, useMemo } from "react";
-
+import { UpdateProduct } from "./UpdateProduct";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next";
+import { DeleteProduct } from "./DeleteProduct";
+import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 type TableColumn<Entry> = {
   title: string;
   field: keyof Entry;
@@ -56,13 +67,52 @@ const MyTable = <Entry extends { id: string }>({
   );
 };
 
-export const ProductsList = () => {
-  const getProductsQuery = useGetProductsQuery<GetProductsQuery, FetchError>(
-    {},
-    {
-      useErrorBoundary: (error) => error.status >= 500,
-    }
+const MobileActionsButtons = ({ entry }: { entry: Product }) => {
+  return (
+    <Menu
+      triggerButton={
+        <Tooltip title={"test"}>
+          <IconButton size="medium">
+            <MoreHorizIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      }
+    >
+      {() => (
+        <MenuList>
+          <MenuItem>
+            <UpdateProduct productId={entry.id} />
+          </MenuItem>
+          <MenuItem>
+            <DeleteProduct product={entry} />
+          </MenuItem>
+        </MenuList>
+      )}
+    </Menu>
   );
+};
+
+const DesktopActionsButtons = ({ entry }: { entry: Product }) => {
+  return (
+    <>
+      <UpdateProduct productId={entry.id} />
+      <DeleteProduct product={entry} />
+    </>
+  );
+};
+
+const ResponsiveActionsButtons = ({ entry }: { entry: Product }) => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  return isDesktop ? (
+    <DesktopActionsButtons entry={entry} />
+  ) : (
+    <MobileActionsButtons entry={entry} />
+  );
+};
+
+export const ProductsList = () => {
+  const getProductsQuery = useGetProducts({});
 
   console.info("ProductsList render");
   console.info(getProductsQuery);
@@ -86,18 +136,13 @@ export const ProductsList = () => {
         field: "updatedAt",
       },
       {
-        title: "Actions",
+        title: "",
         field: "id",
-        Cell: ({ entry }) => <UpdateProductForm productId={entry.id} />,
+        Cell: ({ entry }) => <ResponsiveActionsButtons entry={entry} />,
       },
     ],
     []
   );
 
-  return (
-    <MyTable<Product>
-      data={getProductsQuery.data?.getProducts ?? []}
-      columns={columns}
-    />
-  );
+  return <MyTable<Product> data={getProductsQuery.data} columns={columns} />;
 };

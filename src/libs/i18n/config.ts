@@ -3,27 +3,26 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 import { resources as authResources } from "~/features/auth";
-import { resources } from "./locales/index";
+import { resources as commonResources } from "./locales/index";
 
 import "./adapters/yup.adapter";
 
 export const defaultNS = "common";
 
-i18next
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        ...resources.en,
-        ...authResources.en,
-      },
-      fr: {
-        ...resources.fr,
-        ...authResources.fr,
-      },
-    },
-    fallbackLng: "fr",
-    debug: true,
-    defaultNS,
-  });
+export const resources = {
+  en: {
+    ...commonResources.en,
+    ...authResources.en,
+  },
+  fr: {
+    ...commonResources.fr,
+    ...authResources.fr,
+  },
+};
+
+i18next.use(LanguageDetector).use(initReactI18next).init({
+  resources,
+  fallbackLng: "fr",
+  debug: true,
+  defaultNS,
+});

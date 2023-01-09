@@ -2,6 +2,15 @@ import cognitoClient from "~/libs/cognito";
 import { CognitoUserAttributesBuilder } from "~/libs/cognito/builders/CognitoUserAttributesBuilder";
 import http from "~/libs/http";
 
+export const getAccessToken = async () => {
+  const session = await cognitoClient.getCurrentUserSession();
+  if (!session) return null;
+
+  return session.getAccessToken().getJwtToken();
+};
+
+http.setAccessToken(getAccessToken());
+
 export const register = (email: string, password: string) => {
   if (Boolean(cognitoClient.getCurrentUser())) {
     throw new Error("You are already logged in.");
@@ -54,13 +63,6 @@ export const refreshToken = () => {
   return cognitoClient.refreshToken();
 };
 
-export const getAccessToken = async () => {
-  const session = await cognitoClient.getCurrentUserSession();
-  if (!session) return null;
-
-  return session.getAccessToken().getJwtToken();
-};
-
 export const getUserGroups = async () => {
   const groups = await getDataFromIdToken("cognito:groups");
   if (!groups) return undefined;
@@ -78,5 +80,3 @@ const getDataFromIdToken = async (key: string) => {
 
   return session.getIdToken().decodePayload()[key];
 };
-
-http.setAccessToken(getAccessToken());

@@ -22,6 +22,8 @@ export const FormDialog: React.FunctionComponent<FormDialogProps> = (props) => {
     <Dialog
       triggerButton={triggerButton}
       isDone={isDone}
+      maxWidth="sm"
+      onClose={onClose}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -30,9 +32,6 @@ export const FormDialog: React.FunctionComponent<FormDialogProps> = (props) => {
         textAlign: "center",
         p: 2,
       }}
-      maxWidth="sm"
-      open={true}
-      onClose={onClose}
     >
       {({ onClose }) => (
         <>

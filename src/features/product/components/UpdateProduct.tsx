@@ -9,18 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { object as YupObject, string as YupString } from "yup";
 import { Form } from "~/components/Form/Form";
 import { FormDialog } from "~/components/Form/FormDialog";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { preventRendering } from "~/utils/render";
-import {
-  ProductUpdateInput,
-  useGetProductQuery,
-  useUpdateProductMutation,
-} from "../api/product.client";
+import { useGetProduct } from "../api/getProduct";
+import { useUpdateProduct } from "../api/updateProduct";
 
 type UpdateProductFormProps = {
   productId: string;
@@ -36,31 +31,20 @@ const schema = YupObject().shape({
   label: YupString().trim().min(3).max(20).required(),
 });
 
-const ProductForm: React.FunctionComponent<
+const UpdateProductForm: React.FunctionComponent<
   UpdateProductFormProps & {
-    onSubmit: (data: ProductUpdateInput) => Promise<void>;
+    onSubmit: (data: UpdateProductValues) => Promise<void>;
     error?: Error | null;
   }
 > = (props) => {
   const { productId, error, onSubmit } = props;
-  const getProductQuery = useGetProductQuery({
-    getProductId: productId,
+  const { t } = useTranslation();
+
+  const getProductQuery = useGetProduct({
+    variables: {
+      getProductId: productId,
+    },
   });
-  const { t } = useTranslation(["common"]);
-
-  console.info("ProductForm render", getProductQuery);
-
-  // Check if no changes
-  const handleSubmit = (data: ProductUpdateInput) => {
-    if (
-      data.code !== getProductQuery.data?.getProduct?.code ||
-      data.label !== getProductQuery.data?.getProduct?.label
-    ) {
-      onSubmit(data);
-    } else {
-      console.info("No changes");
-    }
-  };
 
   if (getProductQuery.isLoading) {
     return (
@@ -81,13 +65,13 @@ const ProductForm: React.FunctionComponent<
 
   return (
     <FormWrapper error={error}>
-      <Form<ProductUpdateInput, typeof schema>
-        onSubmit={handleSubmit}
+      <Form<UpdateProductValues, typeof schema>
+        onSubmit={onSubmit}
         schema={schema}
         options={{
           defaultValues: {
-            code: getProductQuery.data?.getProduct?.code,
-            label: getProductQuery.data?.getProduct?.label,
+            code: getProductQuery.data?.code,
+            label: getProductQuery.data?.label,
           },
         }}
         id="update-product-form"
@@ -123,33 +107,24 @@ const ProductForm: React.FunctionComponent<
   );
 };
 
-export const UpdateProductForm: React.FunctionComponent<
-  UpdateProductFormProps
-> = (props) => {
+export const UpdateProduct: React.FunctionComponent<UpdateProductFormProps> = (
+  props
+) => {
   const { productId } = props;
-  const queryClient = useQueryClient();
 
-  const updateProductMutation = useUpdateProductMutation<Error>({
-    onSettled: () => {
-      queryClient.invalidateQueries(["GetProducts"]);
-    },
-  });
+  const updateProductMutation = useUpdateProduct();
 
   console.info("UpdateProductForm render", props);
 
   const { t } = useTranslation();
 
-  const handleSubmit = async (data: ProductUpdateInput) => {
-    console.info("UpdateProductForm handleSubmit", data);
+  const handleSubmit = async (data: UpdateProductValues) => {
     await updateProductMutation.mutateAsync({
       payload: {
         ...data,
         id: productId,
       },
     });
-    /*  .then(() => {
-        updateProductMutation.reset();
-      }); */
   };
 
   return (
@@ -167,7 +142,6 @@ export const UpdateProductForm: React.FunctionComponent<
           <IconButton
             sx={{
               backgroundColor: "primary.main",
-              ml: 1,
             }}
             size="medium"
           >
@@ -190,14 +164,11 @@ export const UpdateProductForm: React.FunctionComponent<
       isDone={updateProductMutation.isSuccess}
       onClose={updateProductMutation.reset}
     >
-      {preventRendering(
-        !updateProductMutation.isSuccess,
-        <ProductForm
-          productId={productId}
-          onSubmit={handleSubmit}
-          error={updateProductMutation.error}
-        />
-      )}
+      <UpdateProductForm
+        productId={productId}
+        onSubmit={handleSubmit}
+        error={updateProductMutation.error}
+      />
     </FormDialog>
   );
 };

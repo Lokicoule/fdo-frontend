@@ -5,7 +5,7 @@ import MuiDialogTitle from "@mui/material/DialogTitle";
 import { cloneElement, useEffect, useState } from "react";
 import { preventRenderingIf } from "~/utils/render";
 
-export type DialogProps = Omit<MuiDialogProps, "children"> & {
+export type DialogProps = Omit<MuiDialogProps, "children" | "open"> & {
   triggerButton: React.ReactElement;
   children: (props: { onClose: () => void }) => React.ReactNode;
   isDone?: boolean;

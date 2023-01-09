@@ -2,20 +2,12 @@ import AddIcon from "@mui/icons-material/Add";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { Avatar, Button, IconButton, Tooltip } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { object as YupObject, string as YupString } from "yup";
-import { Service } from "~/components/Elements/Service";
 import { Form } from "~/components/Form/Form";
 import { FormDialog } from "~/components/Form/FormDialog";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { FetchError } from "~/libs/graphql-fetcher";
-import { preventRenderingIf } from "~/utils/render";
-import {
-  ProductCreateInput,
-  ProductDto,
-  useCreateProductMutation,
-} from "../api/product.client";
+import { useCreateProduct } from "../api/createProduct";
 
 type CreateProductValues = {
   code: string;
@@ -32,19 +24,14 @@ const defaultValues = {
   label: "",
 } satisfies CreateProductValues;
 
-export const CreateProductForm: React.FunctionComponent = (props) => {
-  const queryClient = useQueryClient();
+export const CreateProduct: React.FunctionComponent = (props) => {
+  const createProductMutation = useCreateProduct();
 
-  const createProductMutation = useCreateProductMutation<FetchError>({
-    onSettled: () => {
-      queryClient.invalidateQueries(["GetProducts"]);
-    },
-  });
   const { t } = useTranslation();
 
   console.info("CreateProductForm render", props);
 
-  const handleSubmit = async (data: ProductCreateInput) => {
+  const handleSubmit = async (data: CreateProductValues) => {
     await createProductMutation.mutateAsync({
       payload: data,
     });
@@ -88,7 +75,7 @@ export const CreateProductForm: React.FunctionComponent = (props) => {
       onClose={createProductMutation.reset}
     >
       <FormWrapper error={createProductMutation.error}>
-        <Form<ProductCreateInput, typeof schema>
+        <Form<CreateProductValues, typeof schema>
           onSubmit={handleSubmit}
           schema={schema}
           options={{ defaultValues }}

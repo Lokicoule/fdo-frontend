@@ -1,14 +1,14 @@
 import { DocumentNode, parse } from "graphql";
 import { API_URL } from "~/config";
 import { getAccessToken } from "~/libs/auth";
-import { post } from "./http";
+import http from "./http";
 import { AxiosError } from "axios";
 
 //TODO : Use Axios instead of fetch
 
-type AuthHeaderProps = {
+/* type AuthHeaderProps = {
   authorization: string;
-};
+}; */
 
 export class FetchError extends Error {
   private _status: number;
@@ -23,7 +23,7 @@ export class FetchError extends Error {
   }
 }
 
-export function fetchData<TData, TVariables>(
+/* export function fetchData<TData, TVariables>(
   query: string,
   variables?: TVariables,
   options?: RequestInit["headers"]
@@ -58,7 +58,7 @@ export function fetchData<TData, TVariables>(
 
     return json.data;
   };
-}
+} */
 
 export function requestGraphQL<TData, TVariables>(
   query: string,
@@ -66,9 +66,12 @@ export function requestGraphQL<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     const response = await (
-      await post(API_URL, { query, variables }).catch((err: AxiosError) => {
-        throw new FetchError(err.message, err.response?.status ?? 500);
-      })
+      await http
+        .post(API_URL, { query, variables })
+        .catch((err: AxiosError) => {
+          console.log("err", err);
+          throw new FetchError(err.message, err.response?.status ?? 500);
+        })
     ).data;
 
     console.log("dededed", response);

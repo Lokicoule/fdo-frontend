@@ -1,5 +1,5 @@
 import { Service } from "~/components/Elements/Service";
-import { CreateProductForm } from "../components/CreateProductForm";
+import { CreateProduct } from "../components/CreateProduct";
 
 import { ContentLayout } from "~/components/Layout/ContentLayout";
 import { ProductsList } from "../components/ProductsList";
@@ -10,7 +10,7 @@ export const Products: React.FunctionComponent = () => {
   return (
     <ContentLayout>
       <Service>
-        <CreateProductForm />
+        <CreateProduct />
         <ProductsList />
       </Service>
     </ContentLayout>

@@ -7,6 +7,7 @@ function errorInterceptor(error: AxiosError) {
     error.response &&
     error.response.status >= 400 &&
     error.response.status < 500;
+
   if (!expectedError) {
     console.log("Logging the error", error);
     notify.error({
@@ -14,6 +15,7 @@ function errorInterceptor(error: AxiosError) {
       message: "Please check your internet connection",
     });
   }
+
   return Promise.reject(error);
 }
 
@@ -26,6 +28,7 @@ const axios = Axios.create({
 });
 
 axios.interceptors.response.use((response) => response, errorInterceptor);
+
 async function setAccessToken(accessToken: Promise<string | null>) {
   const token = await accessToken;
   if (token) {
@@ -40,5 +43,3 @@ export default {
   delete: axios.delete,
   setAccessToken,
 };
-
-export const post = axios.post;
