@@ -1,5 +1,8 @@
+import { DocumentNode, parse } from "graphql";
 import { API_URL } from "~/config";
 import { getAccessToken } from "~/libs/auth";
+import { post } from "./http";
+import { AxiosError } from "axios";
 
 //TODO : Use Axios instead of fetch
 
@@ -33,27 +36,58 @@ export function fetchData<TData, TVariables>(
       authHeaders["authorization"] = `Bearer ${accessToken}`;
     }
 
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...authHeaders,
-          ...(options ?? {}),
-        },
-        body: JSON.stringify({ query, variables }),
-      });
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders,
+        ...(options ?? {}),
+      },
+      body: JSON.stringify({ query, variables }),
+    });
 
-      const json = await res.json();
+    const json = await res.json();
 
-      if (json.errors) {
-        const { message } = json.errors[0];
-        throw new FetchError(message, res.status);
+    if (json.errors) {
+      console.log(json.errors);
+      const { message, extensions } = json.errors[0];
+      if (extensions?.code === "INTERNAL_SERVER_ERROR")
+        throw new FetchError(message, 500);
+      throw new FetchError(message, res.status);
+    }
+
+    return json.data;
+  };
+}
+
+export function requestGraphQL<TData, TVariables>(
+  query: string,
+  variables?: TVariables
+) {
+  return async (): Promise<TData> => {
+    const response = await (
+      await post(API_URL, { query, variables }).catch((err: AxiosError) => {
+        throw new FetchError(err.message, err.response?.status ?? 500);
+      })
+    ).data;
+
+    console.log("dededed", response);
+
+    if (response.errors) {
+      console.log(response.errors);
+      const { message, extensions } = response.errors[0];
+      const { exception } = extensions;
+
+      if (exception) {
+        throw new FetchError(message, exception.status ?? 500);
       }
 
-      return json.data;
-    } catch (error: unknown) {
-      throw new FetchError("SERVICE_UNAVAILABLE", 503);
+      throw new FetchError(
+        "An unexpected error occurred. Please try again later.",
+        500
+      );
     }
+
+    return response.data;
   };
 }

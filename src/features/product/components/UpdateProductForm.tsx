@@ -9,13 +9,15 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { object as YupObject, string as YupString } from "yup";
 import { Form } from "~/components/Form/Form";
 import { FormDialog } from "~/components/Form/FormDialog";
 import { FormWrapper } from "~/components/Form/FormWrapper";
-import { queryClient } from "~/libs/react-query";
+import { preventRendering } from "~/utils/render";
 import {
+  ProductUpdateInput,
   useGetProductQuery,
   useUpdateProductMutation,
 } from "../api/product.client";
@@ -36,7 +38,7 @@ const schema = YupObject().shape({
 
 const ProductForm: React.FunctionComponent<
   UpdateProductFormProps & {
-    onSubmit: (data: UpdateProductValues) => Promise<void>;
+    onSubmit: (data: ProductUpdateInput) => Promise<void>;
     error?: Error | null;
   }
 > = (props) => {
@@ -44,9 +46,22 @@ const ProductForm: React.FunctionComponent<
   const getProductQuery = useGetProductQuery({
     getProductId: productId,
   });
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common"]);
 
   console.info("ProductForm render", getProductQuery);
+
+  // Check if no changes
+  const handleSubmit = (data: ProductUpdateInput) => {
+    if (
+      data.code !== getProductQuery.data?.getProduct?.code ||
+      data.label !== getProductQuery.data?.getProduct?.label
+    ) {
+      onSubmit(data);
+    } else {
+      console.info("No changes");
+    }
+  };
+
   if (getProductQuery.isLoading) {
     return (
       <Grid container spacing={2}>
@@ -66,8 +81,8 @@ const ProductForm: React.FunctionComponent<
 
   return (
     <FormWrapper error={error}>
-      <Form<UpdateProductValues, typeof schema>
-        onSubmit={onSubmit}
+      <Form<ProductUpdateInput, typeof schema>
+        onSubmit={handleSubmit}
         schema={schema}
         options={{
           defaultValues: {
@@ -112,12 +127,11 @@ export const UpdateProductForm: React.FunctionComponent<
   UpdateProductFormProps
 > = (props) => {
   const { productId } = props;
+  const queryClient = useQueryClient();
 
   const updateProductMutation = useUpdateProductMutation<Error>({
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["GetProducts"],
-      });
+    onSettled: () => {
+      queryClient.invalidateQueries(["GetProducts"]);
     },
   });
 
@@ -125,14 +139,17 @@ export const UpdateProductForm: React.FunctionComponent<
 
   const { t } = useTranslation();
 
-  const handleSubmit = async (data: UpdateProductValues) => {
+  const handleSubmit = async (data: ProductUpdateInput) => {
+    console.info("UpdateProductForm handleSubmit", data);
     await updateProductMutation.mutateAsync({
       payload: {
+        ...data,
         id: productId,
-        label: data.label,
-        code: data.code,
       },
     });
+    /*  .then(() => {
+        updateProductMutation.reset();
+      }); */
   };
 
   return (
@@ -173,21 +190,14 @@ export const UpdateProductForm: React.FunctionComponent<
       isDone={updateProductMutation.isSuccess}
       onClose={updateProductMutation.reset}
     >
-      {({ isOpen }) => {
-        console.info("UpdateProductForm FormDialog render", {
-          isOpen,
-          updateProductMutation,
-        });
-        return (
-          isOpen && (
-            <ProductForm
-              productId={productId}
-              onSubmit={handleSubmit}
-              error={updateProductMutation.error}
-            />
-          )
-        );
-      }}
+      {preventRendering(
+        !updateProductMutation.isSuccess,
+        <ProductForm
+          productId={productId}
+          onSubmit={handleSubmit}
+          error={updateProductMutation.error}
+        />
+      )}
     </FormDialog>
   );
 };

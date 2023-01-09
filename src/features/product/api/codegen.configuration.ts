@@ -12,7 +12,7 @@ const config: CodegenConfig = {
       ],
       config: {
         fetcher: {
-          func: "../../../libs/graphql-fetcher#fetchData",
+          func: "../../../libs/graphql-fetcher#requestGraphQL",
         },
         withHooks: true,
       },

@@ -6,23 +6,21 @@ import {
   DialogTitle,
 } from "~/components/Elements/Dialog";
 
-export type FormDialogProps = {
+export type FormDialogProps = React.PropsWithChildren<{
   isDone: boolean;
   title: React.ReactElement | string;
   submitButton: React.ReactElement;
   triggerButton: React.ReactElement;
   onClose?: () => void;
-  children: (props: { isOpen: boolean }) => React.ReactNode;
-};
+}>;
 
 export const FormDialog: React.FunctionComponent<FormDialogProps> = (props) => {
-  const { isDone, onClose, title, submitButton, triggerButton, children } =
+  const { isDone, title, submitButton, triggerButton, onClose, children } =
     props;
 
   return (
     <Dialog
       triggerButton={triggerButton}
-      onClose={onClose}
       isDone={isDone}
       sx={{
         display: "flex",
@@ -34,8 +32,9 @@ export const FormDialog: React.FunctionComponent<FormDialogProps> = (props) => {
       }}
       maxWidth="sm"
       open={true}
+      onClose={onClose}
     >
-      {({ isOpen, handleClose }) => (
+      {({ onClose }) => (
         <>
           <DialogTitle
             sx={{
@@ -48,7 +47,7 @@ export const FormDialog: React.FunctionComponent<FormDialogProps> = (props) => {
           >
             {title}
           </DialogTitle>
-          <DialogContent>{children({ isOpen })}</DialogContent>
+          <DialogContent>{children}</DialogContent>
           <DialogActions>
             <Stack
               sx={{
@@ -61,7 +60,7 @@ export const FormDialog: React.FunctionComponent<FormDialogProps> = (props) => {
               direction="row"
               justifyContent="space-between"
             >
-              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={onClose}>Cancel</Button>
               {submitButton}
             </Stack>
           </DialogActions>
