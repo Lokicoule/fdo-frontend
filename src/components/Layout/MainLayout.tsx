@@ -159,7 +159,7 @@ const DesktopSidebar: React.FunctionComponent<{
   );
 };
 
-const SidebarFactory: React.FunctionComponent<{
+const ResponsiveSidebar: React.FunctionComponent<{
   open: boolean;
   onToggle: () => void;
 }> = (props) => {
@@ -209,7 +209,7 @@ export const MainLayout: React.FunctionComponent<React.PropsWithChildren> = (
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={{ width: { sm: width }, flexShrink: { sm: 0 } }}>
-        <SidebarFactory open={open} onToggle={handleOpenToggle} />
+        <ResponsiveSidebar open={open} onToggle={handleOpenToggle} />
       </Box>
       <Box
         component="main"
