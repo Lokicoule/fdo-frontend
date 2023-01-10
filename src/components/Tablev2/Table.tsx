@@ -1,124 +1,186 @@
-import {
-  Paper,
-  Table as MuiTable,
-  TableBody,
-  TableHead,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
+import { Checkbox, TablePagination, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import { cloneElement, useState } from "react";
+import { TableBase, TableBasePassThroughProps } from "./TableBase";
 
-export type TableColumn<Entry> = {
-  title: string;
-  field: keyof Entry;
-  Cell?({ entry }: { entry: Entry }): React.ReactElement;
-  options: {
-    mobile?: boolean;
-  };
-};
-
-export type TableProps<Entry> = {
-  data: Entry[];
-  columns: TableColumn<Entry>[];
+type TableProps<Entry> = TableBasePassThroughProps<Entry> & {
+  pageSize?: number;
+  rowsPerPageOptions?: number[];
+  pagination?: boolean;
+  checkboxSelection?: boolean;
+  deleteSelectedButton?: React.ReactElement;
   emptyRows?: number;
   CheckboxParent?: () => React.ReactElement;
   CheckboxChild?: ({ id }: { id: string }) => React.ReactElement;
 };
 
-const ResponsiveCell = ({
-  children,
-  options,
-}: {
-  children: React.ReactNode;
-  options: {
-    mobile?: boolean;
-  };
-}) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+export type TablePassThroughProps<Entry> = Omit<
+  TableProps<Entry>,
+  "emptyRows" | "CheckboxParent" | "CheckboxChild"
+>;
 
-  if (options.mobile === false && isMobile) {
-    return null;
-  }
+const witchCheckboxSelection =
+  <Entry extends { id: string }>(
+    Element: React.ComponentType<TableProps<Entry>>
+  ): React.FunctionComponent<TableProps<Entry>> =>
+  ({
+    data,
+    checkboxSelection,
+    deleteSelectedButton,
+    ...props
+  }: TableProps<Entry>) => {
+    if (!checkboxSelection || !deleteSelectedButton)
+      return <Element {...props} data={data} />;
 
-  return <TableCell>{children}</TableCell>;
-};
+    const [selected, setSelected] = useState<Entry["id"][]>([]);
 
-export const Table = <Entry extends { id: string }>({
-  data,
-  columns,
-  emptyRows = 0,
-  CheckboxParent,
-  CheckboxChild,
-}: TableProps<Entry>) => {
-  if (data.length === 0) {
-    return <p>Empty</p>;
-  }
-  return (
-    <TableContainer
-      component={Paper}
-      elevation={3}
-      sx={{ pb: 2, maxHeight: "70vh" }}
-    >
-      <MuiTable stickyHeader size="small">
-        <TableHead
-          sx={{
-            "& .MuiTableCell-root": {
-              opacity: 0.9,
-              fontSize: "0.9rem",
-              fontWeight: "bold",
-            },
-          }}
-        >
-          <TableRow>
-            {CheckboxParent && CheckboxChild ? (
-              <TableCell>
-                <CheckboxParent />
-              </TableCell>
-            ) : null}
-            {columns?.map((column, columnIndex) => (
-              <ResponsiveCell
-                key={`${column.title}_${columnIndex}`}
-                options={column.options}
-              >
-                {column.title}
-              </ResponsiveCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.map((entry, entryIndex) => (
-            <TableRow key={entry?.id || entryIndex}>
-              {CheckboxParent && CheckboxChild ? (
-                <TableCell>
-                  <CheckboxChild id={entry.id} />
-                </TableCell>
-              ) : null}
-              {columns?.map(({ Cell, field, title, options }, columnIndex) => (
-                <ResponsiveCell
-                  key={`${title}_${columnIndex}`}
-                  options={options}
-                >
-                  <>{Cell ? <Cell entry={entry} /> : entry[field]}</>
-                </ResponsiveCell>
-              ))}
-            </TableRow>
-          ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 43 * emptyRows }}>
-              <TableCell
-                colSpan={
-                  CheckboxChild && CheckboxParent
-                    ? columns.length + 1
-                    : columns.length
-                }
-              />
-            </TableRow>
+    const handleSelect = (id: Entry["id"]) => {
+      const selectedIndex = selected.indexOf(id);
+      let newSelected: Entry["id"][] = [];
+
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, id);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1)
+        );
+      }
+
+      setSelected(newSelected);
+    };
+
+    const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        setSelected(data.map((item) => item.id));
+      } else {
+        setSelected([]);
+      }
+    };
+
+    const isSelected = (id: Entry["id"]) => selected.includes(id);
+
+    const deleteButton = cloneElement(
+      deleteSelectedButton as React.ReactElement<{ ids?: Entry["id"][] }>,
+      {
+        ids: selected,
+      }
+    );
+
+    return (
+      <>
+        {selected.length > 0 ? (
+          <Toolbar
+            sx={{
+              ...(selected.length > 0 && {
+                bgcolor: (theme) =>
+                  alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.activatedOpacity
+                  ),
+              }),
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography color="inherit" variant="subtitle1" component="div">
+              {selected.length} selected
+            </Typography>
+            {deleteButton}
+          </Toolbar>
+        ) : (
+          <Toolbar />
+        )}
+        <Element
+          {...props}
+          data={data}
+          CheckboxChild={({ id }: { id: string }) => (
+            <Checkbox
+              color="primary"
+              checked={isSelected(id)}
+              onClick={() => handleSelect(id)}
+            />
           )}
-        </TableBody>
-      </MuiTable>
-    </TableContainer>
-  );
+          CheckboxParent={() => (
+            <Checkbox
+              color="primary"
+              indeterminate={
+                selected.length > 0 && selected.length < data.length
+              }
+              checked={data.length > 0 && selected.length === data.length}
+              onChange={handleSelectAll}
+            />
+          )}
+        />
+      </>
+    );
+  };
+
+const withPagination =
+  <Entry extends { id: string }>(
+    Element: React.ComponentType<TableProps<Entry>>
+  ): React.FunctionComponent<TableProps<Entry>> =>
+  ({
+    data,
+    pageSize = 10,
+    rowsPerPageOptions = [5, 10, 25, 50],
+    pagination,
+    ...props
+  }: TableProps<Entry>) => {
+    if (!pagination) return <Element {...props} data={data} emptyRows={0} />;
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(pageSize);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
+    const emptyRows =
+      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+
+    const paginatedData = data.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    );
+
+    console.log(emptyRows);
+
+    return (
+      <>
+        <Element {...props} data={paginatedData} emptyRows={emptyRows} />
+        <TablePagination
+          rowsPerPageOptions={rowsPerPageOptions}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </>
+    );
+  };
+
+export const Table = <Entry extends { id: string }>(
+  props: TableProps<Entry>
+) => {
+  const TableWithPagination = withPagination<Entry>(TableBase);
+  const TableWithCheckboxSelection =
+    witchCheckboxSelection<Entry>(TableWithPagination);
+
+  return <TableWithCheckboxSelection {...props} />;
 };

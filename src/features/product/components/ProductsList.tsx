@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
-import { TableColumn } from "~/components/Tablev2/Table";
-import { TableWrapper } from "~/components/Tablev2/TableWrapper";
+import { TableColumn } from "~/components/Tablev2/TableBase";
+import { Table } from "~/components/Tablev2/Table";
 import dateFormat from "../../../utils/dateFormat";
 import { useGetProducts } from "../api/getProducts";
 import { Product } from "../types";
@@ -112,7 +112,7 @@ export const ProductsList = () => {
   );
 
   return (
-    <TableWrapper<Product>
+    <Table<Product>
       data={getProductsQuery.data}
       columns={columns}
       pagination
