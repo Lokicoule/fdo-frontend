@@ -1,5 +1,4 @@
 import {
-  Checkbox,
   Paper,
   Table as MuiTable,
   TableBody,
@@ -10,7 +9,6 @@ import {
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import { cloneElement } from "react";
 
 export type TableColumn<Entry> = {
   title: string;
@@ -25,8 +23,8 @@ export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
   emptyRows?: number;
-  toggleCheckbox?: (id: string) => React.ReactNode;
-  toggleCheckboxAll?: React.ReactNode;
+  CheckboxParent?: () => React.ReactElement;
+  CheckboxChild?: ({ id }: { id: string }) => React.ReactElement;
 };
 
 const ResponsiveCell = ({
@@ -52,8 +50,8 @@ export const Table = <Entry extends { id: string }>({
   data,
   columns,
   emptyRows = 0,
-  toggleCheckbox,
-  toggleCheckboxAll,
+  CheckboxParent,
+  CheckboxChild,
 }: TableProps<Entry>) => {
   if (data.length === 0) {
     return <p>Empty</p>;
@@ -75,8 +73,10 @@ export const Table = <Entry extends { id: string }>({
           }}
         >
           <TableRow>
-            {toggleCheckboxAll ? (
-              <TableCell>{toggleCheckboxAll}</TableCell>
+            {CheckboxParent && CheckboxChild ? (
+              <TableCell>
+                <CheckboxParent />
+              </TableCell>
             ) : null}
             {columns?.map((column, columnIndex) => (
               <ResponsiveCell
@@ -91,8 +91,10 @@ export const Table = <Entry extends { id: string }>({
         <TableBody>
           {data?.map((entry, entryIndex) => (
             <TableRow key={entry?.id || entryIndex}>
-              {toggleCheckbox ? (
-                <TableCell>{toggleCheckbox(entry.id)}</TableCell>
+              {CheckboxParent && CheckboxChild ? (
+                <TableCell>
+                  <CheckboxChild id={entry.id} />
+                </TableCell>
               ) : null}
               {columns?.map(({ Cell, field, title, options }, columnIndex) => (
                 <ResponsiveCell
@@ -107,7 +109,11 @@ export const Table = <Entry extends { id: string }>({
           {emptyRows > 0 && (
             <TableRow style={{ height: 43 * emptyRows }}>
               <TableCell
-                colSpan={toggleCheckbox ? columns.length + 1 : columns.length}
+                colSpan={
+                  CheckboxChild && CheckboxParent
+                    ? columns.length + 1
+                    : columns.length
+                }
               />
             </TableRow>
           )}

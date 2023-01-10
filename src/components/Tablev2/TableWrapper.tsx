@@ -1,20 +1,40 @@
-import { Checkbox, TablePagination } from "@mui/material";
-import { useState } from "react";
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  TablePagination,
+  Tooltip,
+  Typography,
+  Paper,
+  Stack,
+} from "@mui/material";
+import { cloneElement, useState } from "react";
 import { Table, TableProps } from "./Table";
+import Toolbar from "@mui/material/Toolbar";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { alpha } from "@mui/material/styles";
 
 export type TableWrapperProps<Entry> = TableProps<Entry> & {
   pageSize?: number;
   rowsPerPageOptions?: number[];
   pagination?: boolean;
   checkboxSelection?: boolean;
+  deleteSelectedButton?: React.ReactElement;
 };
 
 const witchCheckboxSelection =
   <Entry extends { id: string }>(
     Element: React.ComponentType<TableWrapperProps<Entry>>
   ): React.FunctionComponent<TableWrapperProps<Entry>> =>
-  ({ data, checkboxSelection, ...props }: TableWrapperProps<Entry>) => {
-    if (!checkboxSelection) return <Element {...props} data={data} />;
+  ({
+    data,
+    checkboxSelection,
+    deleteSelectedButton,
+    ...props
+  }: TableWrapperProps<Entry>) => {
+    if (!checkboxSelection || !deleteSelectedButton)
+      return <Element {...props} data={data} />;
 
     const [selected, setSelected] = useState<Entry["id"][]>([]);
 
@@ -48,27 +68,60 @@ const witchCheckboxSelection =
 
     const isSelected = (id: Entry["id"]) => selected.includes(id);
 
+    const deleteButton = cloneElement(
+      deleteSelectedButton as React.ReactElement<{ ids?: Entry["id"][] }>,
+      {
+        ids: selected,
+      }
+    );
+
     return (
-      <Element
-        {...props}
-        data={data}
-        checkboxSelection={checkboxSelection}
-        toggleCheckbox={(id: string) => (
-          <Checkbox
-            color="primary"
-            checked={isSelected(id)}
-            onClick={() => handleSelect(id)}
-          />
+      <>
+        {selected.length > 0 ? (
+          <Toolbar
+            sx={{
+              ...(selected.length > 0 && {
+                bgcolor: (theme) =>
+                  alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.activatedOpacity
+                  ),
+              }),
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography color="inherit" variant="subtitle1" component="div">
+              {selected.length} selected
+            </Typography>
+            {deleteButton}
+          </Toolbar>
+        ) : (
+          <Toolbar />
         )}
-        toggleCheckboxAll={
-          <Checkbox
-            color="primary"
-            indeterminate={selected.length > 0 && selected.length < data.length}
-            checked={data.length > 0 && selected.length === data.length}
-            onChange={handleSelectAll}
-          />
-        }
-      />
+        <Element
+          {...props}
+          data={data}
+          CheckboxChild={({ id }: { id: string }) => (
+            <Checkbox
+              color="primary"
+              checked={isSelected(id)}
+              onClick={() => handleSelect(id)}
+            />
+          )}
+          CheckboxParent={() => (
+            <Checkbox
+              color="primary"
+              indeterminate={
+                selected.length > 0 && selected.length < data.length
+              }
+              checked={data.length > 0 && selected.length === data.length}
+              onChange={handleSelectAll}
+            />
+          )}
+        />
+      </>
     );
   };
 
@@ -125,26 +178,12 @@ const withPagination =
     );
   };
 
-export const TableWrapper = <Entry extends { id: string }>({
-  pageSize,
-  rowsPerPageOptions,
-  checkboxSelection,
-  data,
-  columns,
-  pagination,
-}: TableWrapperProps<Entry>) => {
+export const TableWrapper = <Entry extends { id: string }>(
+  props: TableWrapperProps<Entry>
+) => {
   const TableWithPagination = withPagination<Entry>(Table);
   const TableWithCheckboxSelection =
     witchCheckboxSelection<Entry>(TableWithPagination);
 
-  return (
-    <TableWithCheckboxSelection
-      data={data}
-      columns={columns}
-      pagination={pagination}
-      pageSize={pageSize}
-      rowsPerPageOptions={rowsPerPageOptions}
-      checkboxSelection={checkboxSelection}
-    />
-  );
+  return <TableWithCheckboxSelection {...props} />;
 };

@@ -5,7 +5,7 @@ import { FetchError } from "~/libs/graphql-fetcher";
 
 export const useDeleteProducts = () =>
   useRemoveProductsMutation<FetchError>({
-    onSuccess: (products) => {
+    onSuccess: () => {
       notify.success({
         title: "Products removed",
         message: `Products have been removed`,
