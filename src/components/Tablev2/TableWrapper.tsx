@@ -6,6 +6,7 @@ export type TableWrapperProps<Entry> = TableProps<Entry> & {
   pageSize?: number;
   rowsPerPageOptions?: number[];
   pagination?: boolean;
+  checkboxSelection?: boolean;
 };
 
 const witchCheckboxSelection =

@@ -25,7 +25,6 @@ export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
   emptyRows?: number;
-  checkboxSelection?: boolean;
   toggleCheckbox?: (id: string) => React.ReactNode;
   toggleCheckboxAll?: React.ReactNode;
 };
@@ -53,7 +52,6 @@ export const Table = <Entry extends { id: string }>({
   data,
   columns,
   emptyRows = 0,
-  checkboxSelection,
   toggleCheckbox,
   toggleCheckboxAll,
 }: TableProps<Entry>) => {
@@ -108,7 +106,9 @@ export const Table = <Entry extends { id: string }>({
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 43 * emptyRows }}>
-              <TableCell colSpan={columns.length} />
+              <TableCell
+                colSpan={toggleCheckbox ? columns.length + 1 : columns.length}
+              />
             </TableRow>
           )}
         </TableBody>
