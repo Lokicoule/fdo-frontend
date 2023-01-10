@@ -4,6 +4,12 @@ import Toolbar from "@mui/material/Toolbar";
 import { cloneElement, useState } from "react";
 import { TableBase, TableBasePassThroughProps } from "./TableBase";
 
+/**
+ * @param emptyRows - number of empty rows to be displayed at the bottom of the table
+ * @param CheckboxParent - a component to be displayed at the top of the table
+ * @param CheckboxChild - a component to be displayed at the left of each row
+ * These props are passed to the TableBase component and should only be defined by the Table component.
+ */
 type TableProps<Entry> = TableBasePassThroughProps<Entry> & {
   pageSize?: number;
   rowsPerPageOptions?: number[];
