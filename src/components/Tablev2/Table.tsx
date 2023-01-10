@@ -178,9 +178,8 @@ const withPagination =
 export const Table = <Entry extends { id: string }>(
   props: TableProps<Entry>
 ) => {
-  const TableWithPagination = withPagination<Entry>(TableBase);
-  const TableWithCheckboxSelection =
-    witchCheckboxSelection<Entry>(TableWithPagination);
+  const TableWithCheckboxSelection = witchCheckboxSelection<Entry>(TableBase);
+  const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
 
-  return <TableWithCheckboxSelection {...props} />;
+  return <TableWithPagination {...props} />;
 };
