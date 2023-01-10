@@ -143,7 +143,7 @@ export const UpdateProduct: React.FunctionComponent<UpdateProductFormProps> = (
             sx={{
               backgroundColor: "primary.main",
             }}
-            size="medium"
+            size="small"
           >
             <EditIcon fontSize="small" />
           </IconButton>

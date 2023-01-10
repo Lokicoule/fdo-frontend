@@ -1,101 +1,20 @@
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
-  Button,
   IconButton,
-  Table,
-  TableBody,
-  TableHead,
+  Stack,
   Tooltip,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
 import { useMemo } from "react";
-import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
+import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
+import { Table, TableColumn } from "~/components/Tablev2/Table";
+import { TableWrapper } from "~/components/Tablev2/TableWrapper";
+import dateFormat from "../../../utils/dateFormat";
 import { useGetProducts } from "../api/getProducts";
 import { Product } from "../types";
-import { UpdateProduct } from "./UpdateProduct";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useTranslation } from "react-i18next";
 import { DeleteProduct } from "./DeleteProduct";
-import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { preventRenderingIf } from "~/utils/render";
-import dateFormat from "../../../utils/dateFormat";
-type TableColumn<Entry> = {
-  title: string;
-  field: keyof Entry;
-  Cell?({ entry }: { entry: Entry }): React.ReactElement;
-  options: {
-    mobile?: boolean;
-  };
-};
-
-export type TableProps<Entry> = {
-  data: Entry[];
-  columns: TableColumn<Entry>[];
-};
-
-const ResponsiveCell = ({
-  children,
-  options,
-}: {
-  children: React.ReactNode;
-  options: {
-    mobile?: boolean;
-  };
-}) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  if (options.mobile === false && isMobile) {
-    return null;
-  }
-
-  return <TableCell>{children}</TableCell>;
-};
-
-const MyTable = <Entry extends { id: string }>({
-  data,
-  columns,
-}: TableProps<Entry>) => {
-  if (data.length === 0) {
-    return <p>Empty</p>;
-  }
-  return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns?.map((column, columnIndex) => (
-              <ResponsiveCell
-                key={`${column.title}_${columnIndex}`}
-                options={column.options}
-              >
-                {column.title}
-              </ResponsiveCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.map((entry, entryIndex) => (
-            <TableRow key={entry?.id || entryIndex}>
-              {columns?.map(({ Cell, field, title, options }, columnIndex) => (
-                <ResponsiveCell
-                  key={`${title}_${columnIndex}`}
-                  options={options}
-                >
-                  <>{Cell ? <Cell entry={entry} /> : entry[field]}</>
-                </ResponsiveCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
+import { UpdateProduct } from "./UpdateProduct";
 
 const MobileActionsButtons = ({ entry }: { entry: Product }) => {
   return (
@@ -124,10 +43,10 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
 
 const DesktopActionsButtons = ({ entry }: { entry: Product }) => {
   return (
-    <>
+    <Stack flexDirection={"row"} justifyContent={"space-evenly"}>
       <UpdateProduct productId={entry.id} />
       <DeleteProduct product={entry} />
-    </>
+    </Stack>
   );
 };
 
@@ -143,7 +62,6 @@ const ResponsiveActionsButtons = ({ entry }: { entry: Product }) => {
 
 export const ProductsList = () => {
   const getProductsQuery = useGetProducts({});
-  const { i18n } = useTranslation();
 
   console.info("ProductsList render");
   console.info(getProductsQuery);
@@ -192,5 +110,11 @@ export const ProductsList = () => {
     []
   );
 
-  return <MyTable<Product> data={getProductsQuery.data} columns={columns} />;
+  return (
+    <TableWrapper<Product>
+      data={getProductsQuery.data}
+      columns={columns}
+      pageSize={10}
+    />
+  );
 };

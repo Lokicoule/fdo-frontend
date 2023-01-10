@@ -34,7 +34,7 @@ export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
             sx={{
               backgroundColor: "error.main",
             }}
-            size="medium"
+            size="small"
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
