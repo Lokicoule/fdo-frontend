@@ -41,7 +41,15 @@ const ResponsiveCell = ({
     return null;
   }
 
-  return <TableCell>{children}</TableCell>;
+  return (
+    <TableCell
+      sx={{
+        p: 1,
+      }}
+    >
+      {children}
+    </TableCell>
+  );
 };
 
 export const Table = <Entry extends { id: string }>({
@@ -93,7 +101,7 @@ export const Table = <Entry extends { id: string }>({
             </TableRow>
           ))}
           {emptyRows > 0 && (
-            <TableRow style={{ height: 63 * emptyRows }}>
+            <TableRow style={{ height: 47 * emptyRows }}>
               <TableCell colSpan={columns.length} />
             </TableRow>
           )}

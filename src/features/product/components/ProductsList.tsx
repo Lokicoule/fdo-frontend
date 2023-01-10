@@ -114,7 +114,7 @@ export const ProductsList = () => {
     <TableWrapper<Product>
       data={getProductsQuery.data}
       columns={columns}
-      pageSize={10}
+      pagination
     />
   );
 };
