@@ -58,7 +58,7 @@ export const TableBase = <Entry extends { id: string }>({
   CheckboxParent,
   CheckboxChild,
 }: TableBaseProps<Entry>) => {
-  if (data.length === 0) {
+  if (data.length === 0 || columns.length === 0) {
     return <p>Empty</p>;
   }
   return (
