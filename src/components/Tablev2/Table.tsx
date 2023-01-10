@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   Paper,
   Table as MuiTable,
   TableBody,
@@ -9,6 +10,7 @@ import {
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
+import { cloneElement } from "react";
 
 export type TableColumn<Entry> = {
   title: string;
@@ -23,6 +25,9 @@ export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
   emptyRows?: number;
+  checkboxSelection?: boolean;
+  toggleCheckbox?: (id: string) => React.ReactNode;
+  toggleCheckboxAll?: React.ReactNode;
 };
 
 const ResponsiveCell = ({
@@ -41,21 +46,16 @@ const ResponsiveCell = ({
     return null;
   }
 
-  return (
-    <TableCell
-      sx={{
-        p: 1,
-      }}
-    >
-      {children}
-    </TableCell>
-  );
+  return <TableCell>{children}</TableCell>;
 };
 
 export const Table = <Entry extends { id: string }>({
   data,
   columns,
   emptyRows = 0,
+  checkboxSelection,
+  toggleCheckbox,
+  toggleCheckboxAll,
 }: TableProps<Entry>) => {
   if (data.length === 0) {
     return <p>Empty</p>;
@@ -66,17 +66,20 @@ export const Table = <Entry extends { id: string }>({
       elevation={3}
       sx={{ pb: 2, maxHeight: "70vh" }}
     >
-      <MuiTable stickyHeader>
+      <MuiTable stickyHeader size="small">
         <TableHead
           sx={{
             "& .MuiTableCell-root": {
-              backgroundColor: "primary.main",
-              color: "primary.contrastText",
               opacity: 0.9,
+              fontSize: "0.9rem",
+              fontWeight: "bold",
             },
           }}
         >
           <TableRow>
+            {toggleCheckboxAll ? (
+              <TableCell>{toggleCheckboxAll}</TableCell>
+            ) : null}
             {columns?.map((column, columnIndex) => (
               <ResponsiveCell
                 key={`${column.title}_${columnIndex}`}
@@ -90,6 +93,9 @@ export const Table = <Entry extends { id: string }>({
         <TableBody>
           {data?.map((entry, entryIndex) => (
             <TableRow key={entry?.id || entryIndex}>
+              {toggleCheckbox ? (
+                <TableCell>{toggleCheckbox(entry.id)}</TableCell>
+              ) : null}
               {columns?.map(({ Cell, field, title, options }, columnIndex) => (
                 <ResponsiveCell
                   key={`${title}_${columnIndex}`}
@@ -101,7 +107,7 @@ export const Table = <Entry extends { id: string }>({
             </TableRow>
           ))}
           {emptyRows > 0 && (
-            <TableRow style={{ height: 47 * emptyRows }}>
+            <TableRow style={{ height: 43 * emptyRows }}>
               <TableCell colSpan={columns.length} />
             </TableRow>
           )}
