@@ -21,15 +21,39 @@ import { useTranslation } from "react-i18next";
 import { DeleteProduct } from "./DeleteProduct";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { preventRenderingIf } from "~/utils/render";
+import dateFormat from "../../../utils/dateFormat";
 type TableColumn<Entry> = {
   title: string;
   field: keyof Entry;
   Cell?({ entry }: { entry: Entry }): React.ReactElement;
+  options: {
+    mobile?: boolean;
+  };
 };
 
 export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
+};
+
+const ResponsiveCell = ({
+  children,
+  options,
+}: {
+  children: React.ReactNode;
+  options: {
+    mobile?: boolean;
+  };
+}) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  if (options.mobile === false && isMobile) {
+    return null;
+  }
+
+  return <TableCell>{children}</TableCell>;
 };
 
 const MyTable = <Entry extends { id: string }>({
@@ -44,20 +68,26 @@ const MyTable = <Entry extends { id: string }>({
       <Table>
         <TableHead>
           <TableRow>
-            {columns.map((column, columnIndex) => (
-              <TableCell key={`${column}_${columnIndex}`}>
+            {columns?.map((column, columnIndex) => (
+              <ResponsiveCell
+                key={`${column.title}_${columnIndex}`}
+                options={column.options}
+              >
                 {column.title}
-              </TableCell>
+              </ResponsiveCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((entry, entryIndex) => (
+          {data?.map((entry, entryIndex) => (
             <TableRow key={entry?.id || entryIndex}>
-              {columns.map(({ Cell, field, title }, columnIndex) => (
-                <TableCell key={`${title}_${columnIndex}`}>
+              {columns?.map(({ Cell, field, title, options }, columnIndex) => (
+                <ResponsiveCell
+                  key={`${title}_${columnIndex}`}
+                  options={options}
+                >
                   <>{Cell ? <Cell entry={entry} /> : entry[field]}</>
-                </TableCell>
+                </ResponsiveCell>
               ))}
             </TableRow>
           ))}
@@ -113,6 +143,7 @@ const ResponsiveActionsButtons = ({ entry }: { entry: Product }) => {
 
 export const ProductsList = () => {
   const getProductsQuery = useGetProducts({});
+  const { i18n } = useTranslation();
 
   console.info("ProductsList render");
   console.info(getProductsQuery);
@@ -122,23 +153,40 @@ export const ProductsList = () => {
       {
         title: "Code",
         field: "code",
+        options: {
+          mobile: true,
+        },
       },
       {
         title: "Label",
         field: "label",
+        options: {
+          mobile: true,
+        },
       },
       {
         title: "Created at",
         field: "createdAt",
+        Cell: ({ entry }) => <span>{dateFormat(entry.createdAt)}</span>,
+        options: {
+          mobile: false,
+        },
       },
       {
         title: "Updated at",
         field: "updatedAt",
+        Cell: ({ entry }) => <span>{dateFormat(entry.updatedAt)}</span>,
+        options: {
+          mobile: false,
+        },
       },
       {
         title: "",
         field: "id",
         Cell: ({ entry }) => <ResponsiveActionsButtons entry={entry} />,
+        options: {
+          mobile: true,
+        },
       },
     ],
     []
