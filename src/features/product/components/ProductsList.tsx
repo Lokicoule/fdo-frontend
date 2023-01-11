@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
-import { TableColumn } from "~/components/Tablev2/TableBase";
-import { Table } from "~/components/Tablev2/Table";
+import { TableColumn } from "~/components/Table/TableBase";
+import { Table } from "~/components/Table/Table";
 import dateFormat from "../../../utils/dateFormat";
 import { useGetProducts } from "../api/getProducts";
 import { Product } from "../types";
@@ -74,6 +74,7 @@ export const ProductsList = () => {
         field: "code",
         options: {
           mobile: true,
+          sortable: true,
         },
       },
       {
@@ -81,6 +82,7 @@ export const ProductsList = () => {
         field: "label",
         options: {
           mobile: true,
+          sortable: true,
         },
       },
       {
@@ -89,6 +91,7 @@ export const ProductsList = () => {
         Cell: ({ entry }) => <span>{dateFormat(entry.createdAt)}</span>,
         options: {
           mobile: false,
+          sortable: true,
         },
       },
       {
@@ -97,6 +100,7 @@ export const ProductsList = () => {
         Cell: ({ entry }) => <span>{dateFormat(entry.updatedAt)}</span>,
         options: {
           mobile: false,
+          sortable: true,
         },
       },
       {
@@ -116,6 +120,7 @@ export const ProductsList = () => {
       data={getProductsQuery.data}
       columns={columns}
       pagination
+      sortable
       checkboxSelection
       deleteSelectedButton={<DeleteProducts />}
     />

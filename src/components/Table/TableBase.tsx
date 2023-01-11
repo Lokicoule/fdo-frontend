@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { TableCellProps } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 
@@ -16,26 +16,29 @@ export type TableColumn<Entry> = {
   Cell?({ entry }: { entry: Entry }): React.ReactElement;
   options: {
     mobile?: boolean;
+    sortable?: boolean;
   };
 };
 
-type TableBaseProps<Entry> = {
+export type TableBaseProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
-  emptyRows?: number;
-  CheckboxParent?: () => React.ReactElement;
-  CheckboxChild?: ({ id }: { id: string }) => React.ReactElement;
+  checkboxSelection?: boolean;
+  renderEmptyRows?: (nbColumns: number) => React.ReactElement;
+  renderCellHead?: ({
+    column,
+  }: {
+    column: TableColumn<Entry>;
+  }) => React.ReactElement;
+  renderCheckboxChild?: (id: string) => React.ReactElement;
+  renderCheckboxParent?: () => React.ReactElement;
 };
 
-export type TableBasePassThroughProps<Entry> = Omit<
-  TableBaseProps<Entry>,
-  "emptyRows" | "CheckboxParent" | "CheckboxChild"
->;
-
-const ResponsiveCell = ({
+export const ResponsiveCell = ({
   children,
   options,
-}: {
+  ...props
+}: TableCellProps & {
   children: React.ReactNode;
   options: {
     mobile?: boolean;
@@ -48,26 +51,29 @@ const ResponsiveCell = ({
     return null;
   }
 
-  return <TableCell>{children}</TableCell>;
+  return <TableCell {...props}>{children}</TableCell>;
 };
 
 export const TableBase = <Entry extends { id: string }>({
   data,
   columns,
-  emptyRows = 0,
-  CheckboxParent,
-  CheckboxChild,
+  checkboxSelection,
+  renderCellHead = ({ column }) => <>{column.title}</>,
+  renderEmptyRows = (nbColumns) => <></>,
+  renderCheckboxChild = (id) => <></>,
+  renderCheckboxParent = () => <></>,
 }: TableBaseProps<Entry>) => {
   if (data.length === 0 || columns.length === 0) {
     return <p>Empty</p>;
   }
+
   return (
     <TableContainer
       component={Paper}
       elevation={3}
       sx={{ pb: 2, maxHeight: "70vh" }}
     >
-      <MuiTable stickyHeader size="small">
+      <MuiTable stickyHeader size="medium">
         <TableHead
           sx={{
             "& .MuiTableCell-root": {
@@ -78,17 +84,15 @@ export const TableBase = <Entry extends { id: string }>({
           }}
         >
           <TableRow>
-            {CheckboxParent && CheckboxChild ? (
-              <TableCell>
-                <CheckboxParent />
-              </TableCell>
-            ) : null}
+            {renderCheckboxParent()}
             {columns?.map((column, columnIndex) => (
               <ResponsiveCell
                 key={`${column.title}_${columnIndex}`}
                 options={column.options}
               >
-                {column.title}
+                {renderCellHead({
+                  column,
+                })}
               </ResponsiveCell>
             ))}
           </TableRow>
@@ -96,11 +100,7 @@ export const TableBase = <Entry extends { id: string }>({
         <TableBody>
           {data?.map((entry, entryIndex) => (
             <TableRow key={entry?.id || entryIndex}>
-              {CheckboxParent && CheckboxChild ? (
-                <TableCell>
-                  <CheckboxChild id={entry.id} />
-                </TableCell>
-              ) : null}
+              {renderCheckboxChild(entry.id)}
               {columns?.map(({ Cell, field, title, options }, columnIndex) => (
                 <ResponsiveCell
                   key={`${title}_${columnIndex}`}
@@ -111,17 +111,7 @@ export const TableBase = <Entry extends { id: string }>({
               ))}
             </TableRow>
           ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 43 * emptyRows }}>
-              <TableCell
-                colSpan={
-                  CheckboxChild && CheckboxParent
-                    ? columns.length + 1
-                    : columns.length
-                }
-              />
-            </TableRow>
-          )}
+          {renderEmptyRows(columns.length + (checkboxSelection ? 1 : 0))}
         </TableBody>
       </MuiTable>
     </TableContainer>
