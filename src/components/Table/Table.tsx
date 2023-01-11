@@ -246,42 +246,16 @@ const withSorting =
     );
   };
 
-/* const withFilter =
-  <Entry extends { id: string }>(
-    Element: React.ComponentType<TableBaseProps<Entry>>
-  ): React.FunctionComponent<TableProps<Entry>> =>
-  ({ data, filterable, ...props }: TableProps<Entry>) => {
-    if (!filterable) return <Element {...props} data={data} />;
-    const [filter, setFilter] = useState<string>("");
-    const filteredData = data.filter((entry) => {
-      return Object.values(entry).some((value) => {
-        if (typeof value === "string") {
-          return value.toLowerCase().includes(filter.toLowerCase());
-        }
-        return false;
-      });
-    });
-
-    return (
-      <>
-        <TextField
-          label="Filter"
-          value={filter}
-          onChange={(event) => setFilter(event.target.value)}
-        />
-        <Element {...props} data={filteredData} />
-      </>
-    );
-  };
- */
 const withFilter =
   <Entry extends { id: string }>(
     Element: React.ComponentType<TableBaseProps<Entry>>
   ): React.FunctionComponent<TableProps<Entry>> =>
   ({ data, filterable, ...props }: TableProps<Entry>) => {
     if (!filterable) return <Element {...props} data={data} />;
+
     const [filter, setFilter] = useState<string>("");
     const [debouncedFilter, setDebouncedFilter] = useState<string>("");
+
     const filteredData = data.filter((entry) => {
       return Object.values(entry).some((value) => {
         if (typeof value === "string") {
