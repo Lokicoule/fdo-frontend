@@ -1,8 +1,7 @@
 import {
   Box,
   Checkbox,
-  Grid,
-  Stack,
+  CircularProgress,
   TableCell,
   TablePagination,
   TableRow,
@@ -41,6 +40,7 @@ export type TableProps<Entry> = Pick<
   pagination?: PaginationOptions;
   selection?: SelectionOptions;
   toolbar?: ToolbarOptions;
+  loading?: boolean;
 };
 
 type OverrideTableProps<Entry> = TableProps<Entry> & {
@@ -360,10 +360,31 @@ const withToolbar =
     );
   };
 
+const withLoader =
+  <Entry extends { id: string }>(
+    Element: React.ComponentType<OverrideTableBaseProps<Entry>>
+  ): React.FunctionComponent<OverrideTableProps<Entry>> =>
+  ({ loading, ...props }: OverrideTableProps<Entry>) => {
+    if (!loading) return <Element {...props} />;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  };
+
 export const Table = <Entry extends { id: string }>(
   props: TableProps<Entry>
 ) => {
-  const TableWithToolbar = withToolbar<Entry>(TableBase);
+  const TableWithLoader = withLoader<Entry>(TableBase);
+  const TableWithToolbar = withToolbar<Entry>(TableWithLoader);
   const TableWithCheckboxSelection =
     witchCheckboxSelection<Entry>(TableWithToolbar);
   const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
