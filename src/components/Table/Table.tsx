@@ -239,7 +239,7 @@ const withSorting =
               {column.title}
             </TableSortLabel>
           ) : (
-            <>{column.title}</>
+            column.title
           )
         }
       />

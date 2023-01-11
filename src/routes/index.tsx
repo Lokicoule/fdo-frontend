@@ -13,5 +13,5 @@ export const AppRoutes = () => {
 
   const element = useRoutes([...commonRoutes, ...routes]);
 
-  return <>{element}</>;
+  return element;
 };
