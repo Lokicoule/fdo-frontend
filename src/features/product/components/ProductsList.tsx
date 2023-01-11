@@ -122,7 +122,8 @@ export const ProductsList = () => {
       pagination
       sortable
       checkboxSelection
-      deleteSelectedButton={<DeleteProducts />}
+      filterable
+      deleteSelectionButton={<DeleteProducts />}
     />
   );
 };

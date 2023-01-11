@@ -4,6 +4,7 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  TextField,
   Typography,
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
@@ -18,7 +19,8 @@ type TableProps<Entry> = TableBaseProps<Entry> & {
   rowsPerPageOptions?: number[];
   pagination?: boolean;
   sortable?: boolean;
-  deleteSelectedButton?: React.ReactElement;
+  filterable?: boolean;
+  deleteSelectionButton?: React.ReactElement;
 };
 
 const witchCheckboxSelection =
@@ -28,10 +30,10 @@ const witchCheckboxSelection =
   ({
     data,
     checkboxSelection,
-    deleteSelectedButton,
+    deleteSelectionButton,
     ...props
   }: TableProps<Entry>) => {
-    if (!checkboxSelection || !deleteSelectedButton)
+    if (!checkboxSelection || !deleteSelectionButton)
       return <Element {...props} data={data} />;
 
     const [selected, setSelected] = useState<Entry["id"][]>([]);
@@ -67,7 +69,7 @@ const witchCheckboxSelection =
     const isSelected = (id: Entry["id"]) => selected.includes(id);
 
     const deleteButton = cloneElement(
-      deleteSelectedButton as React.ReactElement<{ ids?: Entry["id"][] }>,
+      deleteSelectionButton as React.ReactElement<{ ids?: Entry["id"][] }>,
       {
         ids: selected,
       }
@@ -244,12 +246,41 @@ const withSorting =
     );
   };
 
+const withFilter =
+  <Entry extends { id: string }>(
+    Element: React.ComponentType<TableBaseProps<Entry>>
+  ): React.FunctionComponent<TableProps<Entry>> =>
+  ({ data, filterable, ...props }: TableProps<Entry>) => {
+    if (!filterable) return <Element {...props} data={data} />;
+    const [filter, setFilter] = useState<string>("");
+    const filteredData = data.filter((entry) => {
+      return Object.values(entry).some((value) => {
+        if (typeof value === "string") {
+          return value.toLowerCase().includes(filter.toLowerCase());
+        }
+        return false;
+      });
+    });
+
+    return (
+      <>
+        <TextField
+          label="Filter"
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+        />
+        <Element {...props} data={filteredData} />
+      </>
+    );
+  };
+
 export const Table = <Entry extends { id: string }>(
   props: TableProps<Entry>
 ) => {
   const TableWithCheckboxSelection = witchCheckboxSelection<Entry>(TableBase);
   const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
-  const TableWithSorting = withSorting<Entry>(TableWithPagination);
+  const TableWithFilter = withFilter<Entry>(TableWithPagination);
+  const TableWithSorting = withSorting<Entry>(TableWithFilter);
 
   return <TableWithSorting {...props} />;
 };
