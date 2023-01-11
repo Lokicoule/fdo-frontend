@@ -25,20 +25,9 @@ type TableProps<Entry> = TableBaseProps<Entry> & {
   sortable?: boolean;
   searchable?: boolean;
   deleteSelectionButton?: React.ReactElement;
-  title?: React.ReactNode;
+  title?: string;
   addButton?: React.ReactElement;
 };
-
-const Title = <Entry extends { id: string }>({
-  title,
-}: Pick<TableProps<Entry>, "title">) =>
-  typeof title === "string" ? (
-    <Typography variant="h4" id="tableTitle" component="div">
-      {title}
-    </Typography>
-  ) : (
-    title
-  );
 
 const witchCheckboxSelection =
   <Entry extends { id: string }>(
@@ -326,7 +315,11 @@ const withToolbar =
             }),
           }}
         >
-          {title ? <Title title={title} /> : null}
+          {title ? (
+            <Typography variant="h4" id="tableTitle" component="div">
+              {title}
+            </Typography>
+          ) : null}
 
           <Box sx={{ flexGrow: 1 }} />
           <Box
