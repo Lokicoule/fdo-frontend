@@ -28,7 +28,6 @@ export type TableBaseProps<Entry> = {
   renderCellHead?: (column: TableColumn<Entry>) => React.ReactNode;
   renderCheckboxChild?: (id: string) => React.ReactNode;
   renderCheckboxParent?: () => React.ReactNode;
-  searchField?: JSX.Element;
 };
 
 export const ResponsiveCell = ({

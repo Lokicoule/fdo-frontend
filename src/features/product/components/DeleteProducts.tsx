@@ -28,9 +28,14 @@ export const DeleteProducts = (props: { ids?: string[] }) => {
             sx={{
               backgroundColor: "error.main",
             }}
-            size="small"
+            size="medium"
           >
-            <DeleteIcon fontSize="small" />
+            <DeleteIcon
+              sx={{
+                color: "error.contrastText",
+              }}
+              fontSize="small"
+            />
           </IconButton>
         </Tooltip>
       }

@@ -18,29 +18,47 @@ import { TableBase, TableBaseProps } from "./TableBase";
 
 type Order = "asc" | "desc";
 
-type TableProps<Entry> = TableBaseProps<Entry> & {
-  pageSize?: number;
-  rowsPerPageOptions?: number[];
-  pagination?: boolean;
-  sortable?: boolean;
-  searchable?: boolean;
-  deleteSelectionButton?: React.ReactElement;
+type PaginationOptions = {
+  rowsPerPage: number;
+  rowsPerPageOptions: number[];
+};
+
+type SelectionOptions = {
+  selectionButton: React.ReactElement;
+};
+
+type ToolbarOptions = {
   title?: string;
   addButton?: React.ReactElement;
 };
 
+export type TableProps<Entry> = Pick<
+  TableBaseProps<Entry>,
+  "data" | "columns"
+> & {
+  sortable?: boolean;
+  searchable?: boolean;
+  pagination?: PaginationOptions;
+  selection?: SelectionOptions;
+  toolbar?: ToolbarOptions;
+};
+
+type OverrideTableProps<Entry> = TableProps<Entry> & {
+  searchField?: JSX.Element;
+};
+
+type OverrideTableBaseProps<Entry> = TableBaseProps<Entry> & {
+  searchField?: JSX.Element;
+};
+
 const witchCheckboxSelection =
   <Entry extends { id: string }>(
-    Element: React.ComponentType<TableBaseProps<Entry>>
-  ): React.FunctionComponent<TableProps<Entry>> =>
-  ({
-    data,
-    checkboxSelection,
-    deleteSelectionButton,
-    ...props
-  }: TableProps<Entry>) => {
-    if (!checkboxSelection || !deleteSelectionButton)
-      return <Element {...props} data={data} />;
+    Element: React.ComponentType<OverrideTableBaseProps<Entry>>
+  ): React.FunctionComponent<OverrideTableProps<Entry>> =>
+  ({ data, selection, ...props }: OverrideTableProps<Entry>) => {
+    if (!selection?.selectionButton) return <Element {...props} data={data} />;
+
+    const { selectionButton } = selection;
 
     const [selected, setSelected] = useState<Entry["id"][]>([]);
 
@@ -74,8 +92,8 @@ const witchCheckboxSelection =
 
     const isSelected = (id: Entry["id"]) => selected.includes(id);
 
-    const deleteButton = cloneElement(
-      deleteSelectionButton as React.ReactElement<{ ids?: Entry["id"][] }>,
+    const triggerButton = cloneElement(
+      selectionButton as React.ReactElement<{ ids?: Entry["id"][] }>,
       {
         ids: selected,
       }
@@ -101,15 +119,13 @@ const witchCheckboxSelection =
             <Typography color="inherit" variant="subtitle1" component="div">
               {selected.length} selected
             </Typography>
-            {deleteButton}
+            {triggerButton}
           </Toolbar>
-        ) : (
-          <Toolbar />
-        )}
+        ) : null}
         <Element
           {...props}
           data={data}
-          checkboxSelection={checkboxSelection}
+          checkboxSelection
           renderCheckboxChild={(id: string) => (
             <TableCell padding="checkbox">
               <Checkbox
@@ -138,19 +154,17 @@ const witchCheckboxSelection =
 
 const withPagination =
   <Entry extends { id: string }>(
-    Element: React.ComponentType<TableBaseProps<Entry>>
-  ): React.FunctionComponent<TableProps<Entry>> =>
-  ({
-    data,
-    pageSize = 10,
-    rowsPerPageOptions = [5, 10, 25, 50],
-    pagination,
-    ...props
-  }: TableProps<Entry>) => {
+    Element: React.ComponentType<OverrideTableBaseProps<Entry>>
+  ): React.FunctionComponent<OverrideTableProps<Entry>> =>
+  ({ data, pagination, ...props }: OverrideTableProps<Entry>) => {
     if (!pagination) return <Element {...props} data={data} />;
 
+    const { rowsPerPageOptions = [5, 10, 25, 50] } = pagination;
+
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(pageSize);
+    const [rowsPerPage, setRowsPerPage] = useState(
+      pagination.rowsPerPage || rowsPerPageOptions[0]
+    );
 
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -201,9 +215,9 @@ const withPagination =
 
 const withSorting =
   <Entry extends { id: string }>(
-    Element: React.ComponentType<TableBaseProps<Entry>>
-  ): React.FunctionComponent<TableProps<Entry>> =>
-  ({ data, sortable, ...props }: TableProps<Entry>) => {
+    Element: React.ComponentType<OverrideTableBaseProps<Entry>>
+  ): React.FunctionComponent<OverrideTableProps<Entry>> =>
+  ({ data, sortable, ...props }: OverrideTableProps<Entry>) => {
     if (!sortable) return <Element {...props} data={data} />;
 
     const [order, setOrder] = useState<Order>("asc");
@@ -254,9 +268,9 @@ const withSorting =
 
 const withSearch =
   <Entry extends { id: string }>(
-    Element: React.ComponentType<TableBaseProps<Entry>>
-  ): React.FunctionComponent<TableProps<Entry>> =>
-  ({ data, searchable, ...props }: TableProps<Entry>) => {
+    Element: React.ComponentType<OverrideTableBaseProps<Entry>>
+  ): React.FunctionComponent<OverrideTableProps<Entry>> =>
+  ({ data, searchable, ...props }: OverrideTableProps<Entry>) => {
     if (!searchable) return <Element {...props} data={data} />;
 
     const [filter, setSearch] = useState<string>("");
@@ -296,9 +310,13 @@ const withSearch =
 
 const withToolbar =
   <Entry extends { id: string }>(
-    Element: React.ComponentType<TableBaseProps<Entry>>
-  ): React.FunctionComponent<TableProps<Entry>> =>
-  ({ searchField, addButton, title, ...props }: TableProps<Entry>) => {
+    Element: React.ComponentType<OverrideTableBaseProps<Entry>>
+  ): React.FunctionComponent<OverrideTableProps<Entry>> =>
+  ({ searchField, toolbar, ...props }: OverrideTableProps<Entry>) => {
+    if (!toolbar) return <Element {...props} />;
+
+    const { title, addButton } = toolbar;
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -345,10 +363,11 @@ const withToolbar =
 export const Table = <Entry extends { id: string }>(
   props: TableProps<Entry>
 ) => {
-  const TableWithCheckboxSelection = witchCheckboxSelection<Entry>(TableBase);
+  const TableWithToolbar = withToolbar<Entry>(TableBase);
+  const TableWithCheckboxSelection =
+    witchCheckboxSelection<Entry>(TableWithToolbar);
   const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
-  const TableWithToolbar = withToolbar<Entry>(TableWithPagination);
-  const TableWithSearch = withSearch<Entry>(TableWithToolbar);
+  const TableWithSearch = withSearch<Entry>(TableWithPagination);
   const TableWithSorting = withSorting<Entry>(TableWithSearch);
 
   return <TableWithSorting {...props} />;

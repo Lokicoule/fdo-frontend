@@ -120,13 +120,19 @@ export const ProductsList = () => {
     <Table<Product>
       data={getProductsQuery.data}
       columns={columns}
-      pagination
       sortable
-      checkboxSelection
       searchable
-      deleteSelectionButton={<DeleteProducts />}
-      addButton={<CreateProduct />}
-      title="Products"
+      pagination={{
+        rowsPerPageOptions: [5, 10, 25, 50, 100],
+        rowsPerPage: 10,
+      }}
+      selection={{
+        selectionButton: <DeleteProducts />,
+      }}
+      toolbar={{
+        title: "Products",
+        addButton: <CreateProduct />,
+      }}
     />
   );
 };
