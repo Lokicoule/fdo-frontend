@@ -229,7 +229,7 @@ const withSorting =
       <Element
         {...props}
         data={sortedData}
-        renderCellHead={({ column }) =>
+        renderCellHead={(column) =>
           column.options.sortable ? (
             <TableSortLabel
               active={orderBy === column.field}
