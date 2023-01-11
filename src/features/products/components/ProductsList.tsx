@@ -1,6 +1,7 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   IconButton,
+  Link,
   Stack,
   Tooltip,
   useMediaQuery,
@@ -32,6 +33,9 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
       {() => (
         <MenuList>
           <MenuItem>
+            <Link href={`./${entry.id}`}>View</Link>
+          </MenuItem>
+          <MenuItem>
             <UpdateProduct productId={entry.id} />
           </MenuItem>
           <MenuItem>
@@ -46,6 +50,7 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
 const DesktopActionsButtons = ({ entry }: { entry: Product }) => {
   return (
     <Stack flexDirection={"row"} justifyContent={"space-evenly"}>
+      <Link href={`./${entry.id}`}>View</Link>
       <UpdateProduct productId={entry.id} />
       <DeleteProduct product={entry} />
     </Stack>

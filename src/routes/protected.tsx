@@ -4,9 +4,9 @@ import { Loader } from "~/components/Elements/Loader";
 import { MainLayout } from "~/components/Layout/MainLayout";
 import { lazyImport } from "~/utils/lazyImport";
 
-const { Products } = lazyImport(
-  () => import("~/features/product/routes/Products"),
-  "Products"
+const { ProductsRoutes } = lazyImport(
+  () => import("~/features/products"),
+  "ProductsRoutes"
 );
 
 const App = () => {
@@ -24,7 +24,7 @@ export const protectedRoutes = [
     path: "/app",
     element: <App />,
     children: [
-      { path: "products", element: <Products /> },
+      { path: "products/*", element: <ProductsRoutes /> },
       { path: "*", element: <Navigate to="." /> },
     ],
   },
