@@ -19,7 +19,7 @@ type TableProps<Entry> = TableBaseProps<Entry> & {
   rowsPerPageOptions?: number[];
   pagination?: boolean;
   sortable?: boolean;
-  filterable?: boolean;
+  searchable?: boolean;
   deleteSelectionButton?: React.ReactElement;
 };
 
@@ -246,20 +246,20 @@ const withSorting =
     );
   };
 
-const withFilter =
+const withSearch =
   <Entry extends { id: string }>(
     Element: React.ComponentType<TableBaseProps<Entry>>
   ): React.FunctionComponent<TableProps<Entry>> =>
-  ({ data, filterable, ...props }: TableProps<Entry>) => {
-    if (!filterable) return <Element {...props} data={data} />;
+  ({ data, searchable, ...props }: TableProps<Entry>) => {
+    if (!searchable) return <Element {...props} data={data} />;
 
-    const [filter, setFilter] = useState<string>("");
-    const [debouncedFilter, setDebouncedFilter] = useState<string>("");
+    const [filter, setSearch] = useState<string>("");
+    const [debouncedSearch, setDebouncedSearch] = useState<string>("");
 
     const filteredData = data.filter((entry) => {
       return Object.values(entry).some((value) => {
         if (typeof value === "string") {
-          return value.toLowerCase().includes(debouncedFilter.toLowerCase());
+          return value.toLowerCase().includes(debouncedSearch.toLowerCase());
         }
         return false;
       });
@@ -267,7 +267,7 @@ const withFilter =
 
     useEffect(() => {
       const timeout = setTimeout(() => {
-        setDebouncedFilter(filter);
+        setDebouncedSearch(filter);
       }, 500);
 
       return () => clearTimeout(timeout);
@@ -276,9 +276,9 @@ const withFilter =
     return (
       <>
         <TextField
-          label="Filter"
+          label="Search"
           value={filter}
-          onChange={(event) => setFilter(event.target.value)}
+          onChange={(event) => setSearch(event.target.value)}
         />
         <Element {...props} data={filteredData} />
       </>
@@ -290,8 +290,8 @@ export const Table = <Entry extends { id: string }>(
 ) => {
   const TableWithCheckboxSelection = witchCheckboxSelection<Entry>(TableBase);
   const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
-  const TableWithFilter = withFilter<Entry>(TableWithPagination);
-  const TableWithSorting = withSorting<Entry>(TableWithFilter);
+  const TableWithSearch = withSearch<Entry>(TableWithPagination);
+  const TableWithSorting = withSorting<Entry>(TableWithSearch);
 
   return <TableWithSorting {...props} />;
 };

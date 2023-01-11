@@ -122,7 +122,7 @@ export const ProductsList = () => {
       pagination
       sortable
       checkboxSelection
-      filterable
+      searchable
       deleteSelectionButton={<DeleteProducts />}
     />
   );
