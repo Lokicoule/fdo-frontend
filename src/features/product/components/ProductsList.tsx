@@ -16,6 +16,7 @@ import { Product } from "../types";
 import { DeleteProduct } from "./DeleteProduct";
 import { DeleteProducts } from "./DeleteProducts";
 import { UpdateProduct } from "./UpdateProduct";
+import { CreateProduct } from "./CreateProduct";
 
 const MobileActionsButtons = ({ entry }: { entry: Product }) => {
   return (
@@ -124,6 +125,8 @@ export const ProductsList = () => {
       checkboxSelection
       searchable
       deleteSelectionButton={<DeleteProducts />}
+      addButton={<CreateProduct />}
+      title="Products"
     />
   );
 };

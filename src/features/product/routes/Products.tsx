@@ -10,7 +10,6 @@ export const Products: React.FunctionComponent = () => {
   return (
     <ContentLayout>
       <Service>
-        <CreateProduct />
         <ProductsList />
       </Service>
     </ContentLayout>

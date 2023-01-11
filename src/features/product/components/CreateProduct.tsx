@@ -54,9 +54,9 @@ export const CreateProduct: React.FunctionComponent = (props) => {
               backgroundColor: "primary.main",
               ml: 1,
             }}
-            size="medium"
+            size="large"
           >
-            <AddIcon fontSize="small" />
+            <AddIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
       }

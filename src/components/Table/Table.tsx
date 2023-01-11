@@ -1,13 +1,17 @@
 import {
+  Box,
   Checkbox,
+  Grid,
+  Stack,
   TableCell,
   TablePagination,
   TableRow,
   TableSortLabel,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import { cloneElement, useEffect, useState } from "react";
 import { TableBase, TableBaseProps } from "./TableBase";
@@ -21,7 +25,20 @@ type TableProps<Entry> = TableBaseProps<Entry> & {
   sortable?: boolean;
   searchable?: boolean;
   deleteSelectionButton?: React.ReactElement;
+  title?: React.ReactNode;
+  addButton?: React.ReactElement;
 };
+
+const Title = <Entry extends { id: string }>({
+  title,
+}: Pick<TableProps<Entry>, "title">) =>
+  typeof title === "string" ? (
+    <Typography variant="h4" id="tableTitle" component="div">
+      {title}
+    </Typography>
+  ) : (
+    title
+  );
 
 const witchCheckboxSelection =
   <Entry extends { id: string }>(
@@ -274,13 +291,60 @@ const withSearch =
     }, [filter]);
 
     return (
+      <Element
+        {...props}
+        data={filteredData}
+        searchField={
+          <TextField
+            label="Search"
+            value={filter}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        }
+      />
+    );
+  };
+
+const withToolbar =
+  <Entry extends { id: string }>(
+    Element: React.ComponentType<TableBaseProps<Entry>>
+  ): React.FunctionComponent<TableProps<Entry>> =>
+  ({ searchField, addButton, title, ...props }: TableProps<Entry>) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+    return (
       <>
-        <TextField
-          label="Search"
-          value={filter}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        <Element {...props} data={filteredData} />
+        <Toolbar
+          sx={{
+            width: "100%",
+            mb: 2,
+            ...(isMobile && {
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }),
+          }}
+        >
+          {title ? <Title title={title} /> : null}
+
+          <Box sx={{ flexGrow: 1 }} />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              ...(isMobile && {
+                mt: 3,
+                width: "100%",
+                justifyContent: "space-evenly",
+              }),
+            }}
+          >
+            {searchField}
+            {addButton}
+          </Box>
+        </Toolbar>
+        <Element {...props} />
       </>
     );
   };
@@ -290,7 +354,8 @@ export const Table = <Entry extends { id: string }>(
 ) => {
   const TableWithCheckboxSelection = witchCheckboxSelection<Entry>(TableBase);
   const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
-  const TableWithSearch = withSearch<Entry>(TableWithPagination);
+  const TableWithToolbar = withToolbar<Entry>(TableWithPagination);
+  const TableWithSearch = withSearch<Entry>(TableWithToolbar);
   const TableWithSorting = withSorting<Entry>(TableWithSearch);
 
   return <TableWithSorting {...props} />;
