@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
-import { cloneElement, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { TableBase, TableBaseProps } from "./TableBase";
 
 type Order = "asc" | "desc";
@@ -246,7 +246,7 @@ const withSorting =
     );
   };
 
-const withFilter =
+/* const withFilter =
   <Entry extends { id: string }>(
     Element: React.ComponentType<TableBaseProps<Entry>>
   ): React.FunctionComponent<TableProps<Entry>> =>
@@ -261,6 +261,43 @@ const withFilter =
         return false;
       });
     });
+
+    return (
+      <>
+        <TextField
+          label="Filter"
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+        />
+        <Element {...props} data={filteredData} />
+      </>
+    );
+  };
+ */
+const withFilter =
+  <Entry extends { id: string }>(
+    Element: React.ComponentType<TableBaseProps<Entry>>
+  ): React.FunctionComponent<TableProps<Entry>> =>
+  ({ data, filterable, ...props }: TableProps<Entry>) => {
+    if (!filterable) return <Element {...props} data={data} />;
+    const [filter, setFilter] = useState<string>("");
+    const [debouncedFilter, setDebouncedFilter] = useState<string>("");
+    const filteredData = data.filter((entry) => {
+      return Object.values(entry).some((value) => {
+        if (typeof value === "string") {
+          return value.toLowerCase().includes(debouncedFilter.toLowerCase());
+        }
+        return false;
+      });
+    });
+
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        setDebouncedFilter(filter);
+      }, 500);
+
+      return () => clearTimeout(timeout);
+    }, [filter]);
 
     return (
       <>
