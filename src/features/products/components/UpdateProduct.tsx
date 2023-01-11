@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { object as YupObject, string as YupString } from "yup";
 import { Form } from "~/components/Form/Form";
@@ -16,9 +17,15 @@ import { FormDialog } from "~/components/Form/FormDialog";
 import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useGetProduct } from "../api/getProduct";
 import { useUpdateProduct } from "../api/updateProduct";
+import { Product } from "../types";
 
-type UpdateProductFormProps = {
+type UpdateProductProps = {
   productId: string;
+};
+
+type UpdateProductFormProps = UpdateProductProps & {
+  onSubmit: (data: UpdateProductValues) => Promise<void>;
+  error?: Error | null;
 };
 
 type UpdateProductValues = {
@@ -31,14 +38,14 @@ const schema = YupObject().shape({
   label: YupString().trim().min(3).max(20).required(),
 });
 
-const UpdateProductForm: React.FunctionComponent<
-  UpdateProductFormProps & {
-    onSubmit: (data: UpdateProductValues) => Promise<void>;
-    error?: Error | null;
-  }
-> = (props) => {
+const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
+  props
+) => {
   const { productId, error, onSubmit } = props;
   const { t } = useTranslation();
+
+  console.info("UpdateProductForm render", props);
+  const [warnMessage, setWarnMessage] = useState<string | null>(null);
 
   const getProductQuery = useGetProduct({
     variables: {
@@ -63,10 +70,22 @@ const UpdateProductForm: React.FunctionComponent<
     );
   }
 
+  const handleSubmit = async (data: UpdateProductValues) => {
+    if (
+      data.code === getProductQuery.data?.code &&
+      data.label === getProductQuery.data?.label
+    ) {
+      setWarnMessage("Aucune modification n'a été apportée");
+      return;
+    }
+    setWarnMessage(null);
+    await onSubmit(data);
+  };
+
   return (
-    <FormWrapper error={error}>
+    <FormWrapper error={error} warn={warnMessage}>
       <Form<UpdateProductValues, typeof schema>
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         schema={schema}
         options={{
           defaultValues: {
@@ -107,14 +126,14 @@ const UpdateProductForm: React.FunctionComponent<
   );
 };
 
-export const UpdateProduct: React.FunctionComponent<UpdateProductFormProps> = (
+export const UpdateProduct: React.FunctionComponent<UpdateProductProps> = (
   props
 ) => {
   const { productId } = props;
 
   const updateProductMutation = useUpdateProduct();
 
-  console.info("UpdateProductForm render", props);
+  console.info("UpdateProduct render", props);
 
   const { t } = useTranslation();
 
