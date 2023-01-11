@@ -29,8 +29,8 @@ const axios = Axios.create({
 
 axios.interceptors.response.use((response) => response, errorInterceptor);
 
-async function setAccessToken(accessToken: Promise<string | null>) {
-  const token = await accessToken;
+async function setAccessToken(accessTokenFn: () => Promise<string | null>) {
+  const token = await accessTokenFn();
   if (token) {
     axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
   }

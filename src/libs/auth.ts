@@ -2,14 +2,7 @@ import cognitoClient from "~/libs/cognito";
 import { CognitoUserAttributesBuilder } from "~/libs/cognito/builders/CognitoUserAttributesBuilder";
 import http from "~/libs/http";
 
-export const getAccessToken = async () => {
-  const session = await cognitoClient.getCurrentUserSession();
-  if (!session) return null;
-
-  return session.getAccessToken().getJwtToken();
-};
-
-http.setAccessToken(getAccessToken());
+http.setAccessToken(getAccessToken);
 
 export const register = (email: string, password: string) => {
   if (Boolean(cognitoClient.getCurrentUser())) {
@@ -80,3 +73,10 @@ const getDataFromIdToken = async (key: string) => {
 
   return session.getIdToken().decodePayload()[key];
 };
+
+export async function getAccessToken() {
+  const session = await cognitoClient.getCurrentUserSession();
+  if (!session) return null;
+
+  return session.getAccessToken().getJwtToken();
+}
