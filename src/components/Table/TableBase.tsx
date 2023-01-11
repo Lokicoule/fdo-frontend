@@ -24,14 +24,14 @@ export type TableBaseProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
   checkboxSelection?: boolean;
-  renderEmptyRows?: (nbColumns: number) => React.ReactElement;
+  renderEmptyRows?: (nbColumns: number) => React.ReactNode;
   renderCellHead?: ({
     column,
   }: {
     column: TableColumn<Entry>;
-  }) => React.ReactElement;
-  renderCheckboxChild?: (id: string) => React.ReactElement;
-  renderCheckboxParent?: () => React.ReactElement;
+  }) => React.ReactNode;
+  renderCheckboxChild?: (id: string) => React.ReactNode;
+  renderCheckboxParent?: () => React.ReactNode;
 };
 
 export const ResponsiveCell = ({
@@ -59,9 +59,9 @@ export const TableBase = <Entry extends { id: string }>({
   columns,
   checkboxSelection,
   renderCellHead = ({ column }) => <>{column.title}</>,
-  renderEmptyRows = (nbColumns) => <></>,
-  renderCheckboxChild = (id) => <></>,
-  renderCheckboxParent = () => <></>,
+  renderEmptyRows = (nbColumns) => null,
+  renderCheckboxChild = (id) => null,
+  renderCheckboxParent = () => null,
 }: TableBaseProps<Entry>) => {
   if (data.length === 0 || columns.length === 0) {
     return <p>Empty</p>;

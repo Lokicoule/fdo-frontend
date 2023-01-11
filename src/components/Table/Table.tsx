@@ -175,9 +175,7 @@ const withPagination =
               <TableRow style={{ height: 63 * emptyRows }}>
                 <TableCell colSpan={nbColumns} />
               </TableRow>
-            ) : (
-              <></>
-            )
+            ) : null
           }
         />
         <TablePagination
