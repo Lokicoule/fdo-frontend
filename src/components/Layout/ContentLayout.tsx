@@ -73,7 +73,7 @@ export const ContentLayout: React.FunctionComponent<ContentLayoutProps> = (
         }}
         elevation={elevation}
       >
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
           {title}
         </Typography>
         <Service>{children}</Service>

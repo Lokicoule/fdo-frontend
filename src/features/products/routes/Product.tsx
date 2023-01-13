@@ -28,7 +28,6 @@ export const Product = () => {
         },
       ]}
     >
-      <Link>Go back</Link>
       <Service>
         <ViewProduct productId={productId} />
       </Service>
