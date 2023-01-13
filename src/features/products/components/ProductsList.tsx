@@ -1,7 +1,7 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ViewIcon from "@mui/icons-material/SearchOutlined";
 import {
   IconButton,
-  Link,
   Stack,
   Tooltip,
   useMediaQuery,
@@ -9,15 +9,15 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
-import { TableColumn } from "~/components/Table/TableBase";
 import { Table } from "~/components/Table/Table";
-import dateFormat from "../../../utils/dateFormat";
+import { TableColumn } from "~/components/Table/TableBase";
+import { dateFormat } from "../../../utils/dateFormat";
 import { useGetProducts } from "../api/getProducts";
 import { Product } from "../types";
+import { CreateProduct } from "./CreateProduct";
 import { DeleteProduct } from "./DeleteProduct";
 import { DeleteProducts } from "./DeleteProducts";
 import { UpdateProduct } from "./UpdateProduct";
-import { CreateProduct } from "./CreateProduct";
 
 const MobileActionsButtons = ({ entry }: { entry: Product }) => {
   return (
@@ -33,7 +33,11 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
       {() => (
         <MenuList>
           <MenuItem>
-            <Link href={`./${entry.id}`}>View</Link>
+            <Tooltip title="view">
+              <IconButton href={`./${entry.id}`} size="small">
+                <ViewIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </MenuItem>
           <MenuItem>
             <UpdateProduct productId={entry.id} />
@@ -49,8 +53,12 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
 
 const DesktopActionsButtons = ({ entry }: { entry: Product }) => {
   return (
-    <Stack flexDirection={"row"} justifyContent={"space-evenly"}>
-      <Link href={`./${entry.id}`}>View</Link>
+    <Stack flexDirection={"row"} justifyContent={"flex-end"}>
+      <Tooltip title="view">
+        <IconButton href={`./${entry.id}`} size="small">
+          <ViewIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
       <UpdateProduct productId={entry.id} />
       <DeleteProduct product={entry} />
     </Stack>
@@ -127,6 +135,7 @@ export const ProductsList = () => {
       columns={columns}
       sortable
       searchable
+      isLoading={getProductsQuery.isLoading}
       pagination={{
         rowsPerPageOptions: [5, 10, 25, 50, 100],
         rowsPerPage: 10,

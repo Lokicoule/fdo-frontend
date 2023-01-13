@@ -61,17 +61,15 @@ export const AppProvider: React.FunctionComponent<PropsWithChildren> = (
   const { children } = props;
 
   return (
-    <Suspense fallback={<Loader />}>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <QueryClientProvider client={queryClient}>
-          <Notifications />
-          <AuthProvider>
-            <Router>
-              <ThemeProvider>{children}</ThemeProvider>
-            </Router>
-          </AuthProvider>
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </Suspense>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <QueryClientProvider client={queryClient}>
+        <Notifications />
+        <AuthProvider>
+          <Router>
+            <ThemeProvider>{children}</ThemeProvider>
+          </Router>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };

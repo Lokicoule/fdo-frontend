@@ -1,4 +1,4 @@
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from "@mui/icons-material/EditOutlined";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import {
   Avatar,
@@ -158,12 +158,7 @@ export const UpdateProduct: React.FunctionComponent<UpdateProductProps> = (
       }
       triggerButton={
         <Tooltip title={t("dictionary.edit")}>
-          <IconButton
-            sx={{
-              backgroundColor: "primary.main",
-            }}
-            size="small"
-          >
+          <IconButton size="small">
             <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>

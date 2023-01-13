@@ -1,3 +1,4 @@
+import { useMediaQuery, useTheme } from "@mui/material";
 import MuiDialog, { DialogProps as MuiDialogProps } from "@mui/material/Dialog";
 import MuiDialogActions from "@mui/material/DialogActions";
 import MuiDialogContent from "@mui/material/DialogContent";
@@ -19,6 +20,8 @@ export const DialogActions = MuiDialogActions;
 export const Dialog: React.FunctionComponent<DialogProps> = (props) => {
   const { children, isDone, triggerButton, onClose, ...others } = props;
   const [isOpen, setIsOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClose = () => {
     setIsOpen(false);
@@ -43,7 +46,12 @@ export const Dialog: React.FunctionComponent<DialogProps> = (props) => {
     <>
       {trigger}
       {preventRenderingIf(isOpen).render(
-        <MuiDialog {...others} open={isOpen} onClose={handleClose}>
+        <MuiDialog
+          {...others}
+          open={isOpen}
+          fullScreen={isMobile}
+          onClose={handleClose}
+        >
           {children({ onClose: handleClose })}
         </MuiDialog>
       )}

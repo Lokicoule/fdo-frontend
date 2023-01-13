@@ -12,6 +12,7 @@ import {
   ThemeOptions,
   ThemeProvider as MuiThemeProvider,
   useMediaQuery,
+  ComponentsOverrides,
 } from "@mui/material";
 
 import {
@@ -28,12 +29,28 @@ const LinkBehavior = forwardRef<
   return <RouterLink ref={ref} to={href} {...other} />;
 });
 
+const primary = {
+  light: "#33ab9f",
+  main: "#009688",
+  dark: "#00695f",
+  contrastText: "#fff",
+};
+
 const components = {
   components: {
     MuiLink: {
       defaultProps: {
         component: LinkBehavior,
       } as LinkProps,
+      styleOverrides: {
+        root: {
+          textDecoration: "none",
+          color: "inherit",
+          "&:hover": {
+            color: primary.main,
+          },
+        },
+      },
     },
     MuiButtonBase: {
       defaultProps: {
@@ -53,10 +70,7 @@ const themes = {
     palette: {
       mode: "light",
       primary: {
-        light: "#33ab9f",
-        main: "#009688",
-        dark: "#00695f",
-        contrastText: "#fff",
+        ...primary,
       },
       secondary: {
         light: "#f73378",

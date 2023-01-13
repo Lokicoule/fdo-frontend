@@ -1,4 +1,4 @@
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
@@ -30,12 +30,7 @@ export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
       body={`Are you sure you want to remove product ${product.label}?`}
       triggerButton={
         <Tooltip title={t("dictionary.delete")}>
-          <IconButton
-            sx={{
-              backgroundColor: "error.main",
-            }}
-            size="small"
-          >
+          <IconButton size="small">
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Tooltip>

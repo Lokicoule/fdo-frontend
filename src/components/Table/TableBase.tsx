@@ -1,5 +1,6 @@
 import {
   Paper,
+  Skeleton,
   Table as MuiTable,
   TableBody,
   TableHead,
@@ -9,6 +10,7 @@ import {
 import TableCell, { TableCellProps } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
+import { cloneElement } from "react";
 
 export type TableColumn<Entry> = {
   title: string;
@@ -23,11 +25,10 @@ export type TableColumn<Entry> = {
 export type TableBaseProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
-  checkboxSelection?: boolean;
   renderEmptyRows?: (nbColumns: number) => React.ReactNode;
   renderCellHead?: (column: TableColumn<Entry>) => React.ReactNode;
-  renderCheckboxChild?: (id: string) => React.ReactNode;
-  renderCheckboxParent?: () => React.ReactNode;
+  renderCheckbox?: (id: string) => React.ReactNode;
+  triggerCheckbox?: React.ReactElement;
 };
 
 export const ResponsiveCell = ({
@@ -53,11 +54,9 @@ export const ResponsiveCell = ({
 export const TableBase = <Entry extends { id: string }>({
   data,
   columns,
-  checkboxSelection,
   renderCellHead = (column) => column.title,
-  renderEmptyRows = () => null,
-  renderCheckboxChild = () => null,
-  renderCheckboxParent = () => null,
+  renderCheckbox = () => null,
+  triggerCheckbox,
 }: TableBaseProps<Entry>) => {
   if (data.length === 0 || columns.length === 0) {
     return <p>Empty</p>;
@@ -67,20 +66,19 @@ export const TableBase = <Entry extends { id: string }>({
     <TableContainer
       component={Paper}
       elevation={3}
-      sx={{ pb: 2, maxHeight: "70vh" }}
+      sx={{ mb: 2, maxHeight: "70vh" }}
     >
       <MuiTable stickyHeader size="medium">
         <TableHead
           sx={{
             "& .MuiTableCell-root": {
-              opacity: 0.9,
               fontSize: "0.9rem",
               fontWeight: "bold",
             },
           }}
         >
           <TableRow>
-            {renderCheckboxParent()}
+            {triggerCheckbox && cloneElement(triggerCheckbox)}
             {columns?.map((column, columnIndex) => (
               <ResponsiveCell
                 key={`${column.title}_${columnIndex}`}
@@ -94,7 +92,7 @@ export const TableBase = <Entry extends { id: string }>({
         <TableBody>
           {data?.map((entry, entryIndex) => (
             <TableRow key={entry?.id || entryIndex}>
-              {renderCheckboxChild(entry.id)}
+              {renderCheckbox(entry.id)}
               {columns?.map(({ Cell, field, title, options }, columnIndex) => (
                 <ResponsiveCell
                   key={`${title}_${columnIndex}`}
@@ -105,7 +103,6 @@ export const TableBase = <Entry extends { id: string }>({
               ))}
             </TableRow>
           ))}
-          {renderEmptyRows(columns.length + (checkboxSelection ? 1 : 0))}
         </TableBody>
       </MuiTable>
     </TableContainer>

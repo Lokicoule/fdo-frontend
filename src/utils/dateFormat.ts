@@ -5,7 +5,7 @@ const date = new Intl.DateTimeFormat(i18n.language, {
   dateStyle: "short",
 });
 
-export default function dateFormat(dateString?: string | null) {
+export function dateFormat(dateString?: string | null) {
   if (!dateString) {
     return "";
   }

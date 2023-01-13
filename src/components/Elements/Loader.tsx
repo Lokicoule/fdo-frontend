@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Backdrop, Box, CircularProgress } from "@mui/material";
 import { keyframes } from "@mui/material/styles";
 
 const RippleFrames = keyframes({
@@ -62,10 +63,21 @@ const LoaderMessage: React.FunctionComponent<{
   );
 };
 
-export const Loader = () => {
+/* export const Loader = () => {
   return (
     <Layout>
       <LoaderMessage message="loading" />
     </Layout>
+  );
+}; */
+
+export const Loader = () => {
+  return (
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
   );
 };

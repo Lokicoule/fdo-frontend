@@ -1,18 +1,16 @@
 import {
-  Box,
   Checkbox,
-  CircularProgress,
+  Stack,
   TableCell,
   TablePagination,
-  TableRow,
   TableSortLabel,
-  TextField,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
-import { alpha, useTheme } from "@mui/material/styles";
+import { alpha } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import { cloneElement, useEffect, useState } from "react";
+import { SearchButton } from "../Search/Search";
+import { SkeletonTable } from "./SkeletonTable";
 import { TableBase, TableBaseProps } from "./TableBase";
 
 type Order = "asc" | "desc";
@@ -40,7 +38,7 @@ export type TableProps<Entry> = Pick<
   pagination?: PaginationOptions;
   selection?: SelectionOptions;
   toolbar?: ToolbarOptions;
-  loading?: boolean;
+  isLoading?: boolean;
 };
 
 type OverrideTableProps<Entry> = TableProps<Entry> & {
@@ -121,12 +119,13 @@ const witchCheckboxSelection =
             </Typography>
             {triggerButton}
           </Toolbar>
-        ) : null}
+        ) : (
+          <Toolbar />
+        )}
         <Element
           {...props}
           data={data}
-          checkboxSelection
-          renderCheckboxChild={(id: string) => (
+          renderCheckbox={(id: string) => (
             <TableCell padding="checkbox">
               <Checkbox
                 color="primary"
@@ -135,7 +134,7 @@ const witchCheckboxSelection =
               />
             </TableCell>
           )}
-          renderCheckboxParent={() => (
+          triggerCheckbox={
             <TableCell padding="checkbox">
               <Checkbox
                 color="primary"
@@ -146,7 +145,7 @@ const witchCheckboxSelection =
                 onChange={handleSelectAll}
               />
             </TableCell>
-          )}
+          }
         />
       </>
     );
@@ -177,29 +176,14 @@ const withPagination =
       setPage(0);
     };
 
-    const emptyRows =
-      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
-
     const paginatedData = data.slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage
     );
 
-    console.log(emptyRows);
-
     return (
       <>
-        <Element
-          {...props}
-          data={paginatedData}
-          renderEmptyRows={(nbColumns) =>
-            emptyRows > 0 ? (
-              <TableRow style={{ height: 63 * emptyRows }}>
-                <TableCell colSpan={nbColumns} />
-              </TableRow>
-            ) : null
-          }
-        />
+        <Element {...props} data={paginatedData} />
         <TablePagination
           rowsPerPageOptions={rowsPerPageOptions}
           component="div"
@@ -217,11 +201,11 @@ const withSorting =
   <Entry extends { id: string }>(
     Element: React.ComponentType<OverrideTableBaseProps<Entry>>
   ): React.FunctionComponent<OverrideTableProps<Entry>> =>
-  ({ data, sortable, ...props }: OverrideTableProps<Entry>) => {
-    if (!sortable) return <Element {...props} data={data} />;
+  ({ data, columns, sortable, ...props }: OverrideTableProps<Entry>) => {
+    if (!sortable) return <Element {...props} data={data} columns={columns} />;
 
     const [order, setOrder] = useState<Order>("asc");
-    const [orderBy, setOrderBy] = useState<keyof Entry>("id");
+    const [orderBy, setOrderBy] = useState<keyof Entry>(columns[0].field);
 
     const handleRequestSort = (
       event: React.MouseEvent<unknown>,
@@ -249,6 +233,7 @@ const withSorting =
       <Element
         {...props}
         data={sortedData}
+        columns={columns}
         renderCellHead={(column) =>
           column.options.sortable ? (
             <TableSortLabel
@@ -288,7 +273,7 @@ const withSearch =
     useEffect(() => {
       const timeout = setTimeout(() => {
         setDebouncedSearch(filter);
-      }, 500);
+      }, 1000);
 
       return () => clearTimeout(timeout);
     }, [filter]);
@@ -297,13 +282,7 @@ const withSearch =
       <Element
         {...props}
         data={filteredData}
-        searchField={
-          <TextField
-            label="Search"
-            value={filter}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-        }
+        searchField={<SearchButton filter={filter} onSearch={setSearch} />}
       />
     );
   };
@@ -315,45 +294,24 @@ const withToolbar =
   ({ searchField, toolbar, ...props }: OverrideTableProps<Entry>) => {
     if (!toolbar) return <Element {...props} />;
 
-    const { title, addButton } = toolbar;
-
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
     return (
       <>
         <Toolbar
           sx={{
-            width: "100%",
-            mb: 2,
-            ...(isMobile && {
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }),
+            pl: { sm: 2 },
+            pr: { xs: 1, sm: 1 },
           }}
         >
-          {title ? (
-            <Typography variant="h4" id="tableTitle" component="div">
-              {title}
-            </Typography>
+          {toolbar.title ? (
+            <Stack spacing={10} direction="row" sx={{ flex: "1 1 100%" }}>
+              <Typography variant="h5" component="div">
+                {toolbar.title}
+              </Typography>
+              {searchField}
+            </Stack>
           ) : null}
 
-          <Box sx={{ flexGrow: 1 }} />
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              ...(isMobile && {
-                mt: 3,
-                width: "100%",
-                justifyContent: "space-evenly",
-              }),
-            }}
-          >
-            {searchField}
-            {addButton}
-          </Box>
+          {toolbar.addButton}
         </Toolbar>
         <Element {...props} />
       </>
@@ -364,30 +322,20 @@ const withLoader =
   <Entry extends { id: string }>(
     Element: React.ComponentType<OverrideTableBaseProps<Entry>>
   ): React.FunctionComponent<OverrideTableProps<Entry>> =>
-  ({ loading, ...props }: OverrideTableProps<Entry>) => {
-    if (!loading) return <Element {...props} />;
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+  ({ isLoading, ...props }: OverrideTableProps<Entry>) => {
+    if (!isLoading) return <Element {...props} />;
+
+    return <SkeletonTable columns={props.columns} />;
   };
 
 export const Table = <Entry extends { id: string }>(
   props: TableProps<Entry>
 ) => {
   const TableWithLoader = withLoader<Entry>(TableBase);
-  const TableWithToolbar = withToolbar<Entry>(TableWithLoader);
   const TableWithCheckboxSelection =
-    witchCheckboxSelection<Entry>(TableWithToolbar);
-  const TableWithPagination = withPagination<Entry>(TableWithCheckboxSelection);
+    witchCheckboxSelection<Entry>(TableWithLoader);
+  const TableWithToolbar = withToolbar<Entry>(TableWithCheckboxSelection);
+  const TableWithPagination = withPagination<Entry>(TableWithToolbar);
   const TableWithSearch = withSearch<Entry>(TableWithPagination);
   const TableWithSorting = withSorting<Entry>(TableWithSearch);
 

@@ -27,6 +27,7 @@ export const useGetProducts = ({
     {
       ...options,
       useErrorBoundary: (error) => error.status >= 500,
+      //suspense: true,
     }
   );
 
