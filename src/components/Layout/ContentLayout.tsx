@@ -12,7 +12,7 @@ type LocationNavigationProps = {
 export type ContentLayoutProps = React.PropsWithChildren<
   LocationNavigationProps & {
     elevation?: PaperProps["elevation"];
-    title?: React.ReactElement | string;
+    title?: React.ReactNode;
   }
 >;
 
