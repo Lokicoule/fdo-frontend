@@ -1,8 +1,5 @@
 import cognitoClient from "~/libs/cognito";
 import { CognitoUserAttributesBuilder } from "~/libs/cognito/builders/CognitoUserAttributesBuilder";
-import http from "~/libs/http";
-
-http.setAccessToken(getAccessToken);
 
 export const register = (email: string, password: string) => {
   if (Boolean(cognitoClient.getCurrentUser())) {

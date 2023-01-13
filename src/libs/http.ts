@@ -1,8 +1,9 @@
-import Axios, { AxiosError } from "axios";
+import Axios, { AxiosError, AxiosHeaders } from "axios";
 import { API_URL } from "~/config";
+import { getAccessToken } from "~/libs/auth";
 import { notify } from "./notify";
 
-function errorInterceptor(error: AxiosError) {
+async function errorInterceptor(error: AxiosError) {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
@@ -25,6 +26,18 @@ const axios = Axios.create({
     "Content-Type": "application/json",
   },
   method: "POST",
+});
+
+axios.interceptors.request.use(async (config) => {
+  const token = await getAccessToken();
+  if (token) {
+    const headers = config.headers as AxiosHeaders;
+    headers.set("Authorization", `Bearer ${token}`);
+
+    config.headers = headers;
+  }
+
+  return config;
 });
 
 axios.interceptors.response.use((response) => response, errorInterceptor);
