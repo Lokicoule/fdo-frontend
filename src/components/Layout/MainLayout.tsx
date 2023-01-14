@@ -165,7 +165,7 @@ const ResponsiveSidebar: React.FunctionComponent<{
 }> = (props) => {
   const { open, onToggle } = props;
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   if (isSmallScreen) {
     return <MobileSidebar mobileOpen={open} handleDrawerToggle={onToggle} />;

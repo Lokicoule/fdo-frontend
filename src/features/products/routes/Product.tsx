@@ -1,6 +1,4 @@
-import { Link } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { Service } from "~/components/Elements/Service";
 import { ContentLayout } from "~/components/Layout/ContentLayout";
 import { ViewProduct } from "../components/ViewProduct";
 
@@ -13,7 +11,10 @@ export const Product = () => {
 
   return (
     <ContentLayout
-      title="View product"
+      title="Product"
+      fallback={{
+        title: "Product",
+      }}
       locations={[
         {
           name: "Home",
@@ -28,9 +29,7 @@ export const Product = () => {
         },
       ]}
     >
-      <Service>
-        <ViewProduct productId={productId} />
-      </Service>
+      <ViewProduct productId={productId} />
     </ContentLayout>
   );
 };

@@ -1,8 +1,5 @@
-import { Stack, Typography } from "@mui/material";
-import { Service } from "~/components/Elements/Service";
 import { ContentLayout } from "~/components/Layout/ContentLayout";
 import { ProductsList } from "../components/ProductsList";
-import { CreateProduct } from "../components/CreateProduct";
 
 export const Products = () => {
   console.info("Products render");
@@ -19,10 +16,11 @@ export const Products = () => {
           path: "/app/products",
         },
       ]}
+      fallback={{
+        title: "Products",
+      }}
     >
-      <Service>
-        <ProductsList />
-      </Service>
+      <ProductsList />
     </ContentLayout>
   );
 };

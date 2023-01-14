@@ -298,18 +298,19 @@ const withToolbar =
       <>
         <Toolbar
           sx={{
-            pl: { sm: 2 },
-            pr: { xs: 1, sm: 1 },
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
         >
-          {toolbar.title ? (
-            <Stack spacing={10} direction="row" sx={{ flex: "1 1 100%" }}>
-              <Typography variant="h5" component="div">
+          <Stack spacing={10} direction="row">
+            {toolbar.title ? (
+              <Typography variant="h6" component="div">
                 {toolbar.title}
               </Typography>
-              {searchField}
-            </Stack>
-          ) : null}
+            ) : null}
+            {searchField}
+          </Stack>
 
           {toolbar.addButton}
         </Toolbar>
