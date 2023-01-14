@@ -20,6 +20,9 @@ import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ProductIcon from "@mui/icons-material/QrCode2Sharp";
+import DashboardIcon from "@mui/icons-material/GridViewSharp";
+import { NavLink } from "react-router-dom";
 
 type AppBarProps = MuiAppBarProps & {
   open?: boolean;
@@ -92,15 +95,25 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideNavigation = () => {
+  const navigation = [
+    {
+      name: "Dashboard",
+      icon: <DashboardIcon />,
+      path: "/app",
+    },
+    {
+      name: "Products",
+      icon: <ProductIcon />,
+      path: "/app/products",
+    },
+  ];
   return (
     <List>
-      {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
+      {navigation.map((item) => (
+        <ListItem key={item.name} disablePadding>
+          <ListItemButton component={NavLink} to={item.path}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.name} />
           </ListItemButton>
         </ListItem>
       ))}
