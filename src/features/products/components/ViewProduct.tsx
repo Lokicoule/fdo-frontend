@@ -27,6 +27,9 @@ export const ViewProduct: React.FunctionComponent<ProductProps> = (props) => {
     variables: {
       getProductId: productId,
     },
+    options: {
+      enabled: !!productId,
+    },
   });
 
   if (!getProductQuery.data) return <div>Product not found</div>;

@@ -1,4 +1,4 @@
-import { UseQueryOptions } from "@tanstack/react-query";
+import { useQueryClient, UseQueryOptions } from "@tanstack/react-query";
 import { FetchError } from "~/libs/graphql-fetcher";
 import { Overwrite } from "~/types";
 import { Product } from "../types";
@@ -20,6 +20,7 @@ export const useGetProducts = ({
   ReturnType<typeof useGetProductsQuery>,
   { data: Product[] }
 > => {
+  const queryClient = useQueryClient();
   const getProductsQuery = useGetProductsQuery<GetProductsQuery, FetchError>(
     {
       ...variables,
@@ -28,6 +29,9 @@ export const useGetProducts = ({
       ...options,
       useErrorBoundary: (error) => error.status >= 500,
       //suspense: true,
+      onSuccess: (data) => {
+        queryClient.setQueryData<GetProductsQuery>(["GetProducts"], data);
+      },
     }
   );
 

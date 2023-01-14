@@ -12,7 +12,7 @@ import { cloneElement } from "react";
 export type ConfirmationDialogProps = Omit<DialogProps, "children"> & {
   confirmButton: React.ReactElement;
   title: string;
-  body?: string;
+  body?: React.ReactElement;
   cancelButtonText?: string;
 };
 

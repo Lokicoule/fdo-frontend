@@ -51,6 +51,9 @@ const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
     variables: {
       getProductId: productId,
     },
+    options: {
+      enabled: !!productId,
+    },
   });
 
   if (getProductQuery.isLoading) {
