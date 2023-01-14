@@ -2,7 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Alert, AlertColor, AlertTitle, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Slide, { SlideProps } from "@mui/material/Slide";
-import { ProgressBar } from "../Elements/ProgressBar";
+import { ProgressBar } from "~/components/Elements/ProgressBar";
 
 type NotificationProps = {
   notification: {
