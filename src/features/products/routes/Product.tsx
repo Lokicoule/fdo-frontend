@@ -17,7 +17,7 @@ export const Product = () => {
       }}
       locations={[
         {
-          name: "Home",
+          name: "Dashboard",
           path: "/app",
         },
         {
