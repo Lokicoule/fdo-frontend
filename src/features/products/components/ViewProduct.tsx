@@ -1,8 +1,8 @@
-import { Box, Chip, Slide, Stack } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2";
+import { useNavigate } from "react-router-dom";
 import { dateFormat } from "~/utils/dateFormat";
 import { useGetProduct } from "../api/getProduct";
 import { DeleteProduct } from "./DeleteProduct";
@@ -22,6 +22,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export const ViewProduct: React.FunctionComponent<ProductProps> = (props) => {
   const { productId } = props;
+  const navigate = useNavigate();
 
   const getProductQuery = useGetProduct({
     variables: {
@@ -34,6 +35,10 @@ export const ViewProduct: React.FunctionComponent<ProductProps> = (props) => {
 
   if (!getProductQuery.data) return <div>Product not found</div>;
 
+  const handleDelete = () => {
+    navigate("/app/products");
+  };
+
   return (
     <>
       <Stack
@@ -44,12 +49,17 @@ export const ViewProduct: React.FunctionComponent<ProductProps> = (props) => {
         }}
       >
         <UpdateProduct productId={productId} />
-        <DeleteProduct product={getProductQuery.data} />
+        <DeleteProduct product={getProductQuery.data} onDelete={handleDelete} />
       </Stack>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" fontWeight={600}>
         Code produit
       </Typography>
-      <Typography variant="body2" color="text.secondary" gutterBottom>
+      <Typography
+        variant="body2"
+        component={"div"}
+        color="text.secondary"
+        gutterBottom
+      >
         <Chip label={getProductQuery.data.code} />
       </Typography>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" fontWeight={600}>

@@ -7,12 +7,13 @@ import { Product } from "../types";
 
 type DeleteProductProps = {
   product: Product;
+  onDelete?: () => void;
 };
 
 export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
   props
 ) => {
-  const { product } = props;
+  const { product, onDelete } = props;
   const deleteProduct = useDeleteProduct();
 
   const { t } = useTranslation();
@@ -22,12 +23,20 @@ export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
     await deleteProduct.mutate({
       removeProductId: product.id,
     });
+    onDelete?.();
   };
 
   return (
     <ConfirmationDialog
       title={`Delete product ${product.code}`}
-      body={`Are you sure you want to remove product ${product.label}?`}
+      body={
+        <>
+          Are you sure you want to delete the following product?
+          <br />
+          <br />
+          {product.code}
+        </>
+      }
       triggerButton={
         <Tooltip title={t("dictionary.delete")}>
           <IconButton size="small">

@@ -10,6 +10,7 @@ export const useUpdateProduct = () =>
         title: "Product updated",
         message: `Product ${product.updateProduct?.label} has been updated`,
       });
+      queryClient.invalidateQueries(["GetProduct"]);
       queryClient.invalidateQueries(["GetProducts"]);
     },
   });

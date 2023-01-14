@@ -10,6 +10,7 @@ export const useDeleteProduct = () =>
         title: "Product removed",
         message: `Product has been removed`,
       });
+      queryClient.invalidateQueries(["GetProduct"]);
       queryClient.invalidateQueries(["GetProducts"]);
     },
   });

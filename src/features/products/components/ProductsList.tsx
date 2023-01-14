@@ -34,7 +34,7 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
         <MenuList>
           <MenuItem>
             <Tooltip title="view">
-              <IconButton href={`./${entry.id}`} size="small">
+              <IconButton href={`/${entry.id}`} size="small">
                 <ViewIcon fontSize="small" />
               </IconButton>
             </Tooltip>
