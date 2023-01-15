@@ -1,9 +1,9 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, IconButton, Tooltip } from "@mui/material";
-import { QueryKey, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
 import { useDeleteProducts } from "../api/deleteProducts";
-import { GetProductsQuery } from "../api/__generated__/client";
+import { GetProductsResponse } from "../api/getProducts";
 import { Product } from "../types";
 
 export const DeleteProducts = (props: { ids?: string[] }) => {
@@ -15,10 +15,12 @@ export const DeleteProducts = (props: { ids?: string[] }) => {
   }
 
   const codes = queryClient
-    .getQueryData<GetProductsQuery>(["GetProducts"])
-    ?.getProducts?.filter((product) => ids.includes(product.id))
+    .getQueryData<Product[]>(["products"])
+    ?.filter((product) => ids.includes(product.id))
     .map((product) => product.code)
     .join(", ");
+
+  console.log(queryClient.getQueryData<GetProductsResponse>(["products"]));
 
   const deleteProducts = useDeleteProducts();
 

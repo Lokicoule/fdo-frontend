@@ -1,7 +1,0 @@
-mutation CreateProduct($payload: ProductCreateInput!) {
-  createProduct(payload: $payload) {
-    code
-    label
-    id
-  }
-}

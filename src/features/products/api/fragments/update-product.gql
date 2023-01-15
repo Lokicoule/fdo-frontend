@@ -1,7 +1,0 @@
-mutation UpdateProduct($payload: ProductUpdateInput!) {
-  updateProduct(payload: $payload) {
-    code
-    id
-    label
-  }
-}

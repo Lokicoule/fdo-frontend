@@ -1,39 +1,59 @@
-import { UseQueryOptions } from "@tanstack/react-query";
-import { FetchError } from "~/libs/graphql-fetcher";
-import { Overwrite } from "~/types";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { gql } from "graphql-request";
+import client, { BaseError } from "~/libs/graphql-client";
 import { Product } from "../types";
-import {
-  GetProductQuery,
-  GetProductQueryVariables,
-  GetProductsQuery,
-  useGetProductQuery,
-} from "./__generated__/client";
 
-type UseGetProduct = {
-  variables: GetProductQueryVariables;
-  options?: UseQueryOptions<GetProductsQuery, FetchError>;
+export type GetProductVariables = {
+  id: string;
 };
 
-export const useGetProduct = ({
-  variables,
-  options,
-}: UseGetProduct): Overwrite<
-  ReturnType<typeof useGetProductQuery>,
-  { data: Product | undefined | null } // create Maybe type
-> => {
-  const getProductQuery = useGetProductQuery<GetProductQuery, FetchError>(
+type GetProductResponse = {
+  product: Product;
+};
+
+const GetProduct = gql`
+  query GetProduct($id: String!) {
+    product(id: $id) {
+      code
+      id
+      createdAt
+      label
+      updatedAt
+    }
+  }
+`;
+
+export const getProduct = async (
+  variables: GetProductVariables
+): Promise<Product> => {
+  try {
+    const result = await client.request<
+      GetProductResponse,
+      GetProductVariables
+    >(GetProduct, variables);
+    return result.product;
+  } catch (error) {
+    if (error instanceof BaseError) {
+      console.error("getProducts", error.status);
+      throw error;
+    }
+    throw error;
+  }
+};
+
+export const useGetProduct = (variables: GetProductVariables) => {
+  const queryClient = useQueryClient();
+  return useQuery<Product, BaseError>(
+    ["product", variables],
+    () => getProduct(variables),
     {
-      ...variables,
-    },
-    {
-      ...options,
-      useErrorBoundary: (error) => error.status >= 500,
-      //suspense: true,
+      enabled: !!variables.id,
+      placeholderData: () => {
+        return queryClient
+          .getQueryData<Product[]>(["products"])
+          ?.find((product) => product.id === variables.id);
+      },
+      useErrorBoundary: (error) => error?.status >= 500,
     }
   );
-
-  return {
-    ...getProductQuery,
-    data: getProductQuery.data?.getProduct,
-  };
 };

@@ -1,9 +1,0 @@
-query GetProducts($criterions: ProductCriteriaInput) {
-  getProducts(criterions: $criterions) {
-    label
-    id
-    code
-    createdAt
-    updatedAt
-  }
-}

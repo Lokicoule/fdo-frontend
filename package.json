@@ -7,8 +7,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "codegen-user": "graphql-codegen --config src/features/user/graphql/codegen.configuration.ts",
-    "codegen-customer": "graphql-codegen --config src/features/customer/graphql/codegen.configuration.ts",
-    "codegen-product": "graphql-codegen --config src/features/product/config/code-generator.ts"
+    "codegen-customer": "graphql-codegen --config src/features/customer/graphql/codegen.configuration.ts"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.0",

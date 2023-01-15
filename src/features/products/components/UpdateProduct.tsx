@@ -17,7 +17,6 @@ import { FormDialog } from "~/components/Form/FormDialog";
 import { FormWrapper } from "~/components/Form/FormWrapper";
 import { useGetProduct } from "../api/getProduct";
 import { useUpdateProduct } from "../api/updateProduct";
-import { Product } from "../types";
 
 type UpdateProductProps = {
   productId: string;
@@ -48,12 +47,7 @@ const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
   const [warnMessage, setWarnMessage] = useState<string | null>(null);
 
   const getProductQuery = useGetProduct({
-    variables: {
-      getProductId: productId,
-    },
-    options: {
-      enabled: !!productId,
-    },
+    id: productId,
   });
 
   if (getProductQuery.isLoading) {

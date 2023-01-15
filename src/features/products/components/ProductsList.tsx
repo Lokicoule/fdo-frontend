@@ -131,7 +131,7 @@ export const ProductsList = () => {
 
   return (
     <Table<Product>
-      data={getProductsQuery.data}
+      data={getProductsQuery.data ?? []}
       columns={columns}
       sortable
       searchable
