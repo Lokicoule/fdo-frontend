@@ -1,27 +1,44 @@
 import { ClientError, GraphQLClient } from "graphql-request";
 import { API_URL } from "~/config";
 import { getAccessToken } from "~/libs/auth";
+import { GraphQLError } from "graphql";
 
-export class GraphQLClientError extends Error {
-  public readonly status: number;
-  constructor(message?: string, status?: number) {
-    super(message || "INTERNAL_SERVER_ERROR");
-    this.status = status || 500;
+export const GRAPHQL_ERROR_CODE = {
+  BAD_REQUEST: "BAD_REQUEST",
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+  SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
+};
+
+export class BaseException extends Error {
+  public readonly code: string;
+  public readonly useBoundary: boolean;
+  constructor(message: string, code: string, useBoundary?: boolean) {
+    super(message);
+    this.name = "BaseException";
+    this.code = code;
+    this.useBoundary = useBoundary || false;
+  }
+}
+export class TechnicalException extends BaseException {
+  constructor(message: string, code?: string) {
+    super(message, code || "INTERNAL_SERVER_ERROR", true);
+    this.name = "TechnicalException";
   }
 }
 
-type ClientErrorExtensions = {
-  response: {
-    errors?: {
-      extensions?: {
-        exception?: {
-          message?: string;
-          status?: number;
-        };
-      };
-    }[];
-  };
-};
+export class ServiceUnavailableException extends TechnicalException {
+  constructor(message: string) {
+    super(message, "SERVICE_UNAVAILABLE");
+    this.name = "ServiceUnavailableException";
+  }
+}
+
+export class UseCaseException extends BaseException {
+  constructor(message: string) {
+    super(message, "BAD_USER_INPUT", false);
+    this.name = "UseCaseException";
+  }
+}
 
 const client = new GraphQLClient(API_URL, {
   requestMiddleware: async (request) => {
@@ -38,10 +55,18 @@ const client = new GraphQLClient(API_URL, {
   },
   responseMiddleware(response) {
     if (response instanceof ClientError) {
-      const error = response as ClientErrorExtensions;
-      const code = error.response?.errors?.[0]?.extensions?.exception?.message;
-      const status = error.response?.errors?.[0]?.extensions?.exception?.status;
-      throw new GraphQLClientError(code, status);
+      const error = response.response?.errors?.[0] as GraphQLError;
+      console.log("error", error);
+      console.log("error.extensions.code", error.extensions.code);
+      console.log("error.message", error.message);
+      if (error.extensions.code === "BAD_USER_INPUT") {
+        throw new UseCaseException(error.message);
+      }
+      if (error.extensions.code === "INTERNAL_SERVER_ERROR") {
+        throw new TechnicalException(error.message);
+      }
+
+      throw new ServiceUnavailableException(error.message);
     }
   },
 });

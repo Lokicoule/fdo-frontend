@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client, { GraphQLClientError } from "~/libs/graphql-client";
+import client, { BaseException } from "~/libs/graphql-client";
 import { Product } from "../types";
 
 export type GetProductVariables = {
@@ -39,7 +39,7 @@ export const getProduct = async (
 
 export const useGetProduct = (variables: GetProductVariables) => {
   const queryClient = useQueryClient();
-  return useQuery<Product, GraphQLClientError>(
+  return useQuery<Product, BaseException>(
     ["product", variables],
     () => getProduct(variables),
     {
@@ -49,7 +49,7 @@ export const useGetProduct = (variables: GetProductVariables) => {
           .getQueryData<Product[]>(["products"])
           ?.find((product) => product.id === variables.id);
       },
-      useErrorBoundary: (error) => error?.status >= 500,
+      useErrorBoundary: (error) => error.useBoundary,
     }
   );
 };

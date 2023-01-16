@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client, { GraphQLClientError } from "~/libs/graphql-client";
+import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
 
@@ -43,7 +43,7 @@ const createProduct = async (
 
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
-  return useMutation<Product, GraphQLClientError, CreateProductVariables>(
+  return useMutation<Product, BaseException, CreateProductVariables>(
     createProduct,
     {
       onSuccess: (data) => {
@@ -54,7 +54,7 @@ export const useCreateProduct = () => {
         });
         queryClient.invalidateQueries(["products"]);
       },
-      useErrorBoundary: (error) => error?.status >= 500,
+      useErrorBoundary: (error) => error.useBoundary,
     }
   );
 };

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
-import { Service } from "~/components/Layout/ContentLayout";
+import { QueryWrapper } from "~/components/Error/QueryErrorBoundary";
 import { Table } from "~/components/Table/Table";
 import { TableColumn } from "~/components/Table/TableBase";
 import { dateFormat } from "../../../utils/dateFormat";
@@ -35,7 +35,7 @@ const MobileActionsButtons = ({ entry }: { entry: Product }) => {
         <MenuList>
           <MenuItem>
             <Tooltip title="view">
-              <IconButton href={`/${entry.id}`} size="small">
+              <IconButton href={`./${entry.id}`} size="small">
                 <ViewIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -147,9 +147,9 @@ export const ProductsList = () => {
       toolbar={{
         title: "Products",
         addButton: (
-          <Service>
+          <QueryWrapper>
             <CreateProduct />
-          </Service>
+          </QueryWrapper>
         ),
       }}
     />

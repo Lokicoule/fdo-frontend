@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client from "~/libs/graphql-client";
+import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
 
@@ -44,14 +44,17 @@ const updateProduct = async (
 
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
-  return useMutation<Product, Error, UpdateProductVariables>(updateProduct, {
-    onSuccess: (data) => {
-      console.log("useUpdateProduct", data);
-      notify.success({
-        title: "Product updated",
-        message: `Product ${data?.label} has been updated`,
-      });
-      queryClient.invalidateQueries(["products"]);
-    },
-  });
+  return useMutation<Product, BaseException, UpdateProductVariables>(
+    updateProduct,
+    {
+      onSuccess: (data) => {
+        console.log("useUpdateProduct", data);
+        notify.success({
+          title: "Product updated",
+          message: `Product ${data?.label} has been updated`,
+        });
+        queryClient.invalidateQueries(["products"]);
+      },
+    }
+  );
 };

@@ -10,7 +10,7 @@ export const Product = () => {
   return (
     <ContentLayout
       title="Product"
-      fallback={{
+      errorFallback={{
         title: "Product",
       }}
       locations={[

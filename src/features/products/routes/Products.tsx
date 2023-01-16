@@ -16,7 +16,7 @@ export const Products = () => {
           path: "/app/products",
         },
       ]}
-      fallback={{
+      errorFallback={{
         title: "Products",
       }}
     >

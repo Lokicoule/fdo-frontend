@@ -48,9 +48,10 @@
     "signUp": "S'inscrire",
     "signIn": "Se connecter"
   },
-  "errors": {
-    "default-error": "An error has occurred. Please try again later.",
-    "network-error": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",
-    "unknown-error": "Une erreur inconnue est survenue. Veuillez réessayer plus tard s'il vous plaît."
+  "error": {
+    "NETWORK": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",
+    "INTERNAL_SERVER_ERROR": "Une erreur interne est survenue. Veuillez réessayer ultérieurement.",
+    "SERVICE_UNAVAILABLE": "Le service est temporairement indisponible. Veuillez réessayer ultérieurement.",
+    "UNKNOWN": "Une erreur inconnue est survenue. Veuillez réessayer ultérieurement."
   }
 }

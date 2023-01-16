@@ -1,7 +1,6 @@
 import { Chip, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { Service } from "~/components/Layout/ContentLayout";
 import { dateFormat } from "~/utils/dateFormat";
 import { useGetProduct } from "../api/getProduct";
 import { DeleteProduct } from "../components/DeleteProduct";

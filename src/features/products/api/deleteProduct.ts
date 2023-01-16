@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client, { GraphQLClientError } from "~/libs/graphql-client";
+import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
 
@@ -36,7 +36,7 @@ const deleteProduct = async (
 
 export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
-  return useMutation<Product, GraphQLClientError, DeleteProductVariables>(
+  return useMutation<Product, BaseException, DeleteProductVariables>(
     deleteProduct,
     {
       onSuccess: (data) => {
