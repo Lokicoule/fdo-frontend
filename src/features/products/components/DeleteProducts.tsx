@@ -2,6 +2,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
+import { notify } from "~/libs/notify";
 import { useDeleteProducts } from "../api/deleteProducts";
 import { GetProductsResponse } from "../api/getProducts";
 import { Product } from "../types";
@@ -26,14 +27,22 @@ export const DeleteProducts = (props: { ids?: string[] }) => {
 
   const handleDelete = async () => {
     console.log("Delete products", ids);
-    await deleteProducts.mutate({
-      ids,
-    });
+    deleteProducts
+      .mutateAsync({
+        ids,
+      })
+      .catch((err) => {
+        notify.error({
+          title: "Delete products failed",
+          message: err.message,
+        });
+      });
   };
 
   return (
     <ConfirmationDialog
       title={`Delete products`}
+      isDone={deleteProducts.isSuccess || deleteProducts.isError}
       body={
         <>
           Are you sure you want to delete the following products?

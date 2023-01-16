@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client, { BaseError } from "~/libs/graphql-client";
+import client, { GraphQLClientError } from "~/libs/graphql-client";
 import { Product } from "../types";
 
 export type ProductCriteriaInput = {
@@ -39,17 +39,13 @@ export const getProducts = async (
     >(GetProducts, variables || {});
     return result.products;
   } catch (error) {
-    if (error instanceof BaseError) {
-      console.error("getProducts", error.status);
-      throw error;
-    }
     throw error;
   }
 };
 
 export const useGetProducts = (variables?: GetProductsVariables) => {
   const queryClient = useQueryClient();
-  return useQuery<Product[], BaseError>(
+  return useQuery<Product[], GraphQLClientError>(
     ["products", variables],
     () => getProducts(variables),
     {

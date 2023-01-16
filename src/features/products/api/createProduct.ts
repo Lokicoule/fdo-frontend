@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client, { BaseError } from "~/libs/graphql-client";
+import client, { GraphQLClientError } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
 
@@ -37,17 +37,13 @@ const createProduct = async (
     >(CreateProduct, variables);
     return result.createProduct;
   } catch (error) {
-    if (error instanceof BaseError) {
-      console.error("createProduct", error.status);
-      throw error;
-    }
     throw error;
   }
 };
 
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
-  return useMutation<Product, BaseError, CreateProductVariables>(
+  return useMutation<Product, GraphQLClientError, CreateProductVariables>(
     createProduct,
     {
       onSuccess: (data) => {
@@ -58,6 +54,7 @@ export const useCreateProduct = () => {
         });
         queryClient.invalidateQueries(["products"]);
       },
+      useErrorBoundary: (error) => error?.status >= 500,
     }
   );
 };

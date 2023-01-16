@@ -1,68 +1,49 @@
-import { GraphQLClient } from "graphql-request";
+import { ClientError, GraphQLClient } from "graphql-request";
 import { API_URL } from "~/config";
 import { getAccessToken } from "~/libs/auth";
 
-export class BaseError extends Error {
+export class GraphQLClientError extends Error {
   public readonly status: number;
-
-  constructor(message: string, status?: number) {
-    super(message);
-    this.name = "BaseError";
+  constructor(message?: string, status?: number) {
+    super(message || "INTERNAL_SERVER_ERROR");
     this.status = status || 500;
   }
 }
 
-export class InternalServerError extends BaseError {
-  constructor(message: string) {
-    super(message, 500);
-    this.name = "InternalServerError";
-  }
-}
-
-export class BadRequestError extends BaseError {
-  constructor(message: string) {
-    super(message, 400);
-    this.name = "BadRequestError";
-  }
-}
-
-export class UnauthorizedError extends BaseError {
-  constructor(message: string) {
-    super(message, 401);
-    this.name = "UnauthorizedError";
-  }
-}
-
-async function authMiddleware(request: any) {
-  const token = await getAccessToken();
-
-  if (token) {
-    request.headers = {
-      ...request.headers,
-      authorization: `Bearer ${token}`,
-    };
-  }
-
-  return request;
-}
-
-function errorMiddleware(response: any) {
-  /*   if (response.status < 500) {
-    const { message, extensions } = response.data.errors[0];
-    if (extensions?.code === "INTERNAL_SERVER_ERROR")
-      throw new InternalServerError(message);
-    if (extensions?.code === "BAD_USER_INPUT")
-      throw new BadRequestError(message);
-    if (extensions?.code === "UNAUTHENTICATED")
-      throw new UnauthorizedError(message);
-  }
-
-  throw new InternalServerError(response); */
-}
+type ClientErrorExtensions = {
+  response: {
+    errors?: {
+      extensions?: {
+        exception?: {
+          message?: string;
+          status?: number;
+        };
+      };
+    }[];
+  };
+};
 
 const client = new GraphQLClient(API_URL, {
-  requestMiddleware: authMiddleware,
-  responseMiddleware: errorMiddleware,
+  requestMiddleware: async (request) => {
+    const token = await getAccessToken();
+
+    if (token) {
+      request.headers = {
+        ...request.headers,
+        authorization: `Bearer ${token}`,
+      };
+    }
+
+    return request;
+  },
+  responseMiddleware(response) {
+    if (response instanceof ClientError) {
+      const error = response as ClientErrorExtensions;
+      const code = error.response?.errors?.[0]?.extensions?.exception?.message;
+      const status = error.response?.errors?.[0]?.extensions?.exception?.status;
+      throw new GraphQLClientError(code, status);
+    }
+  },
 });
 
 export default client;

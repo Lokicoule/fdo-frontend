@@ -4,7 +4,7 @@ const queryConfig: DefaultOptions = {
   queries: {
     /*     useErrorBoundary: true,
      */
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
     staleTime: 1000 * 60 * 5,
   },

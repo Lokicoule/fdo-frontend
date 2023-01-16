@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
-import client, { BaseError } from "~/libs/graphql-client";
-import { Product } from "../types";
+import client, { GraphQLClientError } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
+import { Product } from "../types";
 
 export type DeleteProductVariables = {
   id: string;
@@ -30,17 +30,13 @@ const deleteProduct = async (
     >(DeleteProduct, variables);
     return result.deleteProduct;
   } catch (error) {
-    if (error instanceof BaseError) {
-      console.error("deleteProduct", error.status);
-      throw error;
-    }
     throw error;
   }
 };
 
 export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
-  return useMutation<Product, BaseError, DeleteProductVariables>(
+  return useMutation<Product, GraphQLClientError, DeleteProductVariables>(
     deleteProduct,
     {
       onSuccess: (data) => {

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
+import { Service } from "~/components/Layout/ContentLayout";
 import { Table } from "~/components/Table/Table";
 import { TableColumn } from "~/components/Table/TableBase";
 import { dateFormat } from "../../../utils/dateFormat";
@@ -145,7 +146,11 @@ export const ProductsList = () => {
       }}
       toolbar={{
         title: "Products",
-        addButton: <CreateProduct />,
+        addButton: (
+          <Service>
+            <CreateProduct />
+          </Service>
+        ),
       }}
     />
   );
