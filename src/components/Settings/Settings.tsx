@@ -1,7 +1,7 @@
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { SwipeableDrawer } from "../Elements/SwipeableDrawer";
 import { IconButton, Box, Typography, Divider, Stack } from "@mui/material";
-import { Mode } from "./Mode";
+import { Mode, ModeV2 } from "./Mode";
 import { LanguageSelector } from "./LanguageSelector";
 
 export const Settings = () => {
@@ -33,23 +33,25 @@ export const Settings = () => {
           <Typography variant="overline">Mode</Typography>
           <Mode />
         </Stack>
-        <Box>
-          <Stack direction={"column"} spacing={1}>
-            <Typography variant="overline">Langues</Typography>
-            <LanguageSelector
-              MenuProps={{
-                anchorOrigin: {
-                  vertical: "bottom",
-                  horizontal: "left",
-                },
-                transformOrigin: {
-                  vertical: "top",
-                  horizontal: "left",
-                },
-              }}
-            />
-          </Stack>
-        </Box>
+        <Stack direction={"column"} spacing={1}>
+          <Typography variant="overline">Langues</Typography>
+          <LanguageSelector
+            MenuProps={{
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
+            }}
+          />
+        </Stack>
+        <Stack direction={"column"} spacing={1}>
+          <Typography variant="overline">Mode v2</Typography>
+          <ModeV2 />
+        </Stack>
       </Stack>
     </SwipeableDrawer>
   );
