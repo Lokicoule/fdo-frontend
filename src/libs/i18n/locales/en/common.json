@@ -52,7 +52,8 @@
     "createdAt": "Created at",
     "updatedAt": "Updated at",
     "product": "Product {{name}}",
-    "products": "Products"
+    "products": "Products",
+    "dashboard": "Dashboard"
   },
   "error": {
     "NETWORK": "An error occurred while communicating with the server. Please try again later.",

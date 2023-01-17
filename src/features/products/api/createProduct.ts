@@ -46,9 +46,7 @@ export const useCreateProduct = () => {
       onSuccess: (data) => {
         console.log(data);
         notify.success({
-          title: t("common:dictionary.product", {
-            name: data?.code,
-          }),
+          title: t("common:dictionary.product"),
           message: t("products:@createProduct.notification.success", {
             label: data?.label,
           }),

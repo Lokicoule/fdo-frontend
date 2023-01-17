@@ -21,6 +21,10 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { LanguageSelector } from "../Settings/LanguageSelector";
+import { Mode } from "../Settings/Mode";
+import { Settings } from "../Settings/Settings";
+import { Stack } from "@mui/material";
 
 type AppBarProps = MuiAppBarProps & {
   open?: boolean;
@@ -97,7 +101,7 @@ const SideNavigation = () => {
 
   const navigation = [
     {
-      name: "Dashboard",
+      name: t("dictionary.dashboard"),
       icon: <DashboardIcon />,
       path: "/app",
     },
@@ -218,6 +222,10 @@ export const MainLayout: React.FunctionComponent<React.PropsWithChildren> = (
           <Typography variant="h6" noWrap component="div">
             FDO Invoice
           </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Stack direction="row" spacing={2}>
+            <Settings />
+          </Stack>
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={{ width: { sm: width }, flexShrink: { sm: 0 } }}>

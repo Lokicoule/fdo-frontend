@@ -99,16 +99,20 @@ const themes = {
   } satisfies ThemeOptions,
 };
 
-type Theme = typeof themes.light | typeof themes.dark;
+export type Mode = "light" | "dark" | "system";
 
 type ThemeContextType = {
-  theme: Theme;
-  toggleTheme: () => void;
+  mode: Mode;
+  dark: () => void;
+  light: () => void;
+  system: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: themes.light,
-  toggleTheme: () => {},
+  mode: "system",
+  dark: () => {},
+  light: () => {},
+  system: () => {},
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -117,32 +121,45 @@ export const ThemeProvider: React.FunctionComponent<React.PropsWithChildren> = (
   props
 ) => {
   const { children } = props;
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const [mode, setMode] = useState<Mode>("system");
 
-  const [theme, setTheme] = useState<Theme>(themes.light);
-  const [isDark, setIsDark] = useState(
-    useMediaQuery("(prefers-color-scheme: dark)")
-  );
-
-  const toggleTheme = () => {
-    console.log("toggleTheme", isDark);
-    setIsDark(!isDark);
-    setTheme(isDark ? themes.light : themes.dark);
+  const handleLight = () => {
+    setMode("light");
   };
+
+  const handleDark = () => {
+    setMode("dark");
+  };
+
+  const handleSystem = () => {
+    setMode("system");
+  };
+
+  const isDark = useMemo(() => {
+    if (mode === "system") {
+      return prefersDarkMode;
+    }
+    return mode === "dark";
+  }, [mode, prefersDarkMode]);
 
   const themeOptions = useMemo(
     () => ({
-      palette: theme.palette,
+      palette: isDark ? themes.dark.palette : themes.light.palette,
     }),
-    [isDark]
+    [mode]
   );
 
   const themeBase = createTheme(themeOptions, components);
   console.log(themeBase);
 
   const value = {
-    theme,
-    toggleTheme,
+    mode,
+    dark: handleDark,
+    light: handleLight,
+    system: handleSystem,
   };
+
   return (
     <ThemeContext.Provider value={value}>
       <MuiThemeProvider theme={themeBase}>

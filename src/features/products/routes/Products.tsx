@@ -11,7 +11,7 @@ export const Products = () => {
     <ContentLayout
       locations={[
         {
-          name: "Dashboard",
+          name: t("dictionary.dashboard"),
           path: "/app",
         },
         {

@@ -51,8 +51,9 @@
     "areYouSureToContinue": "Êtes-vous sûr de vouloir continuer ?",
     "createdAt": "Date de création",
     "updatedAt": "Date de mise à jour",
-    "product": "Produit {{name}}",
-    "products": "Produits"
+    "product": "Produit",
+    "products": "Produits",
+    "dashboard": "Tableau de bord"
   },
   "error": {
     "NETWORK": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",

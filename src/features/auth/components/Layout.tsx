@@ -3,7 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { LanguageSelector } from "../../../components/Elements/LanguageSelector";
+import { LanguageSelector } from "../../../components/Settings/LanguageSelector";
 
 type LayoutProps = React.PropsWithChildren<{
   description: string;

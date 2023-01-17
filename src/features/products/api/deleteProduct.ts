@@ -44,9 +44,7 @@ export const useDeleteProduct = () => {
         const { label, code } = data ?? product ?? {};
 
         notify.success({
-          title: t("common:dictionary.product", {
-            name: code,
-          }),
+          title: t("common:dictionary.product"),
           message: t("products:@deleteProduct.notification.success", {
             label,
           }),
@@ -61,9 +59,7 @@ export const useDeleteProduct = () => {
         const { label, code } = product ?? {};
 
         notify.error({
-          title: t("common:dictionary.product", {
-            name: code,
-          }),
+          title: t("common:dictionary.product"),
           message: t("products:@deleteProduct.notification.error", {
             label,
           }),

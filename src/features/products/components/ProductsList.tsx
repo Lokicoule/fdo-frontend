@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
 import { QueryWrapper } from "~/components/Error/QueryErrorBoundary";
@@ -78,6 +78,7 @@ const ResponsiveActionsButtons = ({ entry }: { entry: Product }) => {
 };
 
 export const ProductsList = () => {
+  const { t, i18n } = useTranslation(["common", "products"]);
   const getProductsQuery = useGetProducts({});
 
   const columns: TableColumn<Product>[] = useMemo(
@@ -125,7 +126,7 @@ export const ProductsList = () => {
         },
       },
     ],
-    []
+    [i18n.language]
   );
 
   return (

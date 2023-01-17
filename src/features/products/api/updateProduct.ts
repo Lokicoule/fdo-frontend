@@ -45,9 +45,7 @@ export const useUpdateProduct = () => {
     {
       onSuccess: (data) => {
         notify.success({
-          title: t("common:dictionary.product", {
-            name: data?.code,
-          }),
+          title: t("common:dictionary.product"),
           message: t("products:@updateProduct.notification.success", {
             label: data?.label,
           }),
