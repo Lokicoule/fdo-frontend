@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useTranslation } from "react-i18next";
 import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
@@ -27,30 +28,30 @@ const CreateProduct = gql`
   }
 `;
 
-const createProduct = async (
-  variables: CreateProductVariables
-): Promise<Product> => {
-  try {
-    const result = await client.request<
-      CreateProductResponse,
-      CreateProductVariables
-    >(CreateProduct, variables);
-    return result.createProduct;
-  } catch (error) {
-    throw error;
-  }
-};
+const createProduct = (variables: CreateProductVariables) =>
+  client
+    .request<CreateProductResponse, CreateProductVariables>(
+      CreateProduct,
+      variables
+    )
+    .then((data) => data.createProduct);
 
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation(["products", "common"]);
+
   return useMutation<Product, BaseException, CreateProductVariables>(
     createProduct,
     {
       onSuccess: (data) => {
-        console.log("useCreateProduct", data);
+        console.log(data);
         notify.success({
-          title: "Product created",
-          message: `Product ${data?.label} has been created`,
+          title: t("common:dictionary.product", {
+            name: data?.code,
+          }),
+          message: t("products:@createProduct.notification.success", {
+            label: data?.label,
+          }),
         });
         queryClient.invalidateQueries(["products"]);
       },

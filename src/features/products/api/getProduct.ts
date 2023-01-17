@@ -23,19 +23,10 @@ const GetProduct = gql`
   }
 `;
 
-export const getProduct = async (
-  variables: GetProductVariables
-): Promise<Product> => {
-  try {
-    const result = await client.request<
-      GetProductResponse,
-      GetProductVariables
-    >(GetProduct, variables);
-    return result.product;
-  } catch (error) {
-    throw error;
-  }
-};
+export const getProduct = (variables: GetProductVariables): Promise<Product> =>
+  client
+    .request<GetProductResponse, GetProductVariables>(GetProduct, variables)
+    .then((data) => data.product);
 
 export const useGetProduct = (variables: GetProductVariables) => {
   const queryClient = useQueryClient();

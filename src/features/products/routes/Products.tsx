@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
 import { ContentLayout } from "~/components/Layout/ContentLayout";
 import { ProductsList } from "../components/ProductsList";
 
 export const Products = () => {
-  console.info("Products render");
+  const { t } = useTranslation();
+
+  const title = t("dictionary.products");
 
   return (
     <ContentLayout
@@ -12,12 +15,12 @@ export const Products = () => {
           path: "/app",
         },
         {
-          name: "Products",
+          name: title,
           path: "/app/products",
         },
       ]}
       errorFallback={{
-        title: "Products",
+        title,
       }}
     >
       <ProductsList />

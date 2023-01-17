@@ -2,6 +2,7 @@ import { ClientError, GraphQLClient } from "graphql-request";
 import { API_URL } from "~/config";
 import { getAccessToken } from "~/libs/auth";
 import { GraphQLError } from "graphql";
+import { notify } from "./notify";
 
 export const GRAPHQL_ERROR_CODE = {
   BAD_REQUEST: "BAD_REQUEST",
@@ -63,9 +64,16 @@ const client = new GraphQLClient(API_URL, {
         throw new UseCaseException(error.message);
       }
       if (error.extensions.code === "INTERNAL_SERVER_ERROR") {
+        notify.error({
+          title: "Technical error",
+          message: "An error has occured, please try again later",
+        });
         throw new TechnicalException(error.message);
       }
-
+      notify.error({
+        title: "Service unavailable",
+        message: "The service is unavailable, please try again later",
+      });
       throw new ServiceUnavailableException(error.message);
     }
   },

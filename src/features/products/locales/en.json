@@ -1,0 +1,31 @@
+{
+  "@createProduct": {
+    "title": "Create product",
+    "notification": {
+      "success": "The product {{label}} has been created successfully"
+    }
+  },
+  "@deleteProduct": {
+    "message": "The product {{code}} will be deleted permanently.",
+    "notification": {
+      "success": "The product {{label}} has been deleted successfully",
+      "error": "The product {{label}} could not be deleted"
+    }
+  },
+  "@deleteProducts": {
+    "message": "The selected products will be deleted permanently.",
+    "notification": {
+      "success": "The selected products have been deleted successfully"
+    }
+  },
+  "@updateProduct": {
+    "title": "Update product",
+    "warnMessageNoChanges": "Before saving, you must make changes to the product.",
+    "notification": {
+      "success": "The product {{label}} has been updated successfully"
+    }
+  },
+  "error": {
+    "PRODUCT_CODE_ALREADY_EXISTS": "The product code already exists"
+  }
+}

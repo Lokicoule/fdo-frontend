@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import { Alert, AlertTitle, Button, IconButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
 import { notify } from "~/libs/notify";
@@ -17,37 +17,23 @@ export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
   const { product, onDelete } = props;
   const deleteProduct = useDeleteProduct();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "products"]);
 
-  const handleDelete = async () => {
-    console.log("Delete product", product);
+  const handleDelete = () => {
     deleteProduct
       .mutateAsync({
         id: product.id,
       })
       .then(() => {
         onDelete?.();
-      })
-      .catch((err) => {
-        notify.error({
-          title: "Delete product failed",
-          message: err.message,
-        });
       });
   };
 
   return (
     <ConfirmationDialog
-      title={`Delete product ${product.code}`}
+      title={t("common:dictionary.areYouSureToContinue")}
+      body={t("products:@deleteProduct.message", { code: product.code })}
       isDone={deleteProduct.isSuccess || deleteProduct.isError}
-      body={
-        <>
-          Are you sure you want to delete the following product?
-          <br />
-          <br />
-          {product.code}
-        </>
-      }
       triggerButton={
         <Tooltip title={t("dictionary.delete")}>
           <IconButton size="small">
@@ -55,7 +41,11 @@ export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
           </IconButton>
         </Tooltip>
       }
-      confirmButton={<Button onClick={handleDelete}>Confirm</Button>}
+      confirmButton={
+        <Button variant="contained" color="error" onClick={handleDelete}>
+          {t("dictionary.confirm")}
+        </Button>
+      }
     />
   );
 };

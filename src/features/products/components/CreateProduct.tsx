@@ -27,9 +27,7 @@ const defaultValues = {
 export const CreateProduct: React.FunctionComponent = (props) => {
   const createProductMutation = useCreateProduct();
 
-  const { t } = useTranslation();
-
-  console.info("CreateProductForm render", props);
+  const { t } = useTranslation(["common", "products"]);
 
   const handleSubmit = async (data: CreateProductValues) => {
     await createProductMutation.mutateAsync({
@@ -44,7 +42,7 @@ export const CreateProduct: React.FunctionComponent = (props) => {
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
             <InventoryIcon />
           </Avatar>
-          Create product
+          <>{t("products:@createProduct.title")}</>
         </>
       }
       triggerButton={
@@ -73,13 +71,13 @@ export const CreateProduct: React.FunctionComponent = (props) => {
           disabled={createProductMutation.isLoading}
           form="create-product-form"
         >
-          Sauvegarder
+          {t("dictionary.save")}
         </Button>
       }
       isDone={createProductMutation.isSuccess}
       onClose={createProductMutation.reset}
     >
-      <FormWrapper error={createProductMutation.error}>
+      <FormWrapper error={createProductMutation.error} namespace="products">
         <Form<CreateProductValues, typeof schema>
           onSubmit={handleSubmit}
           schema={schema}
@@ -102,7 +100,7 @@ export const CreateProduct: React.FunctionComponent = (props) => {
                 <Form.InputField
                   name="label"
                   control={control}
-                  label="Libellé produit"
+                  label={t("dictionary.label")}
                   required
                   fullWidth
                   autoFocus

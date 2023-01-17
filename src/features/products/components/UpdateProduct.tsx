@@ -41,9 +41,8 @@ const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
   props
 ) => {
   const { productId, error, onSubmit } = props;
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "products"]);
 
-  console.info("UpdateProductForm render", props);
   const [warnMessage, setWarnMessage] = useState<string | null>(null);
 
   const getProductQuery = useGetProduct({
@@ -72,7 +71,7 @@ const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
       data.code === getProductQuery.data?.code &&
       data.label === getProductQuery.data?.label
     ) {
-      setWarnMessage("Aucune modification n'a été apportée");
+      setWarnMessage(t("products:@updateProduct.warnMessageNoChanges"));
       return;
     }
     setWarnMessage(null);
@@ -80,7 +79,7 @@ const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
   };
 
   return (
-    <FormWrapper error={error} warn={warnMessage}>
+    <FormWrapper error={error} warn={warnMessage} namespace="products">
       <Form<UpdateProductValues, typeof schema>
         onSubmit={handleSubmit}
         schema={schema}
@@ -109,7 +108,7 @@ const UpdateProductForm: React.FunctionComponent<UpdateProductFormProps> = (
               <Form.InputField
                 name="label"
                 control={control}
-                label="Libellé produit"
+                label={t("dictionary.label")}
                 required
                 fullWidth
                 autoFocus
@@ -130,9 +129,7 @@ export const UpdateProduct: React.FunctionComponent<UpdateProductProps> = (
 
   const updateProductMutation = useUpdateProduct();
 
-  console.info("UpdateProduct render", props);
-
-  const { t } = useTranslation();
+  const { t } = useTranslation(["products", "common"]);
 
   const handleSubmit = async (data: UpdateProductValues) => {
     await updateProductMutation.mutateAsync({
@@ -150,11 +147,11 @@ export const UpdateProduct: React.FunctionComponent<UpdateProductProps> = (
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
             <InventoryIcon />
           </Avatar>
-          Update product
+          {t("products:@updateProduct.title")}
         </>
       }
       triggerButton={
-        <Tooltip title={t("dictionary.edit")}>
+        <Tooltip title={t("common:dictionary.edit")}>
           <IconButton size="small">
             <EditIcon fontSize="small" />
           </IconButton>
@@ -169,7 +166,7 @@ export const UpdateProduct: React.FunctionComponent<UpdateProductProps> = (
           disabled={updateProductMutation.isLoading}
           form="update-product-form"
         >
-          Sauvegarder
+          {t("common:dictionary.save")}
         </Button>
       }
       isDone={updateProductMutation.isSuccess}

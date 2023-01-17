@@ -1,5 +1,6 @@
 import { Chip, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { dateFormat } from "~/utils/dateFormat";
 import { useGetProduct } from "../api/getProduct";
@@ -17,6 +18,7 @@ export const ViewProduct: React.FunctionComponent<ProductContentProps> = ({
   const getProductQuery = useGetProduct({
     id: productId,
   });
+  const { t } = useTranslation(["common", "products"]);
 
   const handleDelete = () => {
     navigate("/app/products");
@@ -40,7 +42,7 @@ export const ViewProduct: React.FunctionComponent<ProductContentProps> = ({
         ) : null}
       </Stack>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" fontWeight={600}>
-        Code produit
+        {t("dictionary.code")}
       </Typography>
 
       <Typography
@@ -52,19 +54,19 @@ export const ViewProduct: React.FunctionComponent<ProductContentProps> = ({
         <Chip label={getProductQuery.data?.code} />
       </Typography>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" fontWeight={600}>
-        Libellé produit
+        {t("dictionary.label")}
       </Typography>
       <Typography variant="body2" color="text.secondary" gutterBottom>
         {getProductQuery.data?.label}
       </Typography>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" fontWeight={600}>
-        Date de création
+        {t("dictionary.createdAt")}
       </Typography>
       <Typography variant="body2" color="text.secondary" gutterBottom>
         {dateFormat(getProductQuery.data?.createdAt)}
       </Typography>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" fontWeight={600}>
-        Dernière mise à jour
+        {t("dictionary.updatedAt")}
       </Typography>
       <Typography variant="body2" color="text.secondary" gutterBottom>
         {dateFormat(getProductQuery.data?.updatedAt)}

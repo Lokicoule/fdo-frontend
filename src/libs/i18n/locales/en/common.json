@@ -46,7 +46,13 @@
     "login": "Login",
     "register": "Register",
     "signUp": "Sign up",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "label": "Label",
+    "areYouSureToContinue": "Are you sure to continue?",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "product": "Product {{name}}",
+    "products": "Products"
   },
   "error": {
     "NETWORK": "An error occurred while communicating with the server. Please try again later.",

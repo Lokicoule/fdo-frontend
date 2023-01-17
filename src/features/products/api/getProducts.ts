@@ -29,19 +29,15 @@ const GetProducts = gql`
   }
 `;
 
-export const getProducts = async (
+export const getProducts = (
   variables?: GetProductsVariables
-): Promise<Product[]> => {
-  try {
-    const result = await client.request<
-      GetProductsResponse,
-      GetProductsVariables
-    >(GetProducts, variables || {});
-    return result.products;
-  } catch (error) {
-    throw error;
-  }
-};
+): Promise<Product[]> =>
+  client
+    .request<GetProductsResponse, GetProductsVariables>(
+      GetProducts,
+      variables || {}
+    )
+    .then((data) => data.products);
 
 export const useGetProducts = (variables?: GetProductsVariables) => {
   const queryClient = useQueryClient();

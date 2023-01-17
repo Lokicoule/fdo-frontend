@@ -12,7 +12,7 @@ import { cloneElement } from "react";
 export type ConfirmationDialogProps = Omit<DialogProps, "children"> & {
   confirmButton: React.ReactElement;
   title: string;
-  body?: React.ReactElement;
+  body?: React.ReactNode;
   cancelButtonText?: string;
 };
 
@@ -52,7 +52,9 @@ export const ConfirmationDialog: React.FunctionComponent<
               justifyContent: "space-between",
             }}
           >
-            <Button onClick={onClose}>{cancelButtonText}</Button>
+            <Button variant="contained" onClick={onClose}>
+              {cancelButtonText}
+            </Button>
             {confirmButton}
           </DialogActions>
         </>

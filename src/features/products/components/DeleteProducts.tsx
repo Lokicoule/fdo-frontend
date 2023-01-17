@@ -1,15 +1,16 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { ConfirmationDialog } from "~/components/Elements/ConfirmationDialog";
 import { notify } from "~/libs/notify";
 import { useDeleteProducts } from "../api/deleteProducts";
-import { GetProductsResponse } from "../api/getProducts";
 import { Product } from "../types";
 
 export const DeleteProducts = (props: { ids?: string[] }) => {
   const { ids } = props;
   const queryClient = useQueryClient();
+  const { t } = useTranslation(["common", "products"]);
 
   if (!ids || ids.length === 0) {
     return null;
@@ -19,9 +20,7 @@ export const DeleteProducts = (props: { ids?: string[] }) => {
     .getQueryData<Product[]>(["products"])
     ?.filter((product) => ids.includes(product.id))
     .map((product) => product.code)
-    .join(", ");
-
-  console.log(queryClient.getQueryData<GetProductsResponse>(["products"]));
+    .join(" / ");
 
   const deleteProducts = useDeleteProducts();
 
@@ -41,14 +40,14 @@ export const DeleteProducts = (props: { ids?: string[] }) => {
 
   return (
     <ConfirmationDialog
-      title={`Delete products`}
+      title={t("common:dictionary.areYouSureToContinue")}
       isDone={deleteProducts.isSuccess || deleteProducts.isError}
       body={
         <>
-          Are you sure you want to delete the following products?
+          {t("products:@deleteProducts.message")}
           <br />
           <br />
-          {codes}
+          <strong>{codes}</strong>
         </>
       }
       triggerButton={
@@ -68,7 +67,11 @@ export const DeleteProducts = (props: { ids?: string[] }) => {
           </IconButton>
         </Tooltip>
       }
-      confirmButton={<Button onClick={handleDelete}>Confirm</Button>}
+      confirmButton={
+        <Button variant="contained" color="error" onClick={handleDelete}>
+          {t("dictionary.confirm")}
+        </Button>
+      }
     />
   );
 };

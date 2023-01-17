@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useTranslation } from "react-i18next";
 import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
@@ -18,30 +19,25 @@ const DeleteProducts = gql`
   }
 `;
 
-const deleteProducts = async (
-  variables: DeleteProductsVariables
-): Promise<Product> => {
-  try {
-    const result = await client.request<
-      DeleteProductsResponse,
-      DeleteProductsVariables
-    >(DeleteProducts, variables);
-    return result.deleteProducts;
-  } catch (error) {
-    throw error;
-  }
-};
+const deleteProducts = (variables: DeleteProductsVariables) =>
+  client
+    .request<DeleteProductsResponse, DeleteProductsVariables>(
+      DeleteProducts,
+      variables
+    )
+    .then((data) => data.deleteProducts);
 
 export const useDeleteProducts = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation(["products", "common"]);
+
   return useMutation<Product, BaseException, DeleteProductsVariables>(
     deleteProducts,
     {
-      onSuccess: (data) => {
-        console.log("useDeleteProducts", data);
+      onSuccess: (data, variables) => {
         notify.success({
-          title: "Products deleted",
-          message: `Products have been deleted`,
+          title: t("common:dictionary.products"),
+          message: t("products:@deleteProducts.notification.success"),
         });
         queryClient.invalidateQueries(["products"]);
       },

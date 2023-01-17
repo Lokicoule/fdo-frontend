@@ -46,7 +46,13 @@
     "login": "Connexion",
     "register": "S'inscrire",
     "signUp": "S'inscrire",
-    "signIn": "Se connecter"
+    "signIn": "Se connecter",
+    "label": "Libellé",
+    "areYouSureToContinue": "Êtes-vous sûr de vouloir continuer ?",
+    "createdAt": "Date de création",
+    "updatedAt": "Date de mise à jour",
+    "product": "Produit {{name}}",
+    "products": "Produits"
   },
   "error": {
     "NETWORK": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",

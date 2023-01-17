@@ -20,6 +20,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type AppBarProps = MuiAppBarProps & {
   open?: boolean;
@@ -92,6 +93,8 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideNavigation = () => {
+  const { t } = useTranslation();
+
   const navigation = [
     {
       name: "Dashboard",
@@ -99,7 +102,7 @@ const SideNavigation = () => {
       path: "/app",
     },
     {
-      name: "Products",
+      name: t("dictionary.products"),
       icon: <ProductIcon />,
       path: "/app/products",
     },

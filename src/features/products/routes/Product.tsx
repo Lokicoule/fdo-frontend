@@ -1,17 +1,20 @@
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { ContentLayout } from "~/components/Layout/ContentLayout";
 import { ViewProduct } from "../components/ViewProduct";
 
 export const Product = () => {
   const { productId } = useParams();
+  const { t } = useTranslation(["common", "products"]);
 
   if (!productId) return null;
+  const title = t("dictionary.product");
 
   return (
     <ContentLayout
-      title="Product"
+      title={title}
       errorFallback={{
-        title: "Product",
+        title,
       }}
       locations={[
         {
@@ -19,11 +22,11 @@ export const Product = () => {
           path: "/app",
         },
         {
-          name: "Products",
+          name: t("dictionary.products"),
           path: "/app/products",
         },
         {
-          name: "View product",
+          name: title,
         },
       ]}
     >

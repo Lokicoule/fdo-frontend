@@ -1,0 +1,31 @@
+{
+  "@createProduct": {
+    "title": "Créer un produit",
+    "notification": {
+      "success": "Le produit {{label}} a été créé avec succès"
+    }
+  },
+  "@deleteProduct": {
+    "message": "Le produit {{code}} sera supprimé définitivement.",
+    "notification": {
+      "success": "Le produit {{label}} a été supprimé avec succès",
+      "error": "Le produit {{label}} n'a pas pu être supprimé"
+    }
+  },
+  "@deleteProducts": {
+    "message": "Les produits sélectionnés seront supprimés définitivement.",
+    "notification": {
+      "success": "Les produits ont été supprimés avec succès"
+    }
+  },
+  "@updateProduct": {
+    "title": "Mise à jour produit",
+    "warnMessageNoChanges": "Veillez à effectuer des modifications avant de valider.",
+    "notification": {
+      "success": "Le produit {{label}} a été mis à jour avec succès"
+    }
+  },
+  "error": {
+    "PRODUCT_CODE_ALREADY_EXISTS": "Le code produit existe déjà"
+  }
+}

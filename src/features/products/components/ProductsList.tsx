@@ -7,6 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { t } from "i18next";
 import { useMemo } from "react";
 import { Menu, MenuItem, MenuList } from "~/components/Elements/Menuv2";
 import { QueryWrapper } from "~/components/Error/QueryErrorBoundary";
@@ -79,13 +80,10 @@ const ResponsiveActionsButtons = ({ entry }: { entry: Product }) => {
 export const ProductsList = () => {
   const getProductsQuery = useGetProducts({});
 
-  console.info("ProductsList render");
-  console.info(getProductsQuery);
-
   const columns: TableColumn<Product>[] = useMemo(
     () => [
       {
-        title: "Code",
+        title: t("dictionary.code"),
         field: "code",
         options: {
           mobile: true,
@@ -93,7 +91,7 @@ export const ProductsList = () => {
         },
       },
       {
-        title: "Label",
+        title: t("dictionary.label"),
         field: "label",
         options: {
           mobile: true,
@@ -101,7 +99,7 @@ export const ProductsList = () => {
         },
       },
       {
-        title: "Created at",
+        title: t("dictionary.createdAt"),
         field: "createdAt",
         Cell: ({ entry }) => <span>{dateFormat(entry.createdAt)}</span>,
         options: {
@@ -110,7 +108,7 @@ export const ProductsList = () => {
         },
       },
       {
-        title: "Updated at",
+        title: t("dictionary.updatedAt"),
         field: "updatedAt",
         Cell: ({ entry }) => <span>{dateFormat(entry.updatedAt)}</span>,
         options: {
@@ -145,7 +143,7 @@ export const ProductsList = () => {
         selectionButton: <DeleteProducts />,
       }}
       toolbar={{
-        title: "Products",
+        title: t("dictionary.products"),
         addButton: (
           <QueryWrapper>
             <CreateProduct />
