@@ -28,6 +28,7 @@ export type TableBaseProps<Entry> = {
   renderEmptyRows?: (nbColumns: number) => React.ReactNode;
   renderCellHead?: (column: TableColumn<Entry>) => React.ReactNode;
   renderCheckbox?: (id: string) => React.ReactNode;
+  selected?: (id: string) => boolean;
   triggerCheckbox?: React.ReactElement;
 };
 
@@ -56,6 +57,7 @@ export const TableBase = <Entry extends { id: string }>({
   columns,
   renderCellHead = (column) => column.title,
   renderCheckbox = () => null,
+  selected = () => false,
   triggerCheckbox,
 }: TableBaseProps<Entry>) => {
   if (data.length === 0 || columns.length === 0) {
@@ -91,7 +93,10 @@ export const TableBase = <Entry extends { id: string }>({
         </TableHead>
         <TableBody>
           {data?.map((entry, entryIndex) => (
-            <TableRow key={entry?.id || entryIndex}>
+            <TableRow
+              key={entry?.id || entryIndex}
+              selected={selected(entry?.id)}
+            >
               {renderCheckbox(entry.id)}
               {columns?.map(({ Cell, field, title, options }, columnIndex) => (
                 <ResponsiveCell

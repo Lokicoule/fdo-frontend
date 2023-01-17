@@ -125,6 +125,7 @@ const witchCheckboxSelection =
         <Element
           {...props}
           data={data}
+          selected={(id: string) => isSelected(id)}
           renderCheckbox={(id: string) => (
             <TableCell padding="checkbox">
               <Checkbox
