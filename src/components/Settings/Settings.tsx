@@ -35,8 +35,19 @@ export const Settings = () => {
         </Stack>
         <Box>
           <Stack direction={"column"} spacing={1}>
-            <Typography variant="overline">Languages</Typography>
-            <LanguageSelector />
+            <Typography variant="overline">Langues</Typography>
+            <LanguageSelector
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "left",
+                },
+              }}
+            />
           </Stack>
         </Box>
       </Stack>

@@ -69,7 +69,7 @@ export const SwipeableDrawer: React.FunctionComponent<SwipeableDrawerProps> = (
               ) : null}
             </Stack>
             <Divider />
-            <Box sx={{ pl: 2, pr: 0.5 }}>{children}</Box>
+            <Box sx={{ p: 2 }}>{children}</Box>
           </Box>
         ) : null}
       </MuiSwipeableDrawer>

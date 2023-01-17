@@ -27,8 +27,6 @@ export const LanguageSelector: React.FunctionComponent<
 > = (props) => {
   const { i18n } = useTranslation();
 
-  console.info("LanguageChooser render", i18n.language);
-
   const handleChangeLanguage = (code: string) => {
     i18n.changeLanguage(code);
   };
