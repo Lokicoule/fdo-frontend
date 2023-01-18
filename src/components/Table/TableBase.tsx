@@ -65,11 +65,7 @@ export const TableBase = <Entry extends { id: string }>({
   }
 
   return (
-    <TableContainer
-      component={Paper}
-      elevation={3}
-      sx={{ mb: 2, maxHeight: "70vh" }}
-    >
+    <TableContainer component={Paper} elevation={1} sx={{ mb: 2 }}>
       <MuiTable stickyHeader size="medium">
         <TableHead
           sx={{

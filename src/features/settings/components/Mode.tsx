@@ -34,7 +34,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
   },
   "& .MuiSwitch-thumb": {
-    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#1e88e5",
     width: 32,
     height: 32,
     "&:before": {
@@ -59,41 +59,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export const Mode = () => {
-  const { light, dark, system, mode } = useTheme();
-
-  return (
-    <ToggleButtonGroup
-      color="primary"
-      value={mode}
-      exclusive
-      sx={{
-        justifyContent: "center",
-      }}
-    >
-      <ToggleButton onClick={light} value={"light"}>
-        <Stack direction="row" spacing={1}>
-          <LightIcon />
-          <Typography>Light</Typography>
-        </Stack>
-      </ToggleButton>
-      <ToggleButton onClick={system} value="system">
-        <Stack direction="row" spacing={1}>
-          <SystemIcon />
-          <Typography>System</Typography>
-        </Stack>
-      </ToggleButton>
-      <ToggleButton onClick={dark} value="dark">
-        <Stack direction="row" spacing={1}>
-          <DarkIcon />
-          <Typography>Dark</Typography>
-        </Stack>
-      </ToggleButton>
-    </ToggleButtonGroup>
-  );
-};
-
-export const ModeV2 = () => {
-  const { light, dark, system, mode } = useTheme();
+  const { light, dark, mode } = useTheme();
 
   return (
     <MaterialUISwitch

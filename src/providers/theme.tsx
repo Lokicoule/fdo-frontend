@@ -19,6 +19,8 @@ import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
 } from "react-router-dom";
+import { useMode } from "~/features/settings/stores";
+import { Mode } from "~/features/settings";
 
 const LinkBehavior = forwardRef<
   HTMLAnchorElement,
@@ -99,20 +101,16 @@ const themes = {
   } satisfies ThemeOptions,
 };
 
-export type Mode = "light" | "dark" | "system";
-
 type ThemeContextType = {
   mode: Mode;
   dark: () => void;
   light: () => void;
-  system: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType>({
   mode: "system",
   dark: () => {},
   light: () => {},
-  system: () => {},
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -121,8 +119,8 @@ export const ThemeProvider: React.FunctionComponent<React.PropsWithChildren> = (
   props
 ) => {
   const { children } = props;
+  const { mode, setMode } = useMode();
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const [mode, setMode] = useState<Mode>("system");
 
   const handleLight = () => {
     setMode("light");
@@ -132,16 +130,12 @@ export const ThemeProvider: React.FunctionComponent<React.PropsWithChildren> = (
     setMode("dark");
   };
 
-  const handleSystem = () => {
-    setMode("system");
-  };
-
   const isDark = useMemo(() => {
     if (mode === "system") {
       return prefersDarkMode;
     }
     return mode === "dark";
-  }, [mode, prefersDarkMode]);
+  }, [mode]);
 
   const themeOptions = useMemo(
     () => ({
@@ -151,13 +145,11 @@ export const ThemeProvider: React.FunctionComponent<React.PropsWithChildren> = (
   );
 
   const themeBase = createTheme(themeOptions, components);
-  console.log(themeBase);
 
   const value = {
     mode,
     dark: handleDark,
     light: handleLight,
-    system: handleSystem,
   };
 
   return (

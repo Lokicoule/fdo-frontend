@@ -17,14 +17,9 @@ const languages = [
   },
 ];
 
-type LanguageSelectorProps = Pick<
-  SelectProps,
-  "variant" | "MenuProps" | "size" | "sx"
->;
+type LanguageProps = Pick<SelectProps, "variant" | "MenuProps" | "size" | "sx">;
 
-export const LanguageSelector: React.FunctionComponent<
-  LanguageSelectorProps
-> = (props) => {
+export const Language: React.FunctionComponent<LanguageProps> = (props) => {
   const { i18n } = useTranslation();
 
   const handleChangeLanguage = (code: string) => {

@@ -5,6 +5,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/GridViewSharp";
 import MenuIcon from "@mui/icons-material/Menu";
 import ProductIcon from "@mui/icons-material/QrCode2Sharp";
+import { Stack } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -19,12 +20,11 @@ import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LanguageSelector } from "../Settings/LanguageSelector";
-import { Mode } from "../Settings/Mode";
-import { Settings } from "../Settings/Settings";
-import { Stack } from "@mui/material";
+import { NavLink } from "react-router-dom";
+import { ProfileMenu } from "~/features/profile/components/ProfileMenu";
+import { Settings } from "~/features/settings";
+import { useSidebar } from "~/stores/app";
 
 type AppBarProps = MuiAppBarProps & {
   open?: boolean;
@@ -194,27 +194,22 @@ export const MainLayout: React.FunctionComponent<React.PropsWithChildren> = (
   props
 ) => {
   const { children } = props;
-  const [open, setOpen] = useState(false);
+  const { isSidebarOpen, toggleSidebar } = useSidebar();
   const theme = useTheme();
 
-  const handleOpenToggle = () => {
-    setOpen(!open);
-  };
-
-  const width = open ? drawerWidth : theme.spacing(7) + 1;
+  const width = isSidebarOpen ? drawerWidth : theme.spacing(7) + 1;
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={isSidebarOpen}>
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
-            onClick={handleOpenToggle}
+            onClick={toggleSidebar}
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: "none" }),
+              ...(isSidebarOpen && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -223,13 +218,14 @@ export const MainLayout: React.FunctionComponent<React.PropsWithChildren> = (
             FDO Invoice
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <ProfileMenu />
             <Settings />
           </Stack>
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={{ width: { sm: width }, flexShrink: { sm: 0 } }}>
-        <ResponsiveSidebar open={open} onToggle={handleOpenToggle} />
+        <ResponsiveSidebar open={isSidebarOpen} onToggle={toggleSidebar} />
       </Box>
       <Box
         component="main"

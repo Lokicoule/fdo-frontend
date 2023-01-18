@@ -3,7 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { LanguageSelector } from "../../../components/Settings/LanguageSelector";
+import { Language } from "../../settings";
 
 type LayoutProps = React.PropsWithChildren<{
   description: string;
@@ -46,7 +46,7 @@ export const Layout: React.FunctionComponent<LayoutProps> = (props) => {
         {children}
       </Paper>
       <div>
-        <LanguageSelector
+        <Language
           sx={{
             alignSelf: "flex-start",
             bottom: 0,

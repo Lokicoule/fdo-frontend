@@ -18,7 +18,7 @@ type AuthContextType = {
     AsyncState,
     (email: string, password: string) => Promise<void>
   ];
-  useLogout: () => Promise<void>;
+  logout: () => Promise<void>;
   useRegister: () => [
     AsyncState,
     (email: string, password: string) => Promise<void>
@@ -40,7 +40,7 @@ const AuthContext = React.createContext<AuthContextType>({
     { isLoading: false, error: undefined },
     () => Promise.resolve(),
   ],
-  useLogout: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
   useRegister: () => [
     { isLoading: false, error: undefined },
     () => Promise.resolve(),
@@ -90,7 +90,7 @@ export const AuthProvider: React.FunctionComponent<React.PropsWithChildren> = (
     isLoggedIn: Boolean(getAuthenticatedUser()),
     user,
     useLogin: () => useAsyncCallback(handleLogin),
-    useLogout: handleLogout,
+    logout: handleLogout,
     useRegister: () =>
       useAsyncCallback(async (email: string, password: string) =>
         register(email, password)

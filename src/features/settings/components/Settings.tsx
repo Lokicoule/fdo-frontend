@@ -1,8 +1,8 @@
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { SwipeableDrawer } from "../Elements/SwipeableDrawer";
-import { IconButton, Box, Typography, Divider, Stack } from "@mui/material";
-import { Mode, ModeV2 } from "./Mode";
-import { LanguageSelector } from "./LanguageSelector";
+import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { SwipeableDrawer } from "~/components/Elements/SwipeableDrawer";
+import { Language } from "./Language";
+import { Mode } from "./Mode";
 
 export const Settings = () => {
   return (
@@ -11,15 +11,18 @@ export const Settings = () => {
       closeIcon
       title={"Settings"}
       triggerButton={
-        <IconButton
-          color="inherit"
-          /* sx={{
-            borderRadius: 1,
-            border: (theme) => `1px solid RGBA(255,255,255,0.3)`,
-          }} */
-        >
-          <SettingsOutlinedIcon />
-        </IconButton>
+        <Tooltip title={"Settings"}>
+          <IconButton
+            color="inherit"
+            size="medium"
+            /*  sx={{
+              borderRadius: 2,
+              border: (theme) => `1px solid RGBA(255,255,255,0.3)`,
+            }} */
+          >
+            <SettingsOutlinedIcon />
+          </IconButton>
+        </Tooltip>
       }
     >
       <Stack
@@ -35,7 +38,7 @@ export const Settings = () => {
         </Stack>
         <Stack direction={"column"} spacing={1}>
           <Typography variant="overline">Langues</Typography>
-          <LanguageSelector
+          <Language
             MenuProps={{
               anchorOrigin: {
                 vertical: "bottom",
@@ -47,10 +50,6 @@ export const Settings = () => {
               },
             }}
           />
-        </Stack>
-        <Stack direction={"column"} spacing={1}>
-          <Typography variant="overline">Mode v2</Typography>
-          <ModeV2 />
         </Stack>
       </Stack>
     </SwipeableDrawer>
