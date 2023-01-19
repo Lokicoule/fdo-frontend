@@ -1,25 +1,20 @@
+import { GraphQLError } from "graphql";
 import { ClientError, GraphQLClient } from "graphql-request";
 import { API_URL } from "~/config";
-import { getAccessToken } from "~/libs/auth";
-import { GraphQLError } from "graphql";
+import { getAccessToken } from "./auth";
 import { notify } from "./notify";
 
-export const GRAPHQL_ERROR_CODE = {
-  BAD_REQUEST: "BAD_REQUEST",
-  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
-  SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
-};
-
 export class BaseException extends Error {
-  public readonly code: string;
-  public readonly useBoundary: boolean;
-  constructor(message: string, code: string, useBoundary?: boolean) {
+  constructor(
+    public readonly message: string,
+    public readonly code: string,
+    public readonly useBoundary: boolean
+  ) {
     super(message);
     this.name = "BaseException";
-    this.code = code;
-    this.useBoundary = useBoundary || false;
   }
 }
+
 export class TechnicalException extends BaseException {
   constructor(message: string, code?: string) {
     super(message, code || "INTERNAL_SERVER_ERROR", true);
@@ -41,6 +36,30 @@ export class UseCaseException extends BaseException {
   }
 }
 
+export class UnknownException extends TechnicalException {
+  constructor(message: string) {
+    super(message, "UNKNOWN_ERROR");
+    this.name = "UnknowException";
+  }
+}
+
+function handleApiError(error: GraphQLError) {
+  switch (error.extensions.code) {
+    case "BAD_USER_INPUT":
+      throw new UseCaseException(error.message);
+    case "INTERNAL_SERVER_ERROR":
+      throw new TechnicalException(error.message);
+    case "SERVICE_UNAVAILABLE":
+      throw new ServiceUnavailableException(error.message);
+    default:
+      throw new UnknownException(error.message);
+  }
+}
+
+function handleNetworkError(error: TypeError) {
+  throw new ServiceUnavailableException(error.message);
+}
+
 const client = new GraphQLClient(API_URL, {
   requestMiddleware: async (request) => {
     const token = await getAccessToken();
@@ -55,26 +74,18 @@ const client = new GraphQLClient(API_URL, {
     return request;
   },
   responseMiddleware(response) {
-    if (response instanceof ClientError) {
-      const error = response.response?.errors?.[0] as GraphQLError;
-      console.log("error", error);
-      console.log("error.extensions.code", error.extensions.code);
-      console.log("error.message", error.message);
-      if (error.extensions.code === "BAD_USER_INPUT") {
-        throw new UseCaseException(error.message);
+    if (response instanceof Error) {
+      if (response instanceof ClientError) {
+        handleApiError(response.response?.errors?.[0] as GraphQLError);
+      } else if (response instanceof TypeError) {
+        handleNetworkError(response);
       }
-      if (error.extensions.code === "INTERNAL_SERVER_ERROR") {
-        notify.error({
-          title: "Technical error",
-          message: "An error has occured, please try again later",
-        });
-        throw new TechnicalException(error.message);
-      }
+    } else {
       notify.error({
-        title: "Service unavailable",
-        message: "The service is unavailable, please try again later",
+        title: "Error",
+        message: "Unknown error",
       });
-      throw new ServiceUnavailableException(error.message);
+      throw new UnknownException(JSON.stringify(response));
     }
   },
 });
