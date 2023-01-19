@@ -79,13 +79,13 @@ const client = new GraphQLClient(API_URL, {
         handleApiError(response.response?.errors?.[0] as GraphQLError);
       } else if (response instanceof TypeError) {
         handleNetworkError(response);
+      } else {
+        notify.error({
+          title: "Error",
+          message: "Unknown error",
+        });
+        throw new UnknownException(JSON.stringify(response));
       }
-    } else {
-      notify.error({
-        title: "Error",
-        message: "Unknown error",
-      });
-      throw new UnknownException(JSON.stringify(response));
     }
   },
 });
