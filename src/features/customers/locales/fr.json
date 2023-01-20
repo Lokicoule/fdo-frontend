@@ -1,0 +1,31 @@
+{
+  "@createCustomer": {
+    "title": "Créer un client",
+    "notification": {
+      "success": "Le client {{code}} a été créé avec succès"
+    }
+  },
+  "@deleteCustomer": {
+    "message": "Le client {{code}} sera supprimé définitivement.",
+    "notification": {
+      "success": "Le client {{code}} a été supprimé avec succès",
+      "error": "Le client {{code}} n'a pas pu être supprimé"
+    }
+  },
+  "@deleteCustomers": {
+    "message": "Les clients sélectionnés seront supprimés définitivement.",
+    "notification": {
+      "success": "Les clients ont été supprimés avec succès"
+    }
+  },
+  "@updateCustomer": {
+    "title": "Mise à jour client",
+    "warnMessageNoChanges": "Veillez à effectuer des modifications avant de valider.",
+    "notification": {
+      "success": "Le client {{code}} a été mis à jour avec succès"
+    }
+  },
+  "error": {
+    "CUSTOMER_CODE_ALREADY_EXISTS": "Le code client existe déjà"
+  }
+}

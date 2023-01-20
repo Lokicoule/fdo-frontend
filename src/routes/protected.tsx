@@ -5,6 +5,11 @@ import { MainLayout } from "~/components/Layout/MainLayout";
 import { Dashboard } from "~/features/misc/routes/Dashboard";
 import { lazyImport } from "~/utils/lazyImport";
 
+const { CustomersRoutes } = lazyImport(
+  () => import("~/features/customers"),
+  "CustomersRoutes"
+);
+
 const { ProductsRoutes } = lazyImport(
   () => import("~/features/products"),
   "ProductsRoutes"
@@ -29,6 +34,7 @@ export const protectedRoutes = [
         path: "/app" || "dashboard",
         element: <Dashboard />,
       },
+      { path: "customers/*", element: <CustomersRoutes /> },
       { path: "products/*", element: <ProductsRoutes /> },
       { path: "*", element: <Navigate to="." /> },
     ],

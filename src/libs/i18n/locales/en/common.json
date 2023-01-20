@@ -53,7 +53,9 @@
     "updatedAt": "Updated at",
     "product": "Product {{name}}",
     "products": "Products",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "customer": "Customer",
+    "customers": "Customers"
   },
   "error": {
     "NETWORK": "An error occurred while communicating with the server. Please try again later.",

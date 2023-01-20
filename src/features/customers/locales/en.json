@@ -1,0 +1,31 @@
+{
+  "@createCustomer": {
+    "title": "Create customer",
+    "notification": {
+      "success": "The customer {{code}} has been created successfully"
+    }
+  },
+  "@deleteCustomer": {
+    "message": "The customer {{code}} will be deleted permanently.",
+    "notification": {
+      "success": "The customer {{code}} has been deleted successfully",
+      "error": "The customer {{code}} could not be deleted"
+    }
+  },
+  "@deleteCustomers": {
+    "message": "The selected customers will be deleted permanently.",
+    "notification": {
+      "success": "The selected customers have been deleted successfully"
+    }
+  },
+  "@updateCustomer": {
+    "title": "Update customer",
+    "warnMessageNoChanges": "Before saving, you must make changes to the customer.",
+    "notification": {
+      "success": "The customer {{code}} has been updated successfully"
+    }
+  },
+  "error": {
+    "PRODUCT_CODE_ALREADY_EXISTS": "The customer code already exists"
+  }
+}

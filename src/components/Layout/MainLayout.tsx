@@ -106,6 +106,11 @@ const SideNavigation = () => {
       path: "/app",
     },
     {
+      name: t("dictionary.customers"),
+      icon: <ProductIcon />,
+      path: "/app/customers",
+    },
+    {
       name: t("dictionary.products"),
       icon: <ProductIcon />,
       path: "/app/products",
@@ -229,6 +234,9 @@ export const MainLayout: React.FunctionComponent<React.PropsWithChildren> = (
       </Box>
       <Box
         component="main"
+        boxSizing={"border-box"}
+        maxWidth="100%"
+        maxHeight="100%"
         sx={{
           flexGrow: 1,
           p: 3,

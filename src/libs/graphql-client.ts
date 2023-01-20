@@ -84,6 +84,7 @@ const client = new GraphQLClient(API_URL, {
           title: "Error",
           message: "Unknown error",
         });
+        console.log(response);
         throw new UnknownException(JSON.stringify(response));
       }
     }

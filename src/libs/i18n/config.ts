@@ -3,6 +3,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 import { resources as authResources } from "~/features/auth";
+import { resources as customersResources } from "~/features/customers";
 import { resources as productsResources } from "~/features/products";
 import { resources as commonResources } from "./locales/index";
 
@@ -14,11 +15,13 @@ export const resources = {
   en: {
     ...commonResources.en,
     ...authResources.en,
+    ...customersResources.en,
     ...productsResources.en,
   },
   fr: {
     ...commonResources.fr,
     ...authResources.fr,
+    ...customersResources.fr,
     ...productsResources.fr,
   },
 };

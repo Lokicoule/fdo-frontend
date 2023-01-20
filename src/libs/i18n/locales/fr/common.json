@@ -53,7 +53,9 @@
     "updatedAt": "Date de mise à jour",
     "product": "Produit",
     "products": "Produits",
-    "dashboard": "Tableau de bord"
+    "dashboard": "Tableau de bord",
+    "customer": "Client",
+    "customers": "Clients"
   },
   "error": {
     "NETWORK": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",
