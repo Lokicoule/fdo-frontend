@@ -1,6 +1,5 @@
 import {
   Paper,
-  Skeleton,
   Table as MuiTable,
   TableBody,
   TableHead,
@@ -65,8 +64,8 @@ export const TableBase = <Entry extends { id: string }>({
   }
 
   return (
-    <TableContainer component={Paper} elevation={1} sx={{ mb: 2 }}>
-      <MuiTable stickyHeader size="medium">
+    <TableContainer component={Paper} elevation={0} sx={{ mb: 2 }}>
+      <MuiTable size="medium">
         <TableHead
           sx={{
             "& .MuiTableCell-root": {

@@ -66,7 +66,7 @@ export const ContentLayout: React.FunctionComponent<ContentLayoutProps> = (
       <Box
         component={Paper}
         sx={{
-          padding: "1.5rem",
+          padding: "0.5rem",
           display: "flex",
           flexDirection: "column",
         }}

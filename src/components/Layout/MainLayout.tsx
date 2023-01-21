@@ -236,7 +236,6 @@ export const MainLayout: React.FunctionComponent<React.PropsWithChildren> = (
         component="main"
         boxSizing={"border-box"}
         maxWidth="100%"
-        maxHeight="100%"
         sx={{
           flexGrow: 1,
           p: 3,
