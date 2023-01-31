@@ -20,7 +20,7 @@ type UpdateProductResponse = {
 };
 
 const UpdateProduct = gql`
-  mutation UpdateProduct($payload: ProductUpdateInput!) {
+  mutation UpdateProduct($payload: UpdateProductMutation!) {
     updateProduct(payload: $payload) {
       code
       label

@@ -5,8 +5,12 @@ import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Customer } from "../types";
 
-export type DeleteCustomerVariables = {
+type DeleteCustomerInput = {
   id: string;
+};
+
+export type DeleteCustomerVariables = {
+  payload: DeleteCustomerInput;
 };
 
 type DeleteCustomerResponse = {
@@ -14,8 +18,8 @@ type DeleteCustomerResponse = {
 };
 
 const DeleteCustomer = gql`
-  mutation DeleteCustomer($id: String!) {
-    removeCustomer(id: $id) {
+  mutation DeleteCustomer($payload: DeleteCustomerMutation!) {
+    deleteCustomer(payload: $payload) {
       id
     }
   }
@@ -37,10 +41,10 @@ export const useDeleteCustomer = () => {
     deleteCustomer,
     {
       onSuccess: (data, variables) => {
-        const { id } = variables;
+        const { payload } = variables;
         const customer = queryClient
           .getQueryData<Customer[]>(["customers"])
-          ?.find((customer) => customer.id === id);
+          ?.find((customer) => customer.id === payload.id);
         const { name, code } = data ?? customer ?? {};
 
         notify.success({
@@ -52,10 +56,10 @@ export const useDeleteCustomer = () => {
         queryClient.invalidateQueries(["customers"]);
       },
       onError: (error, variables) => {
-        const { id } = variables;
+        const { payload } = variables;
         const customer = queryClient
           .getQueryData<Customer[]>(["customers"])
-          ?.find((customer) => customer.id === id);
+          ?.find((customer) => customer.id === payload.id);
         const { name, code } = customer ?? {};
 
         notify.error({

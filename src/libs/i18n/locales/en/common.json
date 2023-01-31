@@ -55,7 +55,11 @@
     "products": "Products",
     "dashboard": "Dashboard",
     "customer": "Customer",
-    "customers": "Customers"
+    "customers": "Customers",
+    "addressLine1": "Address line 1",
+    "addressLine2": "Address line 2",
+    "zipCode": "Zip code",
+    "setDefault": "Set default"
   },
   "error": {
     "NETWORK": "An error occurred while communicating with the server. Please try again later.",

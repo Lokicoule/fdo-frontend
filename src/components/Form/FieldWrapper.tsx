@@ -1,12 +1,12 @@
 import { Alert, TextFieldProps } from "@mui/material";
 import { FieldError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Overwrite } from "~/types";
+import { Override } from "~/types";
 import { ValidationError } from "~/types/ValidationError";
 
 type FieldErrorType =
   | FieldError
-  | Overwrite<FieldError, { message: ValidationError }>;
+  | Override<FieldError, { message: ValidationError }>;
 
 type ErrorMessageProps = {
   error?: FieldErrorType;

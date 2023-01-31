@@ -55,7 +55,11 @@
     "products": "Produits",
     "dashboard": "Tableau de bord",
     "customer": "Client",
-    "customers": "Clients"
+    "customers": "Clients",
+    "addressLine1": "Adresse ligne 1",
+    "addressLine2": "Adresse ligne 2",
+    "zipCode": "Code postal",
+    "setDefault": "Définir par défaut"
   },
   "error": {
     "NETWORK": "Une erreur réseau est survenue. Veuillez réessayer ultérieurement.",

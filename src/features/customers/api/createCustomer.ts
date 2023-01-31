@@ -7,9 +7,18 @@ import { Customer } from "../types";
 
 export type CreateCustomerInput = {
   name: string;
-  email: string;
-  phone: string;
+  email?: string;
+  phoneNumber?: string;
   code?: string;
+  address?: {
+    name: string;
+    phoneNumber: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    country: string;
+    zipCode: string;
+  };
 };
 
 export type CreateCustomerVariables = {
@@ -21,7 +30,7 @@ type CreateCustomerResponse = {
 };
 
 const CreateCustomer = gql`
-  mutation CreateCustomer($payload: CustomerCreateInput!) {
+  mutation CreateCustomer($payload: CreateCustomerMutation!) {
     createCustomer(payload: $payload) {
       code
       name
@@ -34,7 +43,7 @@ const createCustomer = (variables: CreateCustomerVariables) =>
   client
     .request<CreateCustomerResponse, CreateCustomerVariables>(
       CreateCustomer,
-      variables
+      JSON.parse(JSON.stringify(variables))
     )
     .then((data) => data.createCustomer);
 

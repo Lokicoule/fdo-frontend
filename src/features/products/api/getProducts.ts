@@ -3,14 +3,14 @@ import { gql } from "graphql-request";
 import client, { BaseException } from "~/libs/graphql-client";
 import { Product } from "../types";
 
-export type ProductCriteriaInput = {
+export type ProductsQuery = {
   label?: string;
   code?: string;
   id?: string;
 };
 
 export type GetProductsVariables = {
-  criterions?: ProductCriteriaInput;
+  criteria?: ProductsQuery;
 };
 
 export type GetProductsResponse = {
@@ -18,8 +18,8 @@ export type GetProductsResponse = {
 };
 
 const GetProducts = gql`
-  query GetProducts($criterions: ProductCriteriaInput) {
-    products(criterions: $criterions) {
+  query GetProducts($criteria: ProductsQuery) {
+    products(criteria: $criteria) {
       label
       id
       code

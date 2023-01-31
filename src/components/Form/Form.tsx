@@ -14,18 +14,21 @@ import { InputField } from "./InputField";
 import { SecretField } from "./SecretField";
 import { SelectField } from "./SelectField";
 
-type FormProps<TFormValues extends FieldValues> = {
+export type FormProps<
+  TFormValues extends FieldValues,
+  ValidationSchema extends AnyObjectSchema
+> = {
   children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
   id?: string;
   onSubmit: SubmitHandler<TFormValues>;
   options?: UseFormProps<TFormValues>;
-  schema?: AnyObjectSchema;
+  schema?: ValidationSchema;
 };
 
 export function Form<
   TFormValues extends FieldValues = FieldValues,
-  Schema extends AnyObjectSchema = AnyObjectSchema
->(props: FormProps<TFormValues>): JSX.Element {
+  ValidationSchema extends AnyObjectSchema = AnyObjectSchema
+>(props: FormProps<TFormValues, ValidationSchema>): JSX.Element {
   const { children, id, onSubmit, options, schema } = props;
 
   const methods = useForm<TFormValues>({

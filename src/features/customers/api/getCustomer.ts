@@ -18,7 +18,19 @@ const GetCustomer = gql`
       code
       name
       email
-      phone
+      phoneNumber
+      addresses {
+        id
+        name
+        phoneNumber
+        addressLine1
+        addressLine2
+        city
+        country
+        zipCode
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

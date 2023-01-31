@@ -28,7 +28,9 @@ export const DeleteCustomers = (props: { ids?: string[] }) => {
     console.log("Delete customers", ids);
     deleteCustomers
       .mutateAsync({
-        ids,
+        payload: {
+          ids,
+        },
       })
       .catch((err) => {
         notify.error({

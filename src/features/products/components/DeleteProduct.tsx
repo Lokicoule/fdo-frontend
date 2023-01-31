@@ -22,7 +22,9 @@ export const DeleteProduct: React.FunctionComponent<DeleteProductProps> = (
   const handleDelete = () => {
     deleteProduct
       .mutateAsync({
-        id: product.id,
+        payload: {
+          id: product.id,
+        },
       })
       .then(() => {
         onDelete?.();

@@ -109,7 +109,7 @@ export const CustomersList = () => {
       },
       {
         title: t("dictionary.phone"),
-        field: "phone",
+        field: "phoneNumber",
         options: {
           mobile: false,
           sortable: true,

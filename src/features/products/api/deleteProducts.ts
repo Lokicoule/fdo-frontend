@@ -5,8 +5,12 @@ import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
 
-export type DeleteProductsVariables = {
+type DeleteProductsInput = {
   ids: string[];
+};
+
+export type DeleteProductsVariables = {
+  payload: DeleteProductsInput;
 };
 
 type DeleteProductsResponse = {
@@ -14,8 +18,8 @@ type DeleteProductsResponse = {
 };
 
 const DeleteProducts = gql`
-  mutation RemoveProducts($ids: [String!]!) {
-    removeProducts(ids: $ids)
+  mutation RemoveProducts($payload: DeleteProductsMutation!) {
+    deleteProducts(payload: $payload)
   }
 `;
 

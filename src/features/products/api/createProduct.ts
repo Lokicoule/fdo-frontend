@@ -19,7 +19,7 @@ type CreateProductResponse = {
 };
 
 const CreateProduct = gql`
-  mutation CreateProduct($payload: ProductCreateInput!) {
+  mutation CreateProduct($payload: CreateProductMutation!) {
     createProduct(payload: $payload) {
       code
       label

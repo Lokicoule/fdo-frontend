@@ -5,8 +5,12 @@ import client, { BaseException } from "~/libs/graphql-client";
 import { notify } from "~/libs/notify";
 import { Product } from "../types";
 
-export type DeleteProductVariables = {
+export type DeleteProductInput = {
   id: string;
+};
+
+export type DeleteProductVariables = {
+  payload: DeleteProductInput;
 };
 
 type DeleteProductResponse = {
@@ -14,8 +18,8 @@ type DeleteProductResponse = {
 };
 
 const DeleteProduct = gql`
-  mutation DeleteProduct($id: String!) {
-    removeProduct(id: $id) {
+  mutation DeleteProduct($payload: DeleteProductMutation!) {
+    deleteProduct(payload: $payload) {
       id
     }
   }
@@ -37,10 +41,10 @@ export const useDeleteProduct = () => {
     deleteProduct,
     {
       onSuccess: (data, variables) => {
-        const { id } = variables;
+        const { payload } = variables;
         const product = queryClient
           .getQueryData<Product[]>(["products"])
-          ?.find((product) => product.id === id);
+          ?.find((product) => product.id === payload.id);
         const { label, code } = data ?? product ?? {};
 
         notify.success({
@@ -52,10 +56,10 @@ export const useDeleteProduct = () => {
         queryClient.invalidateQueries(["products"]);
       },
       onError: (error, variables) => {
-        const { id } = variables;
+        const { payload } = variables;
         const product = queryClient
           .getQueryData<Product[]>(["products"])
-          ?.find((product) => product.id === id);
+          ?.find((product) => product.id === payload.id);
         const { label, code } = product ?? {};
 
         notify.error({

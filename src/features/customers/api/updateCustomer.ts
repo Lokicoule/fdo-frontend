@@ -8,7 +8,7 @@ import { Customer } from "../types";
 export type UpdateCustomerInput = {
   id: string;
   name: string;
-  phone: string;
+  phoneNumber: string;
   email: string;
   code: string;
 };
@@ -22,7 +22,7 @@ type UpdateCustomerResponse = {
 };
 
 const UpdateCustomer = gql`
-  mutation UpdateCustomer($payload: CustomerUpdateInput!) {
+  mutation UpdateCustomer($payload: UpdateCustomerMutation!) {
     updateCustomer(payload: $payload) {
       code
       name

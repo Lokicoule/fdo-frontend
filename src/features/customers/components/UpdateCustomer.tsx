@@ -31,14 +31,14 @@ type UpdateCustomerValues = {
   code: string;
   name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
 };
 
 const schema = YupObject().shape({
   code: YupString().trim().max(20).required(),
   name: YupString().trim().min(3).max(120).required(),
   email: YupString().trim().email().max(120),
-  phone: YupString()
+  phoneNumber: YupString()
     .trim()
     .matches(/^(\+33|0)[1-9]\s?(\d{2}\s?){4}$/),
 });
@@ -94,7 +94,7 @@ const UpdateCustomerForm: React.FunctionComponent<UpdateCustomerFormProps> = (
             code: getCustomerQuery.data?.code,
             name: getCustomerQuery.data?.name,
             email: getCustomerQuery.data?.email,
-            phone: getCustomerQuery.data?.phone,
+            phoneNumber: getCustomerQuery.data?.phoneNumber,
           },
         }}
         id="update-customer-form"
@@ -116,7 +116,7 @@ const UpdateCustomerForm: React.FunctionComponent<UpdateCustomerFormProps> = (
               <Form.InputField
                 name="name"
                 control={control}
-                label={t("dictionary.label")}
+                label={t("dictionary.name")}
                 required
                 fullWidth
                 autoFocus
@@ -127,7 +127,7 @@ const UpdateCustomerForm: React.FunctionComponent<UpdateCustomerFormProps> = (
               <Form.InputField
                 name="email"
                 control={control}
-                label={t("dictionary.label")}
+                label={t("dictionary.email")}
                 required
                 fullWidth
                 autoFocus
@@ -136,13 +136,13 @@ const UpdateCustomerForm: React.FunctionComponent<UpdateCustomerFormProps> = (
             </Grid>
             <Grid item xs={12}>
               <Form.InputField
-                name="phone"
+                name="phoneNumber"
                 control={control}
-                label={t("dictionary.label")}
+                label={t("dictionary.phone")}
                 required
                 fullWidth
                 autoFocus
-                error={formState.errors["phone"]}
+                error={formState.errors["phoneNumber"]}
               />
             </Grid>
           </Grid>

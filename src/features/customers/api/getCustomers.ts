@@ -3,14 +3,14 @@ import { gql } from "graphql-request";
 import client, { BaseException } from "~/libs/graphql-client";
 import { Customer } from "../types";
 
-export type CustomerCriteriaInput = {
+export type CustomersQuery = {
   name?: string;
   code?: string;
   id?: string;
 };
 
 export type GetCustomersVariables = {
-  criterions?: CustomerCriteriaInput;
+  criteria?: CustomersQuery;
 };
 
 export type GetCustomersResponse = {
@@ -18,12 +18,12 @@ export type GetCustomersResponse = {
 };
 
 const GetCustomers = gql`
-  query GetCustomers($criterions: CustomerCriteriaInput) {
-    customers(criterions: $criterions) {
+  query GetCustomers($criteria: CustomersQuery) {
+    customers(criteria: $criteria) {
       id
       code
       name
-      phone
+      phoneNumber
       email
       createdAt
       updatedAt
